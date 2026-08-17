@@ -21,7 +21,7 @@ echo " | |_) / _ \\/ _\` | |_ | | | || | |"
 echo " |  _ <  __/ (_| |  _|| |_| || | |"
 echo " |_| \\_\\___|\\__,_|_|   \\__,_||_|_|"
 echo -e "${C_RESET}"
-echo -e "${C_BOLD}Herramienta de Desinstalación y Restauración de ReaFull${C_RESET}\n"
+echo -e "${C_BOLD}ReaFull Uninstallation & Restoration Tool${C_RESET}\n"
 
 # 1. Resolve Target REAPER Directory
 NATIVE_DIR="$HOME/.config/REAPER"
@@ -31,10 +31,10 @@ CONFIG_DIR=""
 if [ -n "${1:-}" ]; then
     CONFIG_DIR="$1"
 elif [ -d "$NATIVE_DIR" ] && [ -d "$FLATPAK_DIR" ]; then
-    echo -e "${C_YELLOW}[?] Se detectaron múltiples instalaciones de REAPER:${C_RESET}"
-    echo "    1. REAPER Nativo ($NATIVE_DIR)"
-    echo "    2. REAPER Flatpak ($FLATPAK_DIR)"
-    read -r -p "Selecciona destino [1/2] (por defecto 1): " CHOICE_DIR
+    echo -e "${C_YELLOW}[?] Multiple REAPER installations detected:${C_RESET}"
+    echo "    1. Native REAPER ($NATIVE_DIR)"
+    echo "    2. Flatpak REAPER ($FLATPAK_DIR)"
+    read -r -p "Select destination [1/2] (default 1): " CHOICE_DIR
     if [ "$CHOICE_DIR" = "2" ]; then
         CONFIG_DIR="$FLATPAK_DIR"
     else
@@ -46,69 +46,69 @@ else
     CONFIG_DIR="$NATIVE_DIR"
 fi
 
-echo -e "Directorio objetivo: ${C_BOLD}$CONFIG_DIR${C_RESET}\n"
+echo -e "Target directory: ${C_BOLD}$CONFIG_DIR${C_RESET}\n"
 
 # 2. Check if REAPER is currently running
 if pgrep -i reaper >/dev/null 2>&1; then
-    echo -e "${C_YELLOW}[WARN] REAPER está ejecutándose actualmente.${C_RESET}"
-    read -r -p "¿Deseas continuar de todas formas? [y/N]: " PROCEED_RUNNING
+    echo -e "${C_YELLOW}[WARN] REAPER is currently running.${C_RESET}"
+    read -r -p "Do you want to continue anyway? [y/N]: " PROCEED_RUNNING
     if ! [[ "$PROCEED_RUNNING" =~ ^[yYsS] ]]; then
-        echo "Operación cancelada para cerrar REAPER primero."
+        echo "Operation cancelled. Please close REAPER first."
         exit 0
     fi
 fi
 
 # 3. Main Action Menu
-echo -e "${C_BOLD}Selecciona la acción a realizar:${C_RESET}"
-echo "  1. Restaurar una copia de seguridad previa (Backup Restore)"
-echo "  2. Desinstalar componentes de ReaFull (Temas, FX, fuentes)"
-echo "  3. Eliminar copias de seguridad antiguas de ReaFull (Liberar espacio)"
-echo "  4. Cancelar y salir"
+echo -e "${C_BOLD}Select an action:${C_RESET}"
+echo "  1. Restore a previous backup (Backup Restore)"
+echo "  2. Uninstall ReaFull components (Themes, FX, Fonts)"
+echo "  3. Delete old ReaFull backups (Free up space)"
+echo "  4. Cancel and exit"
 echo ""
-read -r -p "Opción [1-4]: " ACTION_CHOICE
+read -r -p "Choice [1-4]: " ACTION_CHOICE
 
 case "$ACTION_CHOICE" in
     1)
         # Restore Backup
-        echo -e "\n${C_BLUE}[*] Buscando copias de seguridad de ReaFull...${C_RESET}"
+        echo -e "\n${C_BLUE}[*] Searching for ReaFull backups...${C_RESET}"
         mapfile -t BACKUPS < <(find "$(dirname "$CONFIG_DIR")" -maxdepth 1 -name "$(basename "$CONFIG_DIR")_backup_pre_*" -type d | sort -r)
 
         if [ ${#BACKUPS[@]} -eq 0 ]; then
-            echo -e "${C_YELLOW}[!] No se encontraron copias de seguridad previas para $CONFIG_DIR.${C_RESET}"
+            echo -e "${C_YELLOW}[!] No previous backups found for $CONFIG_DIR.${C_RESET}"
             exit 1
         fi
 
-        echo -e "\nCopias de seguridad disponibles:"
+        echo -e "\nAvailable backups:"
         for i in "${!BACKUPS[@]}"; do
             BACKUP_NAME=$(basename "${BACKUPS[$i]}")
             BACKUP_SIZE=$(du -sh "${BACKUPS[$i]}" 2>/dev/null | cut -f1)
             echo -e "  [$i] ${C_BOLD}${BACKUP_NAME}${C_RESET} (${BACKUP_SIZE})"
         done
         echo ""
-        read -r -p "Selecciona el índice de la copia a restaurar [0-$((${#BACKUPS[@]}-1))]: " B_IDX
+        read -r -p "Select the backup index to restore [0-$((${#BACKUPS[@]}-1))]: " B_IDX
 
         if ! [[ "$B_IDX" =~ ^[0-9]+$ ]] || [ "$B_IDX" -ge "${#BACKUPS[@]}" ]; then
-            echo -e "${C_RED}[ERROR] Selección no válida.${C_RESET}"
+            echo -e "${C_RED}[ERROR] Invalid selection.${C_RESET}"
             exit 1
         fi
 
         SELECTED_BACKUP="${BACKUPS[$B_IDX]}"
-        echo -e "\n${C_YELLOW}Restaurando desde: $SELECTED_BACKUP${C_RESET}"
-        read -r -p "¿Estás seguro de sobrescribir $CONFIG_DIR con este respaldo? [y/N]: " CONFIRM_RESTORE
+        echo -e "\n${C_YELLOW}Restoring from: $SELECTED_BACKUP${C_RESET}"
+        read -r -p "Are you sure you want to overwrite $CONFIG_DIR with this backup? [y/N]: " CONFIRM_RESTORE
 
         if [[ "$CONFIRM_RESTORE" =~ ^[yYsS] ]]; then
             rm -rf "$CONFIG_DIR"
             cp -r "$SELECTED_BACKUP" "$CONFIG_DIR"
-            echo -e "${C_GREEN}[OK] ¡Copia de seguridad restaurada exitosamente!${C_RESET}"
+            echo -e "${C_GREEN}[OK] Backup restored successfully!${C_RESET}"
         else
-            echo "Restauración cancelada."
+            echo "Restore cancelled."
         fi
         ;;
 
     2)
         # Uninstall ReaFull Components
-        echo -e "\n${C_YELLOW}[!] Desinstalando componentes de ReaFull...${C_RESET}"
-        read -r -p "¿Confirmas la eliminación de los temas, suites JSFX y fuentes de ReaFull? [y/N]: " CONFIRM_UNINSTALL
+        echo -e "\n${C_YELLOW}[!] Uninstalling ReaFull components...${C_RESET}"
+        read -r -p "Confirm removal of ReaFull themes, JSFX suites, and fonts? [y/N]: " CONFIRM_UNINSTALL
 
         if [[ "$CONFIRM_UNINSTALL" =~ ^[yYsS] ]]; then
             # Remove themes
@@ -126,11 +126,11 @@ case "$ACTION_CHOICE" in
                 if command -v fc-cache >/dev/null 2>&1; then
                     fc-cache -f "$HOME/.local/share/fonts" >/dev/null 2>&1 || true
                 fi
-                echo -e "  -> Fuentes tipográficas de ReaFull desinstaladas."
+                echo -e "  -> ReaFull fonts uninstalled."
             fi
-            echo -e "${C_GREEN}[OK] Componentes de ReaFull desinstalados con éxito.${C_RESET}"
+            echo -e "${C_GREEN}[OK] ReaFull components uninstalled successfully.${C_RESET}"
         else
-            echo "Desinstalación cancelada."
+            echo "Uninstallation cancelled."
         fi
         ;;
 
@@ -138,30 +138,30 @@ case "$ACTION_CHOICE" in
         # Clean Old Backups
         mapfile -t BACKUPS < <(find "$(dirname "$CONFIG_DIR")" -maxdepth 1 -name "$(basename "$CONFIG_DIR")_backup_pre_*" -type d | sort -r)
         if [ ${#BACKUPS[@]} -eq 0 ]; then
-            echo -e "${C_YELLOW}[!] No hay copias de seguridad de ReaFull para eliminar.${C_RESET}"
+            echo -e "${C_YELLOW}[!] No ReaFull backups to delete.${C_RESET}"
             exit 0
         fi
 
-        echo -e "\n${C_YELLOW}Se encontraron ${#BACKUPS[@]} copias de seguridad:${C_RESET}"
+        echo -e "\n${C_YELLOW}Found ${#BACKUPS[@]} backups:${C_RESET}"
         for b in "${BACKUPS[@]}"; do
             echo "  - $(basename "$b") ($(du -sh "$b" | cut -f1))"
         done
         echo ""
-        read -r -p "¿Deseas eliminar TODAS las copias de seguridad anteriores? [y/N]: " CONFIRM_CLEAN_BACKUPS
+        read -r -p "Do you want to delete ALL previous backups? [y/N]: " CONFIRM_CLEAN_BACKUPS
 
         if [[ "$CONFIRM_CLEAN_BACKUPS" =~ ^[yYsS] ]]; then
             for b in "${BACKUPS[@]}"; do
                 rm -rf "$b"
-                echo "  -> Eliminado: $(basename "$b")"
+                echo "  -> Deleted: $(basename "$b")"
             done
-            echo -e "${C_GREEN}[OK] Copias de seguridad eliminadas correctamente.${C_RESET}"
+            echo -e "${C_GREEN}[OK] Backups deleted successfully.${C_RESET}"
         else
-            echo "Operación cancelada."
+            echo "Operation cancelled."
         fi
         ;;
 
     *)
-        echo "Operación cancelada."
+        echo "Operation cancelled."
         exit 0
         ;;
 esac

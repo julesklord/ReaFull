@@ -1,243 +1,243 @@
-# Auditoría de calidad de producto — ReaFull
+# Product Quality Audit — ReaFull
 
-| Campo | Valor |
+| Field | Value |
 |---|---|
-| Producto | **ReaFull** — suite de producción, mezcla y mastering para REAPER en Linux |
-| Versión auditada | `2025.1.0-linux` (`install.py`) · rama `main` @ `c4ac8de` |
-| Fecha | 17 de agosto de 2026 |
-| Alcance | Repositorio completo: instalador, desinstalador, plantillas, assets, branding, licencias, updater in-DAW, documentación y empaquetado |
-| Tipo | Auditoría de calidad de producto (no solo de código) |
-| Veredicto | **No listo para un lanzamiento público como “suite profesional 100 % nativa”.** El contenido es valioso; el empaquetado, la higiene legal y la promesa de no-destrucción no están a la altura. |
+| Product | **ReaFull** — Production, mixing & mastering suite for REAPER on Linux |
+| Audited version | `2025.1.0-linux` (`install.py`) · branch `main` @ `c4ac8de` |
+| Date | August 17, 2026 |
+| Scope | Full repository: installer, uninstaller, templates, assets, branding, licenses, in-DAW updater, documentation, and packaging |
+| Type | Product quality audit (not just code) |
+| Verdict | **Not ready for a public release as a "100% native professional suite."** The content is valuable; the packaging, legal hygiene, and non-destruction promise fall short. |
 
 ---
 
-## 1. Resumen ejecutivo
+## 1. Executive Summary
 
-ReaFull es un *port* y rebrand de **ReArtist Pro** (Edu Serra) hacia Linux. La proposición de valor es clara y atractiva: convertir REAPER nativo (o Flatpak) en una estación de trabajo lista para producir, mezclar y masterizar, con temas, JSFX analog/digital, plantillas, keymaps, grooves y un instalador que promete no romper el entorno del usuario.
+ReaFull is a *port* and rebrand of **ReArtist Pro** (Edu Serra) to Linux. The value proposition is clear and compelling: turn native REAPER (or Flatpak) into a workstation ready for production, mixing, and mastering, with themes, analog/digital JSFX, templates, keymaps, grooves, and an installer that promises not to break the user's environment.
 
-Esa promesa es, hoy, **parcialmente falsa**.
+That promise is, today, **partially false**.
 
-El repositorio es un *dump* casi completo de una instalación Windows de ReArtist (13 383 archivos, **2,1 GB**), con una capa de rebranding incompleta y un instalador Python que sí tiene ideas buenas (backup, merge de `reaper.ini`, detección ALSA), pero que:
+The repository is an almost complete *dump* of a Windows ReArtist installation (13,383 files, **2.1 GB**), with an incomplete rebranding layer and a Python installer that does have good ideas (backup, `reaper.ini` merge, ALSA detection), but which:
 
-1. **Sobrescribe** keymaps, menús, ReaPack y decenas de INI del usuario.
-2. **Filtra mal** datos personales y rutas de Windows del autor original.
-3. **Duplica** ~605 MB de suites JSFX (ReArtist + ReaFull idénticas).
-4. **Afirma** en el README que las rutas `C:\…` “están completamente erradicadas”. No lo están.
-5. **No tiene** tests, CI, changelog, releases de GitHub, guía de usuario propia ni onboarding post-instalación.
+1. **Overwrites** keymaps, menus, ReaPack, and dozens of user INI files.
+2. **Poorly filters** personal data and Windows paths from the original author.
+3. **Duplicates** ~605 MB of JSFX suites (ReArtist + ReaFull identical).
+4. **Claims** in the README that `C:\...` paths "are completely eradicated." They are not.
+5. **Has** no tests, CI, changelog, GitHub releases, user guide, or post-install onboarding.
 
-Como *kit interno* o *preview para early adopters que conocen REAPER*, es usable y generoso. Como producto público que se presenta como “The Ultimate REAPER Production Suite for Linux”, está a **una o dos iteraciones serias** de higiene, legal y UX de poder decirlo con la cara limpia.
+As an *internal kit* or *preview for early adopters who know REAPER*, it is usable and generous. As a public product presented as "The Ultimate REAPER Production Suite for Linux," it is **one or two serious iterations** of hygiene, legal, and UX away from saying that with a straight face.
 
-### Puntuación global
+### Overall Score
 
-**5,8 / 10** — *contenido rico, empaquetado inmaduro*.
+**5.8 / 10** — *rich content, immature packaging*.
 
-| Dimensión | Nota | Comentario corto |
+| Dimension | Score | Brief Comment |
 |---|---:|---|
-| Propuesta de valor | 8,5 | El problema que resuelve es real y el bundle es generoso. |
-| Contenido / profundidad | 8,0 | Temas, 200 track templates, 19 project templates, suites JSFX, grooves, render presets. |
-| Promesa vs. realidad | 4,0 | El README sobrevende sanitización, no-destrucción y “100 % native”. |
-| Instalación y recuperación | 6,0 | Backup e instalador existen; overwrite, Flatpak y uninstall son frágiles. |
-| Identidad de marca | 4,5 | Rebrand a medias: ReaFull por fuera, ReArtist por dentro. |
-| Higiene y privacidad | 3,5 | Rutas, proyectos y logs de Edu Serra siguen en el paquete. |
-| Legal / licencias | 4,0 | MIT en raíz vs LGPL/GPL embebidos; PDFs de Cockos; binarios Windows; fuentes sin OFL. |
-| UX in-DAW | 6,5 | Workflow heredado de ReArtist es sólido; onboarding y updater no. |
-| Operaciones / release | 2,5 | Sin tests, CI, changelog, tags ni releases. Updater inseguro. |
-| Documentación de producto | 4,0 | README de marketing. Cero guía de usuario ReaFull. |
+| Value proposition | 8.5 | The problem it solves is real and the bundle is generous. |
+| Content / depth | 8.0 | Themes, 200 track templates, 19 project templates, JSFX suites, grooves, render presets. |
+| Promise vs. reality | 4.0 | The README oversells sanitization, non-destruction, and "100% native." |
+| Installation & recovery | 6.0 | Backup and installer exist; overwrite, Flatpak, and uninstall are fragile. |
+| Brand identity | 4.5 | Half rebrand: ReaFull on the outside, ReArtist on the inside. |
+| Hygiene & privacy | 3.5 | Edu Serra's paths, projects, and logs remain in the package. |
+| Legal / licenses | 4.0 | MIT at root vs. embedded LGPL/GPL; Cockos PDFs; Windows binaries; fonts without OFL. |
+| In-DAW UX | 6.5 | Workflow inherited from ReArtist is solid; onboarding and updater are not. |
+| Operations / release | 2.5 | No tests, CI, changelog, tags, or releases. Insecure updater. |
+| Product documentation | 4.0 | Marketing README. Zero ReaFull user guide. |
 
 ---
 
-## 2. Qué es el producto (y qué no es)
+## 2. What the Product Is (and What It Is Not)
 
-### 2.1 Definición observada
+### 2.1 Observed Definition
 
-ReaFull no es un DAW ni un plugin. Es una **distribución de configuración** para Cockos REAPER:
+ReaFull is not a DAW or a plugin. It is a **configuration distribution** for Cockos REAPER:
 
-- Temas (`ReaFull Pro/Dark/Gray/Light`)
-- Suites JSFX Analog + Digital (skins de Tukan / Sonic Anomaly / REEQ / etc.)
-- ~200 track templates por instrumento y rol
-- 19 project templates por género (salsa, ranchera, metal, jazz, mastering…)
-- Keymaps, menús, mouse maps, screensets, FX chains, grooves
-- Miles de ReaScripts de terceros (ReaTeam, MPL, X-Raym, FTC, HeDa, Sexan…)
-- Instalador Linux + updater in-DAW
+- Themes (`ReaFull Pro/Dark/Gray/Light`)
+- Analog + Digital JSFX Suites (Tukan / Sonic Anomaly / REEQ / etc. skins)
+- ~200 track templates by instrument and role
+- 19 project templates by genre (salsa, ranchera, metal, jazz, mastering...)
+- Keymaps, menus, mouse maps, screensets, FX chains, grooves
+- Thousands of third-party ReaScripts (ReaTeam, MPL, X-Raym, FTC, HeDa, Sexan...)
+- Linux installer + in-DAW updater
 
-El ADN creativo y de workflow es de **Edu Serra / ReArtist Pro**. El trabajo de empaquetado Linux, sanitización y rebrand es de **Jules Martins**. Esa dualidad no está resuelta: el producto no decide si es un *fork* con identidad propia o un *port oficial/no oficial* de ReArtist.
+The creative and workflow DNA is from **Edu Serra / ReArtist Pro**. The Linux packaging, sanitization, and rebrand work is from **Jules Martins**. That duality is unresolved: the product can't decide if it's a *fork* with its own identity or an *official/unofficial port* of ReArtist.
 
-### 2.2 Usuario objetivo implícito
+### 2.2 Implicit Target User
 
-1. Productor/mezclador en Linux que quiere REAPER “listo” sin semanas de setup.
-2. Usuario de ReArtist en Windows que migra a Linux.
-3. Alguien que busca una consola analog-modeled (SSL/Neve/Pultec/1176/LA-2A) en JSFX.
+1. Producer/mixer on Linux who wants REAPER "ready" without weeks of setup.
+2. ReArtist user on Windows migrating to Linux.
+3. Someone looking for an analog-modeled console (SSL/Neve/Pultec/1176/LA-2A) in JSFX.
 
-El instalador y el README **no segmentan** a estos tres. Un usuario REAPER veterano con keymap propio sufrirá más que un usuario nuevo.
+The installer and README **do not segment** these three. A veteran REAPER user with their own keymap will suffer more than a new user.
 
-### 2.3 Promesas del README vs. evidencia
+### 2.3 README Promises vs. Evidence
 
-| Promesa | Realidad | Veredicto |
+| Promise | Reality | Verdict |
 |---|---|---|
-| “100 % Linux Native” | Quedan rutas `J:\`, `F:\`, `C:/Program Files (x86)/ReArtist/ffmpeg.exe`, logs `C:\Users\EDU SERRA\…`, 5 `.exe` de Windows, fonts Windows (`MS Shell Dlg`, `Segoe UI`). | **Incumplida** |
-| “Fully Sanitized” | `reaper.template.ini` conserva 13 proyectos recientes de Edu Serra y paths de mastering. | **Incumplida** |
-| “Smart Non-Destructive Installer” | Backup sí. Luego `shutil.copy2` de 17 INI encima de los del usuario (`reaper-kb.ini`, `reaper-menu.ini`, `reapack.ini`…). | **Parcial** |
-| “Preserves ALSA, JACK, Pipewire, licenses, recent projects” | El merge de `reaper.ini` sí protege un set de keys. El resto de configs no. | **Parcial** |
-| “Battery-Included” | Cierto: temas, JSFX, templates, scripts, grooves, fonts. | **Cumplida** |
-| “In-DAW Updater” | Existe, pero no hay releases en GitHub; descarga `install.py` de `main` y lo ejecuta en background **sin checksum ni `--target`**. | **Cumplida en forma, fallida en fondo** |
-| “4 curated theme flavors” | Los 4 `.ReaperThemeZip` de ReaFull son **copias byte-idénticas** de los ReArtist 2.0. | **Cumplida como asset, no como rebrand** |
+| "100% Linux Native" | `J:\`, `F:\`, `C:/Program Files (x86)/ReArtist/ffmpeg.exe` paths remain; `C:\Users\EDU SERRA\...` logs; 5 Windows `.exe` files; Windows fonts (`MS Shell Dlg`, `Segoe UI`). | **Violated** |
+| "Fully Sanitized" | `reaper.template.ini` retains 13 recent projects from Edu Serra and mastering paths. | **Violated** |
+| "Smart Non-Destructive Installer" | Backup yes. Then `shutil.copy2` of 17 INI files over the user's (`reaper-kb.ini`, `reaper-menu.ini`, `reapack.ini`...). | **Partial** |
+| "Preserves ALSA, JACK, Pipewire, licenses, recent projects" | The `reaper.ini` merge does protect a set of keys. The rest of the configs do not. | **Partial** |
+| "Battery-Included" | True: themes, JSFX, templates, scripts, grooves, fonts. | **Met** |
+| "In-DAW Updater" | Exists, but there are no GitHub releases; downloads `install.py` from `main` and runs it in the background **without checksum or `--target`**. | **Met in form, failed in substance** |
+| "4 curated theme flavors" | The 4 ReaFull `.ReaperThemeZip` files are **byte-identical copies** of ReArtist 2.0. | **Met as asset, not as rebrand** |
 
 ---
 
-## 3. Fortalezas (lo que sí está bien)
+## 3. Strengths (What Works Well)
 
-No es un proyecto vacío. Hay sustancia de producto:
+This is not an empty project. There is product substance:
 
-1. **Propuesta concreta.** “REAPER en Linux, listo para estudio” es un hueco real. REAPER nativo en Linux llega desnudo.
-2. **Profundidad de workflow.** 200 track templates bien taxonomizados (00 Default → 16 Separators), project templates por género latino/rock/electrónica, FX chains de bus/tape, render presets LUFS (Spotify −8/−10/−12/−14, CD). Eso no se improvisa.
-3. **Suites JSFX con GUI.** Analog (SolidBus, Distres, Pulse-EQ, Fat-Tape, FET-76, Opto-2A, Mix-Chan, Sum-Desk…) y Digital (D-Comp, D-DynEQ, Reflex 1/2/3, T-FFT, T-Meter). Para un usuario Linux sin Waves/UAD, esto es el corazón del producto.
-4. **Instalador con ideas correctas.** Detección native/Flatpak, dry-run, `--no-backup`, `--no-fonts`, `--quiet`, merge selectivo de `reaper.ini`, detección ALSA de UMC404HD / AudioBox, defaults de resampling r8brain, `linux_mlockall`, `alsa_rtprio`.
-5. **Backup + restore.** `create_backup()` + `uninstall.sh` dan un camino de vuelta. Pocos configuradores de DAW lo tienen.
-6. **Créditos visibles.** README nombra a Edu Serra, Cockos, FTC, HeDa, Lokasenna, MPL, X-Raym, Archie, Saike, Tilr, StevieKeys, SWS, cfillion. Eso es ético y necesario.
-7. **ReaPack remotes bien elegidos.** 15 remotos coherentes con lo empaquetado (ReaTeam, MPL, X-Raym, FTC, Sexan, Suzuki, Tilr, Saike…).
-8. **Tipografía automatizada.** Copia a `~/.local/share/fonts/ReaFull` + `fc-cache`. Detalle de producto, no de script.
+1. **Concrete proposition.** "REAPER on Linux, studio-ready" is a real gap. Native REAPER on Linux ships bare.
+2. **Workflow depth.** 200 well-taxonomized track templates (00 Default → 16 Separators), project templates by genre (latin/rock/electronic), bus/tape FX chains, LUFS render presets (Spotify −8/−10/−12/−14, CD). That's not improvised.
+3. **JSFX Suites with GUI.** Analog (SolidBus, Distres, Pulse-EQ, Fat-Tape, FET-76, Opto-2A, Mix-Chan, Sum-Desk...) and Digital (D-Comp, D-DynEQ, Reflex 1/2/3, T-FFT, T-Meter). For a Linux user without Waves/UAD, this is the heart of the product.
+4. **Installer with good ideas.** Native/Flatpak detection, dry-run, `--no-backup`, `--quiet`, selective `reaper.ini` merge, ALSA UMC404HD/AudioBox detection, r8brain resampling defaults, `linux_mlockall`, `alsa_rtprio`.
+5. **Backup + restore.** `create_backup()` + `uninstall.sh` provide a rollback path. Few DAW configurators have this.
+6. **Visible credits.** README names Edu Serra, Cockos, FTC, HeDa, Lokasenna, MPL, X-Raym, Archie, Saike, Tilr, StevieKeys, SWS, cfillion. That is ethical and necessary.
+7. **Well-chosen ReaPack remotes.** 15 remotes coherent with what's packaged (ReaTeam, MPL, X-Raym, FTC, Sexan, Suzuki, Tilr, Saike...).
+8. **Automated typography.** Copies to `~/.local/share/fonts/ReaFull` + `fc-cache`. A product detail, not just a script.
 
-Estas fortalezas son la razón por la que vale la pena arreglar el resto, no tirarlo.
-
----
-
-## 4. Hallazgos
-
-Severidad:
-
-- **P0** — Bloquea un lanzamiento público o puede dañar al usuario / al autor.
-- **P1** — Rompe la promesa de producto o genera soporte recurrente.
-- **P2** — Deuda visible; no bloquea, pero erosiona confianza.
-- **P3** — Pulido.
+These strengths are the reason to fix the rest, not throw it away.
 
 ---
 
-### P0 — Bloqueantes
+## 4. Findings
 
-#### P0.1 El instalador no es no-destructivo
+Severity levels:
 
-`deploy_configurations()` hace `shutil.copy2` de 17 INI sobre el directorio vivo de REAPER:
+- **P0** — Blocks a public release or can harm the user / author.
+- **P1** — Breaks the product promise or generates recurring support.
+- **P2** — Visible debt; doesn't block, but erodes trust.
+- **P3** — Polish.
+
+---
+
+### P0 — Blockers
+
+#### P0.1 The installer is not non-destructive
+
+`deploy_configurations()` does `shutil.copy2` of 17 INI files over the live REAPER directory:
 
 `reaper-kb.ini`, `reaper-menu.ini`, `reaper-mouse.ini`, `reapack.ini`, `reaper-fxfolders.ini`, `reaper-screensets.ini`, `BR.ini`, `Xenakios_Commands.ini`, etc.
 
-Un usuario con años de atajos, menús custom o remotos ReaPack **los pierde** (salvo que restaure el backup). El README dice lo contrario.
+A user with years of shortcuts, custom menus, or ReaPack remotes **loses them** (unless they restore the backup). The README says the opposite.
 
-El merge inteligente existe **solo** para `reaper.ini`, y ni siquiera ahí es completo (ver P1.2).
+The smart merge exists **only** for `reaper.ini`, and even there it's incomplete (see P1.2).
 
-**Impacto de producto:** un power user Linux que pruebe ReaFull una tarde puede sentir que le “han formateado REAPER”. Eso mata adopción y genera issues de pánico.
+**Product impact:** A Linux power user who tries ReaFull one afternoon may feel they've had their "REAPER formatted." That kills adoption and generates panic issues.
 
-**Remedio:** merge por archivo (o al menos no tocar `reaper-kb.ini` / `reapack.ini` / `reaper-mouse.ini` si ya existen, salvo `--force`). Ofrecer perfiles: *Fresh studio* vs *Overlay on my setup*.
+**Remedy:** Per-file merge (or at minimum, don't touch `reaper-kb.ini` / `reapack.ini` / `reaper-mouse.ini` if they already exist, except with `--force`). Offer profiles: *Fresh studio* vs *Overlay on my setup*.
 
-#### P0.2 Datos personales y de sesión de terceros en el paquete
+#### P0.2 Third-party personal and session data in the package
 
-`config_templates/reaper.template.ini` incluye:
+`config_templates/reaper.template.ini` includes:
 
 - `importpath=J:\Antonio Dorado`
-- `lastprojuiref=J:\REARTIST.NET\Test RA2025 Borrar\…`
-- 13 `recent0N=` con proyectos reales (`Lazy Dogs LP`, `Psicophony_Peste de Silicio`, `Aston Maio-Mamacita-Urbano`, `Gaga`, paths en `H:\`, `E:\`, `K:\`)
-- `lastrenderpath3/5/6` a discos de mastering
-- `lastdir=G:\Cab Impulses\BOGREN\Bogren.Digital.Jens.Bogren.Signature.IR.Pack…`
+- `lastprojuiref=J:\REARTIST.NET\Test RA2025 Borrar\...`
+- 13 `recent0N=` entries with real projects (`Lazy Dogs LP`, `Psicophony_Peste de Silicio`, `Aston Maio-Mamacita-Urbano`, `Gaga`, paths on `H:\`, `E:\`, `K:\`)
+- `lastrenderpath3/5/6` pointing to mastering drives
+- `lastdir=G:\Cab Impulses\BOGREN\Bogren.Digital.Jens.Bogren.Signature.IR.Pack...`
 
-Además:
+Additionally:
 
-- `assets/Scripts/HeDaScripts/HeDaScripts Manager.log` — log de sesión de **EDU SERRA** en Windows, con rutas `C:\Users\EDU SERRA\AppData\…`, versión de curl, tests de 7-Zip.
+- `assets/Scripts/HeDaScripts/HeDaScripts Manager.log` — session log of **EDU SERRA** on Windows, with `C:\Users\EDU SERRA\AppData\...` paths, curl version, 7-Zip tests.
 - `reaper-extstate.template.ini` → `ffmpeg path=C:/Program Files (x86)/ReArtist/ffmpeg/bin/ffmpeg.exe`
-- Decenas de `ReaImGui/*.ini` con geometría de ventanas de esa sesión.
+- Dozens of `ReaImGui/*.ini` with window geometry from that session.
 
-Si el usuario instala en una máquina limpia, **hereda el historial de proyectos de otra persona**. Si publica el repo, publica metadatos de sesiones ajenas.
+If the user installs on a clean machine, **they inherit another person's project history**. If they publish the repo, they publish someone else's session metadata.
 
-**Remedio:** allowlist de keys en el template. Borrar `recent*`, `lastproj*`, `lastdir`, `lastrenderpath*`, logs, `ReaImGui/*.ini` de runtime. Regenerar `reaper.template.ini` desde un perfil *factory*.
+**Remedy:** Key allowlist in the template. Delete `recent*`, `lastproj*`, `lastdir`, `lastrenderpath*`, logs, `ReaImGui/*.ini` runtime data. Regenerate `reaper.template.ini` from a *factory* profile.
 
-#### P0.3 Conflicto legal y de atribución no resuelto
+#### P0.3 Unresolved legal and attribution conflict
 
-| Capa | Licencia observada | Problema |
+| Layer | Observed License | Problem |
 |---|---|---|
-| Raíz del repo | MIT (Jules Martins, 2025) | MIT no cubre el bundle. |
-| ReArtist | LGPL v3 (Edu Serra, 2023) — el archivo dice “LGLP” (typo) | Un Combined Work LGPL + MIT requiere avisos, GPL/LGPL adjuntos y no puede “relicenciarse” como MIT. |
-| ReaScripts embebidos | En su mayoría GPL-3 (ReaTeam, MPL, X-Raym…) | Redistribuir 5 000+ scripts como snapshot viola el espíritu (y a veces la letra) de “instala vía ReaPack”. Varios autores lo piden explícitamente. |
-| JSFX Analog/Digital | Skins de Tukan Studios (John Matthews), Sonic Anomaly (Stige T), REEQ (Justin Johnson), Cockos | El `ABOUT` lo admite. Rebrand a “ReaFull Analog FX” + logos ReArtist en GUI + MIT en raíz es una cadena de atribución rota. |
-| `assets/Docs/ReaperUserGuide734e.pdf`, `Reaper FX Manual v2022.pdf` | Copyright Cockos | Redistribuir el user guide oficial en un repo de terceros es, como mínimo, zona gris. Cockos no suele autorizarlo. |
-| `ogler.clap` (13 MB) | Binario CLAP de terceros | Sin licencia, sin fuente, sin nota de procedencia. |
-| `7za.exe`, `curl.exe` (HeDa) | Binarios Windows | Basura en un producto Linux; además redistribución de 7-Zip/curl. |
-| Fuentes | OFL para Open Sans, Orbitron, Roboto | **Sin licencia** para Electrolize, FrozenCrystal, “alarm clock”. |
+| Repo root | MIT (Jules Martins, 2025) | MIT does not cover the bundle. |
+| ReArtist | LGPL v3 (Edu Serra, 2023) — the file says "LGLP" (typo) | A Combined Work LGPL + MIT requires notices, attached GPL/LGPL, and cannot be "relicensed" as MIT. |
+| Embedded ReaScripts | Mostly GPL-3 (ReaTeam, MPL, X-Raym...) | Redistributing 5,000+ scripts as a snapshot violates the spirit (and sometimes the letter) of "install via ReaPack." Several authors explicitly request this. |
+| Analog/Digital JSFX | Tukan Studios (John Matthews), Sonic Anomaly (Stige T), REEQ (Justin Johnson), Cockos skins | The `ABOUT` file acknowledges this. Rebranding to "ReaFull Analog FX" + ReArtist logos in GUI + MIT at root is a broken attribution chain. |
+| `assets/Docs/ReaperUserGuide734e.pdf`, `Reaper FX Manual v2022.pdf` | Cockos Copyright | Redistributing the official user guide in a third-party repo is at minimum gray area. Cockos typically doesn't authorize this. |
+| `ogler.clap` (13 MB) | Third-party CLAP binary | No license, no source, no provenance note. |
+| `7za.exe`, `curl.exe` (HeDa) | Windows binaries | Junk in a Linux product; also redistribution of 7-Zip/curl. |
+| Fonts | OFL for Open Sans, Orbitron, Roboto | **No license** for Electrolize, FrozenCrystal, "alarm clock". |
 
-El README dice: *“Bundled JSFX and ReaScripts maintain their respective open-source licenses.”* Eso es una nota al pie, no un *NOTICE* / *THIRD_PARTY.md*. Para un producto que se clona y se instala entero, no basta.
+The README says: *"Bundled JSFX and ReaScripts maintain their respective open-source licenses."* That's a footnote, not a *NOTICE* / *THIRD_PARTY.md*. For a product that is cloned and installed in full, that's not enough.
 
-**Remedio mínimo para un v1 público:**
+**Minimum remedy for a public v1:**
 
-1. `NOTICE.md` + `THIRD_PARTY.md` con autor, licencia y origen de cada bloque.
-2. Raíz: “installer MIT; bundled content under original licenses”.
-3. Quitar PDFs de Cockos (enlazar a la web oficial).
-4. Quitar `.exe`, `.log`, `ogler.clap` si no hay licencia clara.
-5. Añadir OFL/licencias de las 3 fuentes que faltan, o no empaquetarlas.
-6. Preferir ReaPack para scripts de terceros en vez de vendorar 156 MB.
+1. `NOTICE.md` + `THIRD_PARTY.md` with author, license, and origin for each block.
+2. Root: "installer MIT; bundled content under original licenses."
+3. Remove Cockos PDFs (link to the official website).
+4. Remove `.exe`, `.log`, `ogler.clap` if there's no clear license.
+5. Add OFL/licenses for the 3 missing fonts, or don't package them.
+6. Prefer ReaPack for third-party scripts instead of vendoring 156 MB.
 
-#### P0.4 Updater in-DAW inseguro e incompleto
+#### P0.4 Insecure and incomplete in-DAW updater
 
 `assets/Scripts/ReaFull/ReaFull_Updater.lua`:
 
-- Consulta `/releases/latest`. **No hay releases.** Siempre cae al fallback.
-- El “update” real es:
+- Queries `/releases/latest`. **There are no releases.** It always falls back.
+- The actual "update" is:
 
   ```lua
-  python3 -c "…urlretrieve('…/main/install.py', '/tmp/reafull_install.py');
+  python3 -c "...urlretrieve('.../main/install.py', '/tmp/reafull_install.py');
               os.system('python3 /tmp/reafull_install.py --quiet --no-backup')"
   ```
 
-  Problemas: sin verificación de integridad, corre `--no-backup`, **no pasa `--target`** (rompe Flatpak), corre en background mientras REAPER está abierto (el propio instalador avisa de que REAPER debe estar cerrado), y el OS-detect es un nudo:
+  Problems: no integrity check, runs `--no-backup`, **doesn't pass `--target`** (breaks Flatpak), runs in the background while REAPER is open (the installer itself warns that REAPER should be closed), and the OS-detect is broken:
 
   ```lua
   local is_linux = reaper.GetOS():match("Other") or reaper.GetOS():match("OSX") == nil and reaper.GetOS():match("Win") == nil
   ```
 
-  `is_linux` **nunca se usa**. El menú está en español, el resto del producto en inglés.
+  `is_linux` **is never used**. The menu is in Spanish, the rest of the product in English.
 
-**Impacto:** un usuario que pulse “actualizar” puede pisar su config **sin backup** y, en Flatpak, escribir en `~/.config/REAPER` en vez del sandbox.
+**Impact:** A user who clicks "update" may overwrite their config **without backup** and, on Flatpak, write to `~/.config/REAPER` instead of the sandbox.
 
 ---
 
-### P1 — Rompen la promesa de producto
+### P1 — Breaks the Product Promise
 
-#### P1.1 Rebrand incompleto: el usuario compra ReaFull y recibe ReArtist
+#### P1.1 Incomplete rebrand: the user gets ReArtist instead of ReaFull
 
-El rebrand es una **copia de archivos**, no una transformación de producto.
+The rebrand is a **file copy**, not a product transformation.
 
-| Superficie | Estado |
+| Surface | Status |
 |---|---|
-| Splash, README, `install.py`, carpeta `Scripts/ReaFull/` | ReaFull |
-| Temas `ReaFull *.ReaperThemeZip` | Copias idénticas de `ReArtist 2.0 *` (se siguen embarcando las 8) |
-| Suites `ReaFull Analog/Digital FX` | Copias idénticas de `ReArtist *` (**+605 MB**) |
-| Nombres internos de plugins | `SolidBus (ReArtist Pro)`, `D-Comp (ReArtist Pro)`, … |
-| Logos en GUI | `ReArtist Logo BLUE.png` / `GREY.png` en decenas de JSFX |
-| `ABOUT THIS PLUGIN COLLECTION.txt` | Habla de ReArtist, Edu Serra, carpeta “REARTIST” |
-| `MouseMaps/` | Solo `ReArtist Pro.ReaperMouseMap` — no hay ReaFull |
-| `Scripts/Cockos/ReArtist_theme_adjuster.lua` | Sin equivalente ReaFull |
-| `S&M.template.ini` theme slots | Siguen apuntando a `ReArtist 2.0 *.ReaperThemeZip` |
-| `reaper-fxoptions.ini` | Cientos de entradas `ReARTIST/…` y `ReArtist Analog FX/…` |
+| Splash, README, `install.py`, `Scripts/ReaFull/` folder | ReaFull |
+| `ReaFull *.ReaperThemeZip` themes | Identical copies of `ReArtist 2.0 *` (all 8 still shipped) |
+| `ReaFull Analog/Digital FX` suites | Identical copies of `ReArtist *` (**+605 MB**) |
+| Plugin internal names | `SolidBus (ReArtist Pro)`, `D-Comp (ReArtist Pro)...` |
+| GUI logos | `ReArtist Logo BLUE.png` / `GREY.png` in dozens of JSFX |
+| `ABOUT THIS PLUGIN COLLECTION.txt` | References ReArtist, Edu Serra, "REARTIST" folder |
+| `MouseMaps/` | Only `ReArtist Pro.ReaperMouseMap` — no ReaFull |
+| `Scripts/Cockos/ReArtist_theme_adjuster.lua` | No ReaFull equivalent |
+| `S&M.template.ini` theme slots | Still point to `ReArtist 2.0 *.ReaperThemeZip` |
+| `reaper-fxoptions.ini` | Hundreds of `ReARTIST/...` and `ReArtist Analog FX/...` entries |
 
-El usuario ve “ReaFull Pro” en el splash y “ReArtist Pro” en cada plugin. Eso no es un easter egg: es un producto que no ha terminado de nacer.
+The user sees "ReaFull Pro" on the splash and "ReArtist Pro" in every plugin. That's not an easter egg: it's a product that hasn't finished being born.
 
-**Coste de no decidir:** 605 MB × 2 de JSFX + 4 themes duplicados. En un clone de GitHub / un backup del instalador, duele.
+**Cost of not deciding:** 605 MB × 2 JSFX + 4 duplicate themes. In a GitHub clone / installer backup, it hurts.
 
-**Decisión de producto necesaria (elegir una):**
+**Product decision needed (pick one):**
 
-- **A. Port fiel de ReArtist** — mantener el nombre ReArtist en plugins (crédito correcto), ReaFull solo como “Linux edition / installer”.
-- **B. Marca propia** — rebrand real de slugs JSFX, ABOUT, theme adjuster, mouse map, fxoptions; dejar de embarcar el árbol ReArtist.
+- **A. Faithful ReArtist port** — keep the ReArtist name on plugins (correct attribution), ReaFull only as "Linux edition / installer."
+- **B. Own brand** — real rebrand of JSFX slugs, ABOUT, theme adjuster, mouse map, fxoptions; stop shipping the ReArtist tree.
 
-Hoy es A y B a la vez, peor que cualquiera de las dos.
+Right now it's A and B simultaneously, worse than either.
 
-#### P1.2 `reaper.template.ini` no es una plantilla
+#### P1.2 `reaper.template.ini` is not a template
 
-Es un `REAPER.ini` de una máquina Windows de 2025, con placeholders solo en `lastthemefn5` y `splashimage`. Conserva:
+It's a `REAPER.ini` from a 2025 Windows machine, with placeholders only in `lastthemefn5` and `splashimage`. It retains:
 
-- Geometría de ventanas de un monitor concreto (`iconpicker_x=-1275`, docks, prefs en coords absolutas).
-- Fuentes Windows (`Segoe UI`, `Arial Narrow`, `alarm clock`).
-- Historial de proyectos y renders (P0.2).
-- Keys de hardware/UI que el merge intenta preservar *si ya existen*, pero que se instalan tal cual en un perfil nuevo.
+- Window geometry from a specific monitor (`iconpicker_x=-1275`, docks, prefs at absolute coordinates).
+- Windows fonts (`Segoe UI`, `Arial Narrow`, `alarm clock`).
+- Project and render history (P0.2).
+- Hardware/UI keys that the merge tries to preserve *if they already exist*, but are installed as-is in a new profile.
 
-El merge **no expande** `{{REAPER_CONFIG_DIR}}` en las líneas del template: reescribe theme/splash a mano. Si alguien añade más placeholders, se quedarán literales.
+The merge **does not expand** `{{REAPER_CONFIG_DIR}}` in template lines: it rewrites theme/splash manually. If anyone adds more placeholders, they'll remain as literals.
 
-#### P1.3 Detección de destino y de proceso, incompleta para Linux real
+#### P1.3 Incomplete target and process detection for real Linux
 
 ```python
 def detect_reaper_dir():
@@ -248,349 +248,349 @@ def detect_reaper_dir():
     return native_dir
 ```
 
-Si el usuario tiene **las dos** (muy común: probó nativo y se pasó a Flatpak, o al revés), siempre gana nativo. No pregunta.
+If the user has **both** (very common: tried native and switched to Flatpak, or vice versa), native always wins. It doesn't ask.
 
-`is_reaper_running()` usa `pgrep -x reaper`. Un binario Flatpak o un `reaper.exe` bajo Wine no se detectan. El usuario puede instalar encima de una sesión viva.
+`is_reaper_running()` uses `pgrep -x reaper`. A Flatpak binary or a `reaper.exe` under Wine isn't detected. The user can install over a live session.
 
-`uninstall.sh` **solo** mira `$HOME/.config/REAPER` (o `$1`). No hay Flatpak, no hay `--quiet`, no hay listado de backups `*_backup_pre_reafull_*` documentado en el README de forma simétrica.
+`uninstall.sh` **only** looks at `$HOME/.config/REAPER` (or `$1`). No Flatpak, no `--quiet`, no documented `*_backup_pre_reafull_*` backup listing in the README.
 
-`install.sh` avisa de deps que faltan pero **sigue igual**. `curl` se marca como dependencia y el instalador Python no lo usa.
+`install.sh` warns about missing deps but **proceeds anyway**. `curl` is listed as a dependency but the Python installer doesn't use it.
 
-#### P1.4 Defaults de audio agresivos y demasiado específicos
+#### P1.4 Aggressive and too-specific audio defaults
 
-`detect_best_audio_settings()` está bien intencionado y mal generalizado:
+`detect_best_audio_settings()` is well-intentioned but poorly generalized:
 
-- Hardcodea `hw:U192k` (Behringer UMC404HD) y `hw:USB` (AudioBox). Cualquier otra interfaz se ignora.
-- `alsa_rtprio=90` + `linux_mlockall=1` fallan en silencio sin `rtirq` / `limits.conf` / grupo `audio`. El usuario ve xruns o REAPER que no abre ALSA, no un mensaje.
-- Fuerza 48 kHz / 256 / 3 buffers. Legítimo como default de estudio; no se documenta ni se pregunta.
-- Si el usuario *ya* tiene device, igual pisa `playresamplemode`, `afxb`, `workthreads` cuando valen `"0"` / `"50"`.
+- Hardcodes `hw:U192k` (Behringer UMC404HD) and `hw:USB` (AudioBox). Any other interface is ignored.
+- `alsa_rtprio=90` + `linux_mlockall=1` fail silently without `rtirq` / `limits.conf` / `audio` group. The user sees xruns or REAPER not opening ALSA, not an error message.
+- Forces 48 kHz / 256 / 3 buffers. Legitimate as a studio default; not documented or prompted.
+- If the user *already* has a device, it may overwrite `playresamplemode`, `afxb`, `workthreads` when they're `"0"` / `"50"`.
 
-Un producto “pro Linux” debería detectar PipeWire/JACK primero (es el stack 2026), no solo `aplay -l` + dos marcas de interfaz.
+A "pro Linux" product should detect PipeWire/JACK first (it's the 2026 stack), not just `aplay -l` + two interface brands.
 
-#### P1.5 Startup scripts sin consentimiento
+#### P1.5 Startup scripts without consent
 
-`assets/Scripts/__startup.lua` lanza al arrancar:
+`assets/Scripts/__startup.lua` launches at startup:
 
 1. Lil Chordbox (FTC)
 2. Adaptive grid (background)
 3. Gridbox
 
-En un producto “studio console”, abrir dos overlays MIDI/grid en cada launch es una decisión de autor, no un default universal. No hay toggle, no hay wizard, no está documentado.
+In a product marketed as a "studio console," opening two MIDI/grid overlays at every launch is an author's decision, not a universal default. No toggle, no wizard, not documented.
 
-#### P1.6 Verificación desconectada del flujo de producto
+#### P1.6 Verification disconnected from the product flow
 
-`scripts/verify_installation.py` existe y es la semilla correcta de un health-check. El instalador **no lo llama**. El README no lo menciona. Comprueba 6 cosas superficiales (carpeta, un theme, dos dirs FX, dos nombres de fuente, ≥10 track templates, un INI). No valida:
+`scripts/verify_installation.py` exists and is the right seed for a health check. The installer **doesn't call it**. The README doesn't mention it. It checks 6 superficial things (folder, one theme, two FX dirs, two font names, ≥10 track templates, one INI). It doesn't validate:
 
-- que los JSFX resuelven
-- que no quedaron `{{REAPER_CONFIG_DIR}}` literales
-- que no hay `C:\` en el `reaper.ini` instalado
-- que SWS/ReaPack quedaron linkeados
-- que las fuentes *alarm clock* / Orbitron (las que usa el theme) están
+- That JSFX resolves correctly
+- That no literal `{{REAPER_CONFIG_DIR}}` remains
+- That no `C:\` exists in the installed `reaper.ini`
+- That SWS/ReaPack were linked
+- That the *alarm clock* / Orbitron fonts (used by the theme) are present
 
-Además acepta el fallback ReArtist como “OK”, lo que esconde un rebrand a medias.
+It also accepts the ReArtist fallback as "OK", hiding a half-done rebrand.
 
-#### P1.7 Scripts de empaquetado no son producto, son leftover de cocina
+#### P1.7 Packaging scripts are not product, they're kitchen leftovers
 
-`scripts/sanitize_and_prepare.py`, `apply_rebranding.py`, `clean_templates_final.py` tienen:
+`scripts/sanitize_and_prepare.py`, `apply_rebranding.py`, `clean_templates_final.py` contain:
 
 ```python
 REPO_DIR = "/mnt/DEV/projects/repos/julesklord/ReaFull"
 SRC_EXTRACTED = "/home/julesklord/.cache/reartist_extracted_files"
 ```
 
-Rutas de la máquina del autor. Si un contributor (o el propio updater mental) los corre en otro sitio, no hacen nada o escriben fuera. No hay `Makefile` / `justfile` que distinga *build del paquete* vs *install del usuario*.
+Author's machine paths. If a contributor (or their mental updater) runs these elsewhere, they do nothing or write outside. There's no `Makefile` / `justfile` distinguishing *package build* from *user install*.
 
-Esto no es solo deuda de código: es señal de que **el repo *es* el working copy de una migración**, no un artefacto reproducible.
+This is not just code debt: it's a signal that **the repo *is* the working copy of a migration**, not a reproducible artifact.
 
 ---
 
-### P2 — Deuda visible
+### P2 — Visible Debt
 
-#### P2.1 El repo es un dump, no un paquete
+#### P2.1 The repo is a dump, not a package
 
-| Árbol | Peso | Comentario |
+| Tree | Size | Comment |
 |---|---:|---|
-| `Effects/` | 1,3 GB | Mitad duplicada ReArtist/ReaFull |
-| `Scripts/` | 156 MB | ~5 042 `.lua` de todo ReaTeam + HeDa + MPL + X-Raym… |
-| `Data/` | 49 MB | Incluye `tilr_*` **y** `tilr8_*` (muestras duplicadas) + 1 788 toolbar icons |
-| `Docs/` | 29 MB | Manuales oficiales de REAPER |
-| `ReaPack/` | 15 MB | `registry.db` snapshot de abril 2025 + cache |
-| `UserPlugins/FX/ogler.clap` | 13 MB | Binario suelto |
-| `ColorThemes/` | 15 MB | 8 zips, 4 de ellos clones |
-| **Total** | **2,1 GB** | Un `git clone` es hostil. Un backup del instalador duplica eso otra vez. |
+| `Effects/` | 1.3 GB | Half duplicated ReArtist/ReaFull |
+| `Scripts/` | 156 MB | ~5,042 `.lua` files from all of ReaTeam + HeDa + MPL + X-Raym... |
+| `Data/` | 49 MB | Includes `tilr_*` **and** `tilr8_*` (duplicate samples) + 1,788 toolbar icons |
+| `Docs/` | 29 MB | Official REAPER manuals |
+| `ReaPack/` | 15 MB | `registry.db` snapshot from April 2025 + cache |
+| `UserPlugins/FX/ogler.clap` | 13 MB | Loose binary |
+| `ColorThemes/` | 15 MB | 8 zips, 4 of which are clones |
+| **Total** | **2.1 GB** | A `git clone` is hostile. An installer backup duplicates that again. |
 
-`create_backup()` hace `copytree` del **directorio REAPER entero**. Tras instalar ReaFull, el siguiente update copia ~2 GB+ otra vez. En un SSD de portátil eso es un bug de producto.
+`create_backup()` does `copytree` of the **entire REAPER directory**. After installing ReaFull, the next update copies ~2 GB+ again. On a laptop SSD that's a product bug.
 
-**Dirección correcta:** perfil *core* (temas + JSFX ReaFull + templates + kb/menu) de ~400–500 MB, y un perfil *full* opcional. Scripts de terceros vía ReaPack, no vendorizados.
+**Right direction:** *core* profile (themes + ReaFull JSFX + templates + kb/menu) at ~400–500 MB, with an optional *full* profile. Third-party scripts via ReaPack, not vendored.
 
-#### P2.2 Documentación de producto inexistente
+#### P2.2 Nonexistent product documentation
 
-Hay README de marketing y dos PDFs de Cockos. Falta:
+There's a marketing README and two Cockos PDFs. Missing:
 
-- Guía de primeros 15 minutos (qué theme, qué screenset, dónde están los analog FX)
-- Mapa de keymaps (el producto *es* un keymap)
-- Diferencias ReaFull Pro / Dark / Gray / Light
-- Qué hace cada project template
-- Qué JSFX usar en un bus vocal vs. un mixbus
-- Troubleshooting Linux (PipeWire, rtprio, Flatpak permissions, fuentes que no cargan)
-- Changelog / semver real
-- Política de updates
+- First 15 minutes guide (which theme, which screenset, where the analog FX are)
+- Keymap map (the product *is* a keymap)
+- ReaFull Pro / Dark / Gray / Light differences
+- What each project template does
+- Which JSFX to use on a vocal bus vs. a mixbus
+- Linux troubleshooting (PipeWire, rtprio, Flatpak permissions, fonts not loading)
+- Real changelog / semver
+- Update policy
 
-El keymap se llama `ReaFull Pro Full Keymap` y no hay una sola página que lo explique. Un usuario nuevo no puede adoptar un keymap que no entiende.
+The keymap is called `ReaFull Pro Full Keymap` and there isn't a single page explaining it. A new user can't adopt a keymap they don't understand.
 
-`AGENTS.md` en la raíz es un volcado de skills de Claude Code, no documentación del proyecto. En un repo público es ruido (y un poco confuso).
+`AGENTS.md` at the root is a Claude Code skills dump, not project documentation. In a public repo it's noise (and a bit confusing).
 
-#### P2.3 Operaciones de release ausentes
+#### P2.3 Missing release operations
 
-- Sin `.github/workflows`
-- Sin issue / PR templates
-- Sin `CHANGELOG.md`
-- Sin tags / GitHub Releases (el updater depende de ellos)
-- Sin tests (ni siquiera un `--dry-run` asertado)
-- Versión `2025.1.0-linux` en un repo auditado en 2026, sin calendario
-- 5 commits, todos de setup. No hay rastro de feedback de usuarios.
+- No `.github/workflows`
+- No issue / PR templates
+- No `CHANGELOG.md`
+- No tags / GitHub Releases (the updater depends on them)
+- No tests (not even an asserted `--dry-run`)
+- Version `2025.1.0-linux` in a repo audited in 2026, no timeline
+- 5 commits, all setup. No trace of user feedback.
 
-Un producto “suite” sin canal de update fiable **envejece el día que se clona**. Los scripts de ReaTeam del snapshot se quedan congelados; ReaPack luego peleará con copias locales.
+A "suite" product without a reliable update channel **ages the day it's cloned**. The ReaTeam scripts from the snapshot stay frozen; ReaPack will later fight local copies.
 
-#### P2.4 UX del instalador / desinstalador
+#### P2.4 Installer / uninstaller UX
 
-- `install.sh` imprime un ASCII art y delega. Bien.
-- `--quiet` no es quiet: sigue imprimiendo el banner cyan.
-- No hay progress bar. Copiar 2 GB en silencio parece un cuelgue.
-- No resume; si peta a mitad, deja un REAPER a medio pintar + un backup.
-- `uninstall.sh` es restore, no uninstall. No borra fuentes de `~/.local/share/fonts/ReaFull`. El nombre miente.
-- `ls -d ${CONFIG_DIR}_backup_pre_*` sin quotes rompe si el path tiene espacios.
-- No hay `set -u` ni validación de que REAPER no está abierto en el uninstall.
+- `install.sh` prints ASCII art and delegates. Fine.
+- `--quiet` isn't quiet: it still prints the cyan banner.
+- No progress bar. Copying 2 GB silently looks like a hang.
+- No resume; if it fails midway, it leaves a half-painted REAPER + a backup.
+- `uninstall.sh` is restore, not uninstall. It doesn't remove fonts from `~/.local/share/fonts/ReaFull`. The name is misleading.
+- `ls -d ${CONFIG_DIR}_backup_pre_*` without quotes breaks if the path has spaces.
+- No `set -u` or validation that REAPER isn't open during uninstall.
 
-#### P2.5 Identidad visual inconsistente
+#### P2.5 Inconsistent visual identity
 
-- Dos splashes (ReaFull + ReArtist) se instalan ambos (el de ReArtist queda en `assets/branding/` y no se copia, pero vive en el clone).
-- Theme adjuster, mouse map y logos internos siguen siendo ReArtist.
-- Menú del updater en español; CLI y README en inglés; scripts de Edu en inglés/español mezclado.
-- Typo “LGLP v3” en la licencia de ReArtist.
-- `install.py` VERSION year 2025 vs. copyright 2025 vs. fecha real 2026.
+- Two splashes (ReaFull + ReArtist) are both installed (ReArtist's lives in `assets/branding/` and isn't copied, but it's in the clone).
+- Theme adjuster, mouse map, and internal logos are still ReArtist.
+- Updater menu in Spanish; CLI and README in English; Edu's scripts in mixed English/Spanish.
+- Typo "LGLP v3" in the ReArtist license.
+- `install.py` VERSION year 2025 vs. copyright 2025 vs. actual date 2026.
 
-#### P2.6 Superficie de scripts de terceros sin curaduría
+#### P2.6 Curatorship-free third-party script surface
 
-Embarcar HeDa Track Inspector 2 + HeDaScripts Manager (con `7za.exe`, `curl.exe` y un `.log` de Windows) dentro de un producto Linux es lastre. Track Inspector es de pago / con manager propio: redistribuir su árbol de settings y binarios es un riesgo comercial además de técnico.
+Shipping HeDa Track Inspector 2 + HeDaScripts Manager (with `7za.exe`, `curl.exe`, and a Windows `.log`) inside a Linux product is dead weight. Track Inspector is paid / has its own manager: redistributing its settings tree and binaries is a commercial risk in addition to being technical.
 
-Lo mismo aplica a snapshots de Sexan Pie3000, ReaSpaghetti, McSequencer, etc. Un producto curado elige 20 herramientas y las documenta. Un dump embarca 5 000 y reza.
+The same applies to snapshots of Sexan Pie3000, ReaSpaghetti, McSequencer, etc. A curated product picks 20 tools and documents them. A dump ships 5,000 and prays.
 
-#### P2.7 Calidad de “verify” y de sanitizers
+#### P2.7 Quality of "verify" and sanitizers
 
-Los sanitizers (`clean_fxfolders.py`, `sanitize_and_prepare.py`) son one-shots de migración, no gates. Prueba: después de correrlos, `reaper.template.ini` **sigue** teniendo `J:\` y `F:\`. El gate no existe.
+The sanitizers (`clean_fxfolders.py`, `sanitize_and_prepare.py`) are migration one-shots, not gates. Proof: after running them, `reaper.template.ini` **still** has `J:\` and `F:\`. The gate doesn't exist.
 
-`apply_rebranding.py` hace `content.replace("ReArtist", "ReaFull")` en menús. Eso es un replace ciego: puede romper créditos, comentarios o IDs que debían quedarse.
-
----
-
-### P3 — Pulido
-
-- `__startup.lua` tiene líneas en blanco de más y cero cabecera de producto.
-- `Grooves/` está duplicado: `assets/Grooves` y `assets/Data/Grooves`.
-- `tilr_*` y `tilr8_*` conviven (muestras wav × 2).
-- `MouseMaps` no tiene variante ReaFull.
-- `LangPack/` (10 MB) se instala sin preguntar idioma.
-- `reaper_www_root/` (5,4 MB) no se menciona en el README.
-- Keymaps extra (`DK keymap`, `German Keymap`) sin documentación de cuándo usarlos.
-- `pgrep -x reaper` no cubre `reaper.bin` / AppImage.
-- `fc-cache` se llama aunque `fc-cache` no exista (`install.sh` solo avisa).
-- Links SWS/ReaPack solo buscan 4 paths x86_64. No ARM64, no `/usr/lib64`, no `~/.local`.
-- `safe_copy_tree` silencia errores de copia: un JSFX a medio copiar se instala “OK”.
-- No hay `CONTRIBUTING`, ni política de “qué se acepta en el bundle”.
+`apply_rebranding.py` does `content.replace("ReArtist", "ReaFull")` in menus. That's a blind replace: it can break credits, comments, or IDs that should have stayed.
 
 ---
 
-## 5. Recorrido de usuario (journey audit)
+### P3 — Polish
 
-### 5.1 Descubrimiento
-
-El README se lee bien: hero, bullets, lista de FX con nombres que suenan a hardware, CLI. El splash ayuda. Falta una captura **real** de REAPER ya tematizado (TCP/MCP/mixer), que es lo que vende una suite de DAW. Un usuario de Ardour/Bitwig no puede imaginar el look.
-
-### 5.2 Instalación (primeros 10 minutos)
-
-1. Clone de **2,1 GB**. Fricción alta. No hay release zip “core”.
-2. `./install.sh` — OK para Linux.
-3. Si REAPER está abierto, pregunta. Bien.
-4. Backup silencioso de todo `~/.config/REAPER`. En una instalación ya grande, el usuario no sabe que acaba de gastar otros 2 GB.
-5. Copia masiva sin progreso.
-6. Fin: “Start REAPER now”. Cero checklist (cierra sesión PipeWire? instala SWS? cierra y abre?).
-
-**Momento de verdad:** al abrir REAPER, el theme Pro debería cargarse y el splash verse. Eso probablemente funciona. Luego:
-
-- Tres tools de FTC se auto-lanzan.
-- El browser de FX muestra “ReArtist Pro” en cada analog.
-- Recent projects puede listar discos `J:\` que no existen.
-- El keymap ha sustituido al del usuario.
-
-No hay tour, ni “ReaFull Hub”, ni página de bienvenida. El updater está enterrado en `Scripts/ReaFull/`.
-
-### 5.3 Uso diario
-
-Aquí el producto **gana**, si el usuario acepta el workflow ReArtist:
-
-- Templates de pista con iconos y autocolor SWS.
-- Mix-Chan / Mix-Bus / Sum-Desk como metáfora de consola.
-- Screensets de mezcla vs. edición.
-- Render presets LUFS listos.
-- Grooves MPC/SP1200/ASR10 — un detalle de productor, no de informático.
-
-Eso es el *core loop* y está heredado, no inventado. Está bien heredarlo. Hay que **nombrarlo y documentarlo**.
-
-### 5.4 Update / uninstall
-
-Update: roto (no hay releases) o peligroso (main + `--no-backup`).
-Uninstall: restore de backup, no desinstalación. Las fuentes quedan. Flatpak no está cubierto.
-
-### 5.5 Soporte
-
-Sin ISSUE_TEMPLATE, sin FAQ, sin “known Linux issues”. El usuario irá a GitHub Issues o a Discord de REAPER hablando de ReArtist y de ReaFull a la vez. Soporte imposible de escalar.
+- `__startup.lua` has extra blank lines and zero product header.
+- `Grooves/` is duplicated: `assets/Grooves` and `assets/Data/Grooves`.
+- `tilr_*` and `tilr8_*` coexist (wav samples × 2).
+- `MouseMaps` has no ReaFull variant.
+- `LangPack/` (10 MB) installs without asking for language.
+- `reaper_www_root/` (5.4 MB) is not mentioned in the README.
+- Extra keymaps (`DK keymap`, `German Keymap`) with no documentation on when to use them.
+- `pgrep -x reaper` doesn't cover `reaper.bin` / AppImage.
+- `fc-cache` is called even when it doesn't exist (`install.sh` only warns).
+- SWS/ReaPack links only search 4 x86_64 paths. No ARM64, no `/usr/lib64`, no `~/.local`.
+- `safe_copy_tree` silences copy errors: a half-copied JSFX installs as "OK".
+- No `CONTRIBUTING`, no policy on "what's accepted in the bundle."
 
 ---
 
-## 6. Arquitectura de producto (cómo está hecho vs. cómo debería)
+## 5. User Journey Audit
+
+### 5.1 Discovery
+
+The README reads well: hero, bullets, FX list with hardware-sounding names, CLI. The splash helps. A **real** screenshot of REAPER already themed (TCP/MCP/mixer) is missing — that's what sells a DAW suite. An Ardour/Bitwig user can't imagine the look.
+
+### 5.2 Installation (First 10 Minutes)
+
+1. **2.1 GB clone.** High friction. No "core" release zip.
+2. `./install.sh` — OK for Linux.
+3. If REAPER is open, it asks. Good.
+4. Silent backup of entire `~/.config/REAPER`. In an already large installation, the user doesn't know they just spent another 2 GB.
+5. Mass copy without progress.
+6. End: "Start REAPER now". Zero checklist (close PipeWire session? install SWS? close and reopen?).
+
+**Truth moment:** On opening REAPER, the Pro theme should load and the splash should show. That probably works. Then:
+
+- Three FTC tools auto-launch.
+- The FX browser shows "ReArtist Pro" on every analog.
+- Recent projects may list drives `J:\` that don't exist.
+- The keymap has replaced the user's.
+
+There's no tour, no "ReaFull Hub", no welcome page. The updater is buried in `Scripts/ReaFull/`.
+
+### 5.3 Daily Use
+
+Here the product **wins**, if the user accepts the ReArtist workflow:
+
+- Track templates with icons and SWS autocolor.
+- Mix-Chan / Mix-Bus / Sum-Desk as console metaphor.
+- Mixing vs. editing screensets.
+- LUFS render presets ready.
+- MPC/SP1200/ASR10 grooves — a producer's detail, not a computer scientist's.
+
+That's the *core loop* and it's inherited, not invented. Inheriting it is fine. It needs to be **named and documented**.
+
+### 5.4 Update / Uninstall
+
+Update: broken (no releases) or dangerous (main + `--no-backup`).
+Uninstall: backup restore, not actual uninstall. Fonts remain. Flatpak not covered.
+
+### 5.5 Support
+
+No ISSUE_TEMPLATE, no FAQ, no "known Linux issues." Users will go to GitHub Issues or the REAPER Discord talking about ReArtist and ReaFull simultaneously. Support impossible to scale.
+
+---
+
+## 6. Product Architecture (How It Is vs. How It Should Be)
 
 ```
-Hoy:
-  [Dump Windows ReArtist]
-        │  scripts/*_prepare.py  (rutas hardcodeadas de /home/julesklord)
-        ▼
-  [Repo 2.1 GB, dual brand]
-        │  install.py  (copytree + merge parcial)
-        ▼
-  [~/.config/REAPER  o  Flatpak, a veces el equivocado]
-        │  updater.lua  (git main, no-backup)
-        ▼
-  [Deriva / overwrite]
+Today:
+  [Windows ReArtist Dump]
+        |  scripts/*_prepare.py  (hardcoded /home/julesklord paths)
+        v
+  [2.1 GB Repo, dual brand]
+        |  install.py  (copytree + partial merge)
+        v
+  [~/.config/REAPER  or  Flatpak, sometimes the wrong one]
+        |  updater.lua  (git main, no-backup)
+        v
+  [Drift / overwrite]
 
-Debería:
-  [Fuente ReArtist versionada + parches Linux/ReaFull]
-        │  pipeline reproducible (sanitize → audit paths → pack)
-        ▼
-  [Artefacto "reafull-core-x.y.z.tar.zst" + opcional "reafull-extras"]
-        │  installer: perfil Fresh | Overlay, target nativo/Flatpak explícito
-        ▼
-  [REAPER]  +  health-check  +  updater por tag firmado
+Should be:
+  [Versioned ReArtist source + Linux/ReaFull patches]
+        |  reproducible pipeline (sanitize → audit paths → pack)
+        v
+  [Artifact "reafull-core-x.y.z.tar.zst" + optional "reafull-extras"]
+        |  installer: Fresh | Overlay profile, explicit native/Flatpak target
+        v
+  [REAPER]  +  health-check  +  updater by signed tag
 ```
 
-El gap no es técnico, es de **disciplina de producto**: dejar de tratar el working copy como el release.
+The gap is not technical, it's **product discipline**: stop treating the working copy as the release.
 
 ---
 
-## 7. Riesgos
+## 7. Risks
 
-| Riesgo | Prob. | Impacto | Nota |
+| Risk | Prob. | Impact | Note |
 |---|---|---|---|
-| Usuario pierde keymap/menús y culpa a ReaFull en público | Alta | Alto | P0.1 |
-| Takedown / roce con Cockos por los PDF oficiales | Baja | Alto | Fácil de evitar |
-| Roce con Tukan / Sonic Anomaly / HeDa por redistribución + rebrand | Media | Alto | El ABOUT de Edu es honesto; el MIT de raíz no |
-| Edu Serra no reconoce este port / conflicto de marca ReArtist | Media | Alto | Hay crédito, no hay evidencia de acuerdo escrito en el repo |
-| Updater pisa una sesión Flatpak | Media | Alto | P0.4 |
-| Clone de 2 GB + backups llenan el disco | Alta | Medio | P2.1 |
-| “100 % sanitized” se desmiente en 30 segundos con `rg 'J:\\'` | Alta | Medio | Daña credibilidad |
-| Snapshot de ReaTeam se pudre y choca con ReaPack | Alta | Medio | P2.3 / P2.6 |
+| User loses keymap/menus and blames ReaFull publicly | High | High | P0.1 |
+| Takedown / friction with Cockos over official PDFs | Low | High | Easy to avoid |
+| Friction with Tukan / Sonic Anomaly / HeDa over redistribution + rebrand | Medium | High | Edu's ABOUT is honest; MIT at root is not |
+| Edu Serra doesn't recognize this port / ReArtist brand conflict | Medium | High | There's credit, no evidence of written agreement in the repo |
+| Updater overwrites a Flatpak session | Medium | High | P0.4 |
+| 2 GB clone + backups fill the disk | High | Medium | P2.1 |
+| "100% sanitized" debunked in 30 seconds with `rg 'J:\\'` | High | Medium | Damages credibility |
+| ReaTeam snapshot rots and clashes with ReaPack | High | Medium | P2.3 / P2.6 |
 
 ---
 
-## 8. Roadmap recomendado (para poder decir “v1.0”)
+## 8. Recommended Roadmap (To Say "v1.0")
 
-Ordenado por retorno de confianza, no por brillo.
+Ordered by trust return, not shininess.
 
-### Sprint 0 — Dejar de hacer daño (antes de cualquier anuncio)
+### Sprint 0 — Stop Causing Harm (Before Any Announcement)
 
-1. Limpiar `reaper.template.ini` / `reaper-extstate.template.ini` de rutas, recents, renders, ffmpeg.exe.
-2. Borrar `HeDaScripts Manager.log`, `ReaImGui/*.ini` de runtime, `.exe`, PDFs de Cockos, `ogler.clap` si no hay licencia.
-3. El instalador **no sobrescribe** `reaper-kb.ini`, `reaper-mouse.ini`, `reapack.ini` si existen, salvo `--force`.
-4. Updater: desactivar download de `main` hasta tener releases. Dejar solo “sync ReaPack” + “reload theme”.
-5. `NOTICE.md` + aclarar que MIT cubre el instalador, no el bundle.
+1. Clean `reaper.template.ini` / `reaper-extstate.template.ini` of paths, recents, renders, ffmpeg.exe.
+2. Delete `HeDaScripts Manager.log`, `ReaImGui/*.ini` runtime data, `.exe`, Cockos PDFs, `ogler.clap` if there's no license.
+3. Installer **must not overwrite** `reaper-kb.ini`, `reaper-mouse.ini`, `reapack.ini` if they exist, except with `--force`.
+4. Updater: disable `main` download until there are releases. Keep only "sync ReaPack" + "reload theme."
+5. `NOTICE.md` + clarify that MIT covers the installer, not the bundle.
 
-### Sprint 1 — Producto honesto
+### Sprint 1 — Honest Product
 
-6. Decidir A o B (port ReArtist vs. marca propia) y eliminar el árbol duplicado (605 MB).
-7. Perfiles de instalación: `core` / `full`.
-8. Wizard de target: Native vs Flatpak vs path.
-9. Llamar a `verify_installation.py` al final, y endurecerlo (cero `C:\`, cero `{{…}}` literales).
-10. README honesto: qué se pisa, qué se preserva, requisitos SWS/ReaPack/PipeWire, tamaño del clone.
+6. Decide A or B (ReArtist port vs. own brand) and remove the duplicate tree (605 MB).
+7. Installation profiles: `core` / `full`.
+8. Target wizard: Native vs Flatpak vs custom path.
+9. Call `verify_installation.py` at the end, and harden it (zero `C:\`, zero literal `{{…}}`).
+10. Honest README: what gets overwritten, what's preserved, SWS/ReaPack/PipeWire requirements, clone size.
 
-### Sprint 2 — Se siente como un producto
+### Sprint 2 — Feels Like a Product
 
-11. Guía “First 15 minutes” + cheat sheet del keymap.
-12. Screenshot real del mixer Pro.
-13. `__startup.lua` opt-in, o un “ReaFull Setup” al primer launch.
-14. Detección PipeWire/JACK + mensaje si `mlockall`/rtprio no están disponibles.
-15. Progress en el instalador. Uninstall que desinstale (fuentes incluidas) además de restore.
-16. Tag `v2026.1.0`, GitHub Release, changelog. Apuntar el updater a ese tag con checksum.
+11. "First 15 minutes" guide + keymap cheat sheet.
+12. Real mixer Pro screenshot.
+13. `__startup.lua` opt-in, or a "ReaFull Setup" wizard on first launch.
+14. PipeWire/JACK detection + message if `mlockall`/rtprio aren't available.
+15. Progress in the installer. Uninstall that actually uninstalls (fonts included) in addition to restore.
+16. Tag `v2026.1.0`, GitHub Release, changelog. Point the updater to that tag with checksum.
 
-### Sprint 3 — Sostenible
+### Sprint 3 — Sustainable
 
-17. Dejar de vendorar ReaTeam entero. ReaPack remotes + un pin de versiones.
-18. CI: `python3 install.py --dry-run` + linter de paths Windows + test de placeholders.
-19. Quitar `AGENTS.md` genérico o sustituirlo por convenciones reales del repo.
-20. Acuerdo explícito (aunque sea un mail archivado / sección de créditos firmada) con el linaje ReArtist / Tukan / Sonic Anomaly.
-
----
-
-## 9. Criterios de salida para un “Go” de lanzamiento
-
-Un v1.0 público debería cumplir **todos**:
-
-- [ ] `rg '[A-Z]:\\\\|C:/Program Files' config_templates assets/Scripts/ReaFull` → 0 hits de sesión
-- [ ] Ningún `.exe`, `.log` de usuario, ni PDF copyright Cockos en el árbol
-- [ ] Un solo árbol de FX (ReaFull **o** ReArtist), no los dos
-- [ ] Instalador con perfiles Fresh / Overlay; Overlay no pisa kb/mouse/reapack
-- [ ] `--target` / detección pregunta si hay native + Flatpak
-- [ ] Health-check post-install con exit code ≠ 0 si falla
-- [ ] Updater solo habla con un release tag + checksum, o está desactivado
-- [ ] `NOTICE.md` / `THIRD_PARTY.md` revisados
-- [ ] Guía de 15 minutos + 1 screenshot real
-- [ ] Clone “core” < 700 MB (idealmente < 400 MB)
-
-Hoy el producto **no pasa ninguno** de esos checks de forma limpia.
+17. Stop vendoring the entire ReaTeam. ReaPack remotes + a version pin.
+18. CI: `python3 install.py --dry-run` + Windows path linter + placeholder test.
+19. Remove generic `AGENTS.md` or replace it with real repo conventions.
+20. Explicit agreement (even an archived email / signed credits section) with the ReArtist / Tukan / Sonic Anomaly lineage.
 
 ---
 
-## 10. Conclusión
+## 9. Exit Criteria for a "Go" Release
 
-ReaFull tiene el material de un gran producto Linux: una consola analog-modeled, un vocabulario de templates que entiende géneros reales (no solo “EDM starter”), y un instalador que ya piensa en ALSA, backups y Flatpak. Eso es más de lo que ofrecen la mayoría de “REAPER configs” que circulan como zips opacos.
+A public v1.0 should pass **all**:
 
-Lo que no tiene todavía es **disciplina de producto**.
+- [ ] `rg '[A-Z]:\\\\|C:/Program Files' config_templates assets/Scripts/ReaFull` → 0 session hits
+- [ ] No `.exe`, user `.log`, or Cockos-copyrighted PDFs in the tree
+- [ ] Single FX tree (ReaFull **or** ReArtist), not both
+- [ ] Installer with Fresh / Overlay profiles; Overlay doesn't overwrite kb/mouse/reapack
+- [ ] `--target` / detection asks if native + Flatpak both exist
+- [ ] Post-install health check with exit code ≠ 0 on failure
+- [ ] Updater only communicates with a release tag + checksum, or is disabled
+- [ ] `NOTICE.md` / `THIRD_PARTY.md` reviewed
+- [ ] 15-minute guide + 1 real screenshot
+- [ ] "Core" clone < 700 MB (ideally < 400 MB)
 
-Es un working copy de una migración Windows → Linux, publicado con un README que habla como si la migración hubiera terminado. El usuario paga esa distancia con un clone de 2 GB, un keymap pisado, un FX browser que dice ReArtist, un historial de proyectos ajenos y un botón de Update que no debería existir.
-
-La buena noticia: casi todo lo P0/P1 es higiene y decisiones, no DSP ni diseño. En dos sprints cortos ReaFull puede pasar de “dump con aspiraciones” a “la forma canónica de usar REAPER en Linux”. Hasta entonces, el veredicto honesto es:
-
-> **Úsalo en local, con backup, sabiendo que estás instalando ReArtist Pro sanitizado a medias.**  
-> **No lo anuncies todavía como suite nativa, no-destructiva y battery-included.**
+Today the product **passes none** of those checks cleanly.
 
 ---
 
-### Anexo A — Inventario rápido
+## 10. Conclusion
 
-| Componente | Cantidad / tamaño | Notas de calidad |
+ReaFull has the material of a great Linux product: an analog-modeled console, a template vocabulary that understands real genres (not just "EDM starter"), and an installer that already thinks about ALSA, backups, and Flatpak. That's more than most "REAPER configs" circulating as opaque zips.
+
+What it doesn't yet have is **product discipline**.
+
+It's a working copy of a Windows → Linux migration, published with a README that speaks as if the migration were finished. The user pays that distance with a 2 GB clone, an overwritten keymap, an FX browser saying ReArtist, someone else's project history, and an Update button that shouldn't exist.
+
+The good news: almost all P0/P1 is hygiene and decisions, not DSP or design. In two short sprints ReaFull can go from "dump with aspirations" to "the canonical way to use REAPER on Linux." Until then, the honest verdict is:
+
+> **Use it locally, with a backup, knowing you're installing a half-sanitized ReArtist Pro.**
+> **Don't announce it yet as a native, non-destructive, battery-included suite.**
+
+---
+
+### Appendix A — Quick Inventory
+
+| Component | Count / Size | Quality Notes |
 |---|---|---|
-| Temas | 8 zips (4+4 clones) | Idénticos ReaFull/ReArtist |
-| JSFX Analog | 382 MB × 2 | Nombres y logos ReArtist |
-| JSFX Digital | 223 MB × 2 | Idem |
-| Track templates | 200 / 16 categorías | Punto fuerte |
-| Project templates | 19 | Punto fuerte; paths OK |
-| Scripts Lua | ~5 042 | Dump, no curaduría |
-| Grooves | 82 + copia en `Data/` | Duplicados |
-| Fonts | 11 archivos | 3 sin licencia en el repo |
-| Config templates | 22 INI | 2 aún con paths Windows |
-| Binarios Windows | 5 `.exe` | HeDa Manager |
-| Tests automatizados | 0 | — |
-| Releases GitHub | 0 | Updater inútil |
-| Guía de usuario ReaFull | 0 | — |
+| Themes | 8 zips (4+4 clones) | ReaFull/ReArtist identical |
+| JSFX Analog | 382 MB × 2 | ReArtist names and logos |
+| JSFX Digital | 223 MB × 2 | Same |
+| Track templates | 200 / 16 categories | Strength |
+| Project templates | 19 | Strength; paths OK |
+| Lua scripts | ~5,042 | Dump, no curation |
+| Grooves | 82 + copy in `Data/` | Duplicates |
+| Fonts | 11 files | 3 without license in repo |
+| Config templates | 22 INI | 2 still with Windows paths |
+| Windows binaries | 5 `.exe` | HeDa Manager |
+| Automated tests | 0 | — |
+| GitHub releases | 0 | Updater useless |
+| ReaFull user guide | 0 | — |
 
-### Anexo B — Archivos clave revisados
+### Appendix B — Key Files Reviewed
 
 - `README.md`, `LICENSE`, `install.py`, `install.sh`, `uninstall.sh`
 - `scripts/{sanitize_and_prepare,apply_rebranding,clean_fxfolders,clean_templates_final,verify_installation}.py`
 - `config_templates/reaper.template.ini`, `reaper-extstate.template.ini`, `S&M.template.ini`, `reapack.ini`, `reaper-kb.ini`
 - `assets/Scripts/ReaFull/ReaFull_Updater.lua`, `assets/Scripts/__startup.lua`
 - `assets/Licences/*`, `assets/Effects/ReaFull Analog FX/ABOUT THIS PLUGIN COLLECTION.txt`
-- Inventario de `assets/{ColorThemes,Effects,Scripts,UserPlugins,ProjectTemplates,TrackTemplates,Docs}`
+- Inventory of `assets/{ColorThemes,Effects,Scripts,UserPlugins,ProjectTemplates,TrackTemplates,Docs}`
 
-### Anexo C — Método
+### Appendix C — Method
 
-Auditoría estática del repositorio (lectura de instalador, plantillas, licencias, updater, README; medición de tamaños y duplicados; búsqueda de paths Windows, binarios y leftovers de sesión). No se ejecutó el instalador contra un REAPER vivo ni se validó DSP/audio de los JSFX. Las notas de UX in-DAW se infieren del arranque (`__startup.lua`), templates y configs, no de una sesión de mezcla.
+Static audit of the repository (reading installer, templates, licenses, updater, README; measuring sizes and duplicates; searching for Windows paths, binaries, and session leftovers). The installer was not run against a live REAPER instance and JSFX DSP/audio was not validated. In-DAW UX notes are inferred from startup (`__startup.lua`), templates, and configs, not from a mixing session.

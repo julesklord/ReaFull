@@ -17,8 +17,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # 1. Check Python3 (Mandatory)
 if ! command -v python3 >/dev/null 2>&1; then
-    echo -e "${C_RED}[ERROR] Python 3 no está instalado.${C_RESET}"
-    echo "Instala Python 3 mediante el gestor de paquetes de tu distribución Linux (ej: sudo apt install python3 / sudo pacman -S python)."
+    echo -e "${C_RED}[ERROR] Python 3 is not installed.${C_RESET}"
+    echo "Install Python 3 using your Linux distribution's package manager (e.g. sudo apt install python3 / sudo pacman -S python)."
     exit 1
 fi
 
@@ -29,8 +29,8 @@ if ! command -v fc-cache >/dev/null 2>&1; then
 fi
 
 if [ ${#RECOMMENDED_MISSING[@]} -ne 0 ]; then
-    echo -e "${C_YELLOW}[!] Paquetes recomendados ausentes: ${RECOMMENDED_MISSING[*]}${C_RESET}"
-    echo -e "    (Recomendado para actualizar la caché de fuentes tipográficas automáticamente)\n"
+    echo -e "${C_YELLOW}[!] Missing recommended packages: ${RECOMMENDED_MISSING[*]}${C_RESET}"
+    echo -e "    (Recommended to automatically update the font cache)\n"
 fi
 
 # 3. Permissions & Exec

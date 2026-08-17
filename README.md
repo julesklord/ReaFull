@@ -20,7 +20,7 @@ ReaFull transforms Cockos REAPER on Linux into a studio-ready workstation for pr
 
 [![ReaFull Studio Console Demo](https://raw.githubusercontent.com/julesklord/ReaFull/main/docs/demo_preview.gif)](https://github.com/julesklord/ReaFull/raw/main/docs/demo.mp4)
 
-> 🎬 **Vídeo Demo Completo en Alta Definición:** [Ver / Descargar `docs/demo.mp4`](https://github.com/julesklord/ReaFull/raw/main/docs/demo.mp4) · [Versión WebM `docs/demo.webm`](https://github.com/julesklord/ReaFull/raw/main/docs/demo.webm)
+> 🎬 **Full High-Definition Demo Video:** [View / Download `docs/demo.mp4`](https://github.com/julesklord/ReaFull/raw/main/docs/demo.mp4) · [WebM Version `docs/demo.webm`](https://github.com/julesklord/ReaFull/raw/main/docs/demo.webm)
 
 ---
 

@@ -1,17 +1,17 @@
-# ReaFull — Documentación y Recursos
+# ReaFull — Documentation & Resources
 
-Para consultar los manuales oficiales de **Cockos REAPER**, accede directamente a los recursos oficiales en línea:
+For official **Cockos REAPER** manuals, refer directly to the online official resources:
 
-## 📖 Manuales Oficiales de REAPER
-- **Guía de Usuario Oficial de REAPER (PDF más reciente)**:  
+## REAPER Official Manuals
+- **Official REAPER User Guide (latest PDF)**:
   [https://www.reaper.fm/userguide.php](https://www.reaper.fm/userguide.php)
-- **Guía de Plugins y Efectos de REAPER**:  
+- **REAPER Plugins & Effects Guide**:
   [https://www.reaper.fm/guides/Reaper_FX_Summary.pdf](https://www.reaper.fm/guides/Reaper_FX_Summary.pdf)
-- **Documentación de JSFX / EEL2**:  
+- **JSFX / EEL2 Documentation**:
   [https://www.reaper.fm/sdk/js/js.php](https://www.reaper.fm/sdk/js/js.php)
-- **API de REAPER para ReaScript**:  
+- **REAPER API for ReaScript**:
   [https://www.reaper.fm/sdk/reascript/reascripthelp.html](https://www.reaper.fm/sdk/reascript/reascripthelp.html)
 
-## 🎛️ Extensiones y Ecosistema
+## Extensions & Ecosystem
 - **SWS / S&M Extension**: [https://www.sws-extension.org/](https://www.sws-extension.org/)
 - **ReaPack (Package Manager)**: [https://reapack.com/](https://reapack.com/)

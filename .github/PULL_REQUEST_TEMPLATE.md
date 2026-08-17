@@ -1,14 +1,14 @@
-## Resumen de Cambios
-Describe brevemente las modificaciones introducidas por este Pull Request.
+## Summary of Changes
+Briefly describe the modifications introduced by this Pull Request.
 
-## Tipo de Cambio
-- [ ] Corrección de error (Bug fix)
-- [ ] Nueva función o plugin (Feature)
-- [ ] Mejora en plantillas de pistas o proyectos (Templates)
-- [ ] Optimización de instalación / scripts de despliegue
-- [ ] Actualización de documentación
+## Type of Change
+- [ ] Bug fix
+- [ ] New feature or plugin (Feature)
+- [ ] Track or project template improvement (Templates)
+- [ ] Installation / deployment script optimization
+- [ ] Documentation update
 
-## Lista de Verificación (Checklist)
-- [ ] He ejecutado `./scripts/verify_installation.py` y no se detectan rutas de Windows rotas ni marcadores de posición sin expandir.
-- [ ] El instalador (`./install.sh --dry-run`) completa sin errores.
-- [ ] Se mantienen las atribuciones y licencias originales en `NOTICE.md` / `THIRD_PARTY.md` si se agregan nuevos componentes de terceros.
+## Checklist
+- [ ] I have run `./scripts/verify_installation.py` and no broken Windows paths or unexpanded placeholders were detected.
+- [ ] The installer (`./install.sh --dry-run`) completes without errors.
+- [ ] Original attributions and licenses are preserved in `NOTICE.md` / `THIRD_PARTY.md` if new third-party components are added.

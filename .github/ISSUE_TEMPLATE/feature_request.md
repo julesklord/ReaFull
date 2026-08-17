@@ -1,16 +1,16 @@
 ---
-name: Solicitud de Función / Feature Request
-about: Sugiere una idea, nuevo plugin JSFX, plantilla de pista o mejora en el flujo de trabajo.
+name: Feature Request
+about: Suggest an idea, new JSFX plugin, track template, or workflow improvement.
 title: "[FEATURE] "
 labels: ["enhancement"]
 assignees: ""
 ---
 
-### Propósito de la Mejora
-Describe claramente el problema o flujo de trabajo que esta mejora busca resolver.
+### Purpose of the Improvement
+Clearly describe the problem or workflow this improvement aims to solve.
 
-### Solución Propuesta
-Explica cómo imaginas que funcionaría esta característica en ReaFull (nuevo preset, plugin JSFX, script de inicio, etc.).
+### Proposed Solution
+Explain how you envision this feature working in ReaFull (new preset, JSFX plugin, startup script, etc.).
 
-### Contexto Adicional
-Cualquier enlace, referencia a hardware analógico, plugin o documentación relevante.
+### Additional Context
+Any relevant links, references to analog hardware, plugins, or documentation.
