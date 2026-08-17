@@ -53,9 +53,7 @@ def is_reaper_running():
         return False
 
 def detect_reaper_dir():
-    # Native default
     native_dir = os.path.expanduser("~/.config/REAPER")
-    # Flatpak default
     flatpak_dir = os.path.expanduser("~/.var/app/fm.reaper.Reaper/config/REAPER")
     
     if os.path.exists(native_dir):
@@ -161,7 +159,6 @@ def deploy_assets(target_dir, dry_run=False):
 
     # Link native extension libraries if available on system
     if not dry_run:
-        # SWS
         for sws_path in ["/usr/lib/sws/reaper_sws-x86_64.so", "/usr/lib/REAPER/Plugins/reaper_sws-x86_64.so"]:
             if os.path.exists(sws_path):
                 link_dst = os.path.join(userplugins_dst, "reaper_sws-x86_64.so")
@@ -172,7 +169,6 @@ def deploy_assets(target_dir, dry_run=False):
                         pass
                 break
         
-        # ReaPack
         for reapack_path in ["/usr/lib/REAPER/Plugins/reaper_reapack-x86_64.so", "/usr/lib/reapack/reaper_reapack-x86_64.so"]:
             if os.path.exists(reapack_path):
                 link_dst = os.path.join(userplugins_dst, "reaper_reapack-x86_64.so")
@@ -188,7 +184,6 @@ def deploy_assets(target_dir, dry_run=False):
 def deploy_configurations(target_dir, dry_run=False):
     log_info("Configuring settings and applying cross-platform path resolution...")
     
-    # 1. Direct INI copies from config_templates
     direct_inis = [
         "BR.ini",
         "reapack.ini",
@@ -215,8 +210,7 @@ def deploy_configurations(target_dir, dry_run=False):
         if os.path.exists(src) and not dry_run:
             shutil.copy2(src, dst)
 
-    # 2. Process templates with variable expansion
-    # reaper-extstate.template.ini
+    # Process templates with variable expansion
     extstate_tpl = os.path.join(CONFIG_TEMPLATES_DIR, "reaper-extstate.template.ini")
     extstate_dst = os.path.join(target_dir, "reaper-extstate.ini")
     if os.path.exists(extstate_tpl) and not dry_run:
@@ -226,7 +220,6 @@ def deploy_configurations(target_dir, dry_run=False):
         with open(extstate_dst, "w", encoding="utf-8") as f:
             f.write(content)
 
-    # S&M.template.ini
     sm_tpl = os.path.join(CONFIG_TEMPLATES_DIR, "S&M.template.ini")
     sm_dst = os.path.join(target_dir, "S&M.ini")
     if os.path.exists(sm_tpl) and not dry_run:
@@ -236,9 +229,65 @@ def deploy_configurations(target_dir, dry_run=False):
         with open(sm_dst, "w", encoding="utf-8") as f:
             f.write(content)
 
-    # 3. Smart Merge of reaper.ini
+    # Smart Merge of reaper.ini
     merge_reaper_ini(target_dir, dry_run=dry_run)
     log_success("Configurations applied cleanly.")
+
+def detect_best_audio_settings():
+    """
+    Detects the optimal pro audio engine settings on Linux:
+    - ALSA hardware interface detection
+    - Realtime CPU threading & priority
+    - Mastering-grade resampling and anticipative FX buffering
+    """
+    cpu_cores = os.cpu_count() or 4
+    audio_settings = {
+        "workthreads": str(cpu_cores),
+        "afx": "1",
+        "afxb": "200",
+        "afxrender": "1",
+        "playresamplemode": "5",  # r8brain free / 512pt Sinc (Highest Quality playback)
+        "projrenderresample": "6",  # r8brain / 768pt Sinc (Mastering-grade offline export)
+        "audio_closeifidle": "0",  # Prevent interface reinit clicks
+        "audio_mute": "1",
+        "audio_mute_db": "18.0",  # Auto-mute runaway feedback >= +18dB
+        "linux_mlockall": "1",  # Lock audio memory in RAM
+        "linux_disable_pm": "1",  # Disable power management throttling on audio threads
+        "linux_auto_pasuspend": "1",  # Suspend competing sound daemons during DAW use
+        "alsa_rtprio": "90",  # High realtime scheduling priority
+    }
+
+    # Check ALSA hardware devices
+    try:
+        res = subprocess.run(["aplay", "-l"], capture_output=True, text=True)
+        if "U192k" in res.stdout or "UMC404HD" in res.stdout:
+            audio_settings.update({
+                "alsa_indev": "hw:U192k",
+                "alsa_outdev": "hw:U192k",
+                "linux_audio_bits": "32",
+                "linux_audio_bsize": "256",
+                "linux_audio_bufs": "3",
+                "linux_audio_nch_in": "4",
+                "linux_audio_nch_out": "4",
+                "linux_audio_srate": "48000",
+                "linux_audio_srateor": "1",
+            })
+        elif "AudioBox" in res.stdout:
+            audio_settings.update({
+                "alsa_indev": "hw:USB",
+                "alsa_outdev": "hw:USB",
+                "linux_audio_bits": "24",
+                "linux_audio_bsize": "256",
+                "linux_audio_bufs": "3",
+                "linux_audio_nch_in": "2",
+                "linux_audio_nch_out": "2",
+                "linux_audio_srate": "48000",
+                "linux_audio_srateor": "1",
+            })
+    except Exception:
+        pass
+
+    return audio_settings
 
 def merge_reaper_ini(target_dir, dry_run=False):
     cur_ini_path = os.path.join(target_dir, "reaper.ini")
@@ -266,8 +315,28 @@ def merge_reaper_ini(target_dir, dry_run=False):
     cur_sections = parse_ini(cur_ini_path)
     tpl_sections = parse_ini(tpl_ini_path)
 
-    # Keys to protect and preserve unconditionally from current Linux installation
-    linux_keys_to_preserve = {
+    # 1. Protect all project history and user environment keys
+    project_and_system_keys = {
+        # Recent projects & session state
+        "lastproject",
+        "lastprojuiref",
+        "projecttab1",
+        "projecttab2",
+        "projecttab3",
+        "projecttab4",
+        "projecttab5",
+        "projecttabs",
+        "hasrecentsec",
+        "maxrecent",
+        "numrecent",
+        "recent01", "recent02", "recent03", "recent04", "recent05",
+        "recent06", "recent07", "recent08", "recent09", "recent10",
+        "projdefrecpath",
+        "lastrenderpath", "lastrenderpath2", "lastrenderpath3", "lastrenderpath4", "lastrenderpath5", "lastrenderpath6",
+        "render_pattern_0", "render_pattern_1", "render_pattern_2", "render_pattern_3",
+        "SWSProjectList",
+        
+        # Audio & Hardware state
         "alsa_indev",
         "alsa_outdev",
         "alsa_rtprio",
@@ -283,14 +352,15 @@ def merge_reaper_ini(target_dir, dry_run=False):
         "linux_auto_pasuspend",
         "linux_disable_pm",
         "linux_mlockall",
-        "hasrecentsec",
+        "workthreads",
+        "playresamplemode",
+        "projrenderresample",
+        "afx",
+        "afxb",
+        "afxrender",
+        
+        # UI & License state
         "nag",
-        "lastproject",
-        "lastprojuiref",
-        "projecttab1",
-        "projecttab2",
-        "projecttab3",
-        "projecttabs",
         "pspage_last",
         "prefs_x",
         "prefs_y",
@@ -307,11 +377,27 @@ def merge_reaper_ini(target_dir, dry_run=False):
             if "=" in line:
                 k, v = line.split("=", 1)
                 k_trim = k.strip()
-                if k_trim in linux_keys_to_preserve:
+                if k_trim in project_and_system_keys:
                     preserved_kvs[k_trim] = v.strip()
 
+    # Detect if audio settings were empty or unconfigured, and apply professional audio defaults
+    best_audio = detect_best_audio_settings()
+    has_custom_audio = bool(preserved_kvs.get("alsa_indev") or preserved_kvs.get("alsa_outdev") or preserved_kvs.get("jack_launchcmd"))
+    
+    if not has_custom_audio:
+        log_info("Applying optimal Linux professional audio engine defaults (ALSA 48kHz, Low Latency, HQ Sinc)...")
+        for k, v in best_audio.items():
+            preserved_kvs[k] = v
+    else:
+        # Enhance existing custom audio config with pro Linux realtime & HQ resampling parameters
+        log_info(f"Custom audio device detected ({preserved_kvs.get('alsa_indev', 'custom')}). Preserving device and tuning realtime engine...")
+        for opt_k in ["alsa_rtprio", "linux_mlockall", "linux_disable_pm", "linux_auto_pasuspend", "workthreads", "playresamplemode", "projrenderresample", "afx", "afxb", "afxrender"]:
+            if opt_k not in preserved_kvs or preserved_kvs[opt_k] in ["", "0", "-1", "50"]:
+                preserved_kvs[opt_k] = best_audio.get(opt_k, preserved_kvs.get(opt_k, "1"))
+
+    # Preserve custom sections
     preserved_sections = {}
-    for sec_name in [".swell", ".swell_recent_path", "Recent", "RecentFX", "reaper_video"]:
+    for sec_name in [".swell", ".swell_recent_path", "Recent", "RecentFX", "recentmetropat", "reaper_video", "midihw"]:
         if sec_name in cur_sections:
             preserved_sections[sec_name] = cur_sections[sec_name]
 
@@ -341,6 +427,7 @@ def merge_reaper_ini(target_dir, dry_run=False):
             else:
                 merged_reaper_lines.append(line)
 
+    # Append remaining preserved keys
     for k, v in preserved_kvs.items():
         if k not in seen_reaper_keys:
             merged_reaper_lines.append(f"{k}={v}\n")
@@ -352,7 +439,6 @@ def merge_reaper_ini(target_dir, dry_run=False):
 
     # Write merged reaper.ini
     with open(cur_ini_path, "w", encoding="utf-8") as f:
-        # Swell sections first
         for sec in [".swell", ".swell_recent_path"]:
             if sec in preserved_sections:
                 f.write(f"[{sec}]\n")
@@ -360,22 +446,19 @@ def merge_reaper_ini(target_dir, dry_run=False):
                 if not preserved_sections[sec] or not preserved_sections[sec][-1].endswith("\n"):
                     f.write("\n")
 
-        # Main [reaper]
         f.write("[reaper]\n")
         f.writelines(merged_reaper_lines)
         if not merged_reaper_lines or not merged_reaper_lines[-1].endswith("\n"):
             f.write("\n")
 
-        # Other template sections
         for sec, lines in tpl_sections.items():
-            if sec not in ["reaper", ".swell", ".swell_recent_path", "Recent", "RecentFX", "reaper_video"]:
+            if sec not in ["reaper", ".swell", ".swell_recent_path", "Recent", "RecentFX", "recentmetropat", "reaper_video", "midihw"]:
                 f.write(f"[{sec}]\n")
                 f.writelines(lines)
                 if not lines or not lines[-1].endswith("\n"):
                     f.write("\n")
 
-        # Preserved recent sections
-        for sec in ["Recent", "RecentFX", "reaper_video"]:
+        for sec in ["Recent", "RecentFX", "recentmetropat", "reaper_video", "midihw"]:
             if sec in preserved_sections:
                 f.write(f"[{sec}]\n")
                 f.writelines(preserved_sections[sec])
