@@ -16,9 +16,21 @@ ReaFull transforms Cockos REAPER on Linux into a studio-ready workstation for pr
 
 ---
 
-## 2. Included Subsystems & Component Breakdown
+## 2. Studio Interface & Workflow Showcase
 
-### 2.1 Audio Processing Suites (JSFX)
+<p align="center">
+  <a href="docs/demo.mp4">
+    <img src="docs/demo_preview.gif" alt="ReaFull Studio Console Demo" width="920" style="max-width: 100%; border-radius: 12px;"/>
+  </a>
+  <br>
+  <em>🎬 Haz clic en la imagen o descarga el vídeo completo en alta definición: <a href="docs/demo.mp4"><b>docs/demo.mp4</b></a> (o <a href="docs/demo.webm"><b>docs/demo.webm</b></a>)</em>
+</p>
+
+---
+
+## 3. Included Subsystems & Component Breakdown
+
+### 3.1 Audio Processing Suites (JSFX)
 
 #### ReaFull Analog FX Suite
 Analog hardware emulations with dedicated GUIs:
@@ -58,7 +70,7 @@ Precision surgical mixing and mastering tools:
 
 ---
 
-### 2.2 Themes & Typography
+### 3.2 Themes & Typography
 - **ReaFull Pro**: Flagship dark console theme optimized for contrast, extended sessions, and clean dockers.
 - **ReaFull Dark**: Ultra-dark theme for nighttime workflows.
 - **ReaFull Gray**: Balanced neutral studio console theme.
@@ -67,7 +79,7 @@ Precision surgical mixing and mastering tools:
 
 ---
 
-### 2.3 Workflow Templates
+### 3.3 Workflow Templates
 
 #### 17 Categorized Track Template Modules (200+ Strips)
 Pre-routed strips with coloring, icons, and gain staging:
@@ -83,16 +95,9 @@ Complete session routing, VCA groups, and master bus processing for:
 
 ---
 
-## 3. Installation
+## 4. Installation & Terminal Experience
 
-### 3.1 Requirements
-- Cockos REAPER (Native Linux or Flatpak)
-- Python 3.8+
-- Bash
-- Fontconfig (`fc-cache`)
-- Recommended: SWS Extension and ReaPack
-
-### 3.2 Interactive Setup
+### 4.1 Quick Start
 
 ```bash
 git clone https://github.com/julesklord/ReaFull.git
@@ -100,33 +105,46 @@ cd ReaFull
 ./install.sh
 ```
 
+### 4.2 Interactive CLI Experience & Automated Verification
+
+<table>
+  <tr>
+    <td align="center" width="50%"><b>1. Selector Modular Interactivo</b></td>
+    <td align="center" width="50%"><b>2. Despliegue y Verificación de Salud</b></td>
+  </tr>
+  <tr>
+    <td><img src="docs/terminal_interactive.png" alt="Selector Modular Interactivo" width="100%"/></td>
+    <td><img src="docs/terminal_install.png" alt="Despliegue y Verificación de Salud" width="100%"/></td>
+  </tr>
+</table>
+
 ---
 
-## 4. CLI Reference & Installation Profiles
+## 5. CLI Reference & Profiles
 
 ```bash
-# Overlay Profile (Default when existing setup is detected: preserves your keymaps/menus)
+# Perfil Overlay (Por defecto si ya tienes REAPER configurado: preserva tus atajos y menús)
 ./install.sh --profile overlay
 
-# Fresh Studio Profile (Clean studio setup: deploys all ReaFull defaults)
+# Perfil Fresh Studio (Configuración limpia de estudio: despliega todos los valores por defecto)
 ./install.sh --profile fresh
 
-# Predefined Presets
-./install.sh --preset full         # Complete suite deployment (~858 MB)
-./install.sh --preset minimal      # Essential UI, fonts, and audio tuning (~20 MB)
-./install.sh --preset fx-only      # JSFX plugin suites and presets (~640 MB)
-./install.sh --preset themes-only  # Themes and icons only (~20 MB)
+# Presets Predefinidos
+./install.sh --preset full         # Instalación completa (~858 MB)
+./install.sh --preset minimal      # UI esencial, fuentes y tuning de audio (~20 MB)
+./install.sh --preset fx-only      # Suites de plugins JSFX y presets (~640 MB)
+./install.sh --preset themes-only  # Temas e iconos exclusivamente (~20 MB)
 
-# Force overwrite of keyboard shortcuts and custom menus
+# Forzar sobrescritura de atajos de teclado y menús personalizados
 ./install.sh --force
 
-# Specify custom destination (e.g. Flatpak)
+# Especificar destino personalizado (ej: Flatpak)
 ./install.sh --target ~/.var/app/fm.reaper.Reaper/config/REAPER
 
-# Simulation / Dry Run
+# Simulación / Dry Run sin modificar archivos
 ./install.sh --dry-run --preset full
 
-# Silent / Non-interactive installation
+# Instalación silenciosa no interactiva
 ./install.sh --quiet
 ```
 
@@ -149,7 +167,7 @@ cd ReaFull
 
 ---
 
-## 5. Backup, Restoration & Uninstallation
+## 6. Backup, Restoration & Uninstallation
 
 Every installation creates an automated timestamped backup:
 ```text
@@ -168,7 +186,7 @@ Menu options in `uninstall.sh`:
 
 ---
 
-## 6. Quick Start: First 15 Minutes
+## 7. Quick Start: First 15 Minutes
 
 1. **Launch REAPER**: The ReaFull Pro theme will load automatically.
 2. **Screensets & Workspaces**:
@@ -181,7 +199,7 @@ Menu options in `uninstall.sh`:
 
 ---
 
-## 7. Credits & Legal Notice
+## 8. Credits & Legal Notice
 
 ReaFull is packaged and maintained by **Jules Martins** ([@julesklord](https://github.com/julesklord)).
 
@@ -194,7 +212,7 @@ For full third-party component catalog, author credits, and license disclosures,
 
 ---
 
-## 8. License
+## 9. License
 
 The ReaFull installation engine and deployment scripts are licensed under the [MIT License](LICENSE).  
 Bundled JSFX audio effects, ReaScripts, and fonts retain their original open-source licenses (GPL-3.0, LGPL-3.0, MIT, Apache 2.0, SIL Open Font License).
