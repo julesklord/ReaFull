@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """
-ReaFull Installer for Linux REAPER
+ReaFull: Interactive & Modular Installer for Linux REAPER
 Author: Jules Martins (fearlesslymediagroup@gmail.com)
 Repository: https://github.com/julesklord/ReaFull
 
-Automates the complete installation, cross-platform path resolution,
-and non-destructive configuration merging of the ReaFull production suite.
+Features:
+- Interactive modular component selector
+- Transparent file size calculations and transfer logging
+- Non-destructive configuration merge & full backup creation
+- Audio engine hardware auto-tuning (ALSA Realtime, HQ Sinc)
 """
 
 import os
@@ -14,9 +17,10 @@ import shutil
 import argparse
 import subprocess
 import re
+import time
 from datetime import datetime
 
-VERSION = "2025.1.0-linux"
+VERSION = "2025.2.0-modular"
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSETS_DIR = os.path.join(ROOT_DIR, "assets")
@@ -31,19 +35,189 @@ class Colors:
     YELLOW = '\033[93m'
     RED = '\033[91m'
     BOLD = '\033[1m'
+    DIM = '\033[2m'
     ENDC = '\033[0m'
 
-def log_info(msg):
-    print(f"{Colors.BLUE}[*]{Colors.ENDC} {msg}")
+# Modular Component Definitions
+COMPONENTS = {
+    "themes": {
+        "name": "Temas Visuales y Splash Screen",
+        "desc": "Temas ReaFull Pro, Dark, Gray, Light y pantalla de inicio",
+        "folders": [("ColorThemes", "ColorThemes"), ("branding/Splash ReaFull.png", "Splash ReaFull.png")],
+        "inis": ["reaper-themeconfig.ini"],
+        "default": True
+    },
+    "analog_fx": {
+        "name": "ReaFull Analog FX Suite (JSFX)",
+        "desc": "Emulaciones analógicas (SolidBus, DisTres-C, Pulse-EQ, Tape, Tube-Pre, FET-76, Summing)",
+        "folders": [("Effects/ReaFull Analog FX", "Effects/ReaFull Analog FX"), ("Effects/ReArtist Analog FX", "Effects/ReArtist Analog FX")],
+        "inis": [],
+        "default": True
+    },
+    "digital_fx": {
+        "name": "ReaFull Digital FX Suite (JSFX)",
+        "desc": "Procesamiento digital (D-DynEQ, D-MSComp, D-Meter LUFS, Reflex 1/2/3 Reverbs, T-FFT)",
+        "folders": [("Effects/ReaFull Digital FX", "Effects/ReaFull Digital FX"), ("Effects/ReArtist Digital FX", "Effects/ReArtist Digital FX")],
+        "inis": [],
+        "default": True
+    },
+    "community_fx": {
+        "name": "Community FX Suites (Saike, Sonic Anomaly, Tilr)",
+        "desc": "Herramientas de la comunidad integradas y optimizadas",
+        "folders": [
+            ("Effects/Saike Tools", "Effects/Saike Tools"),
+            ("Effects/Sonic Anomaly", "Effects/Sonic Anomaly"),
+            ("Effects/tilr", "Effects/tilr"),
+            ("Effects/Liteon", "Effects/Liteon"),
+            ("Effects/LOSER", "Effects/LOSER"),
+            ("Effects/stillwell", "Effects/stillwell"),
+            ("Effects/Mawi", "Effects/Mawi"),
+            ("Effects/Schwa", "Effects/Schwa"),
+        ],
+        "inis": [],
+        "default": True
+    },
+    "templates": {
+        "name": "Plantillas de Pistas y Proyectos",
+        "desc": "17 categorías de TrackTemplates (Drums, Vocals, Guitars, Master) y ProjectTemplates",
+        "folders": [("TrackTemplates", "TrackTemplates"), ("ProjectTemplates", "ProjectTemplates")],
+        "inis": [],
+        "default": True
+    },
+    "sws_autocolor": {
+        "name": "SWS AutoColor, Iconos y Datos",
+        "desc": "310+ reglas de auto-color, iconos de pista eduserra/, toolbar icons HiDPI",
+        "folders": [("Data", "Data"), ("ReaImGui", "ReaImGui")],
+        "inis": ["sws-autocoloricon.ini", "S&M.template.ini", "S&M_Cyclactions.ini"],
+        "default": True
+    },
+    "menus_toolbars": {
+        "name": "Menús, Barras de Herramientas y Screensets",
+        "desc": "Barras flotantes personalizadas, atajos de teclado y espacios de trabajo",
+        "folders": [("MenuSets", "MenuSets"), ("KeyMaps", "KeyMaps"), ("MouseMaps", "MouseMaps"), ("OSC", "OSC")],
+        "inis": ["reaper-menu.ini", "reaper-screensets.ini", "screensets.ini", "reaper-kb.ini", "reaper-mouse.ini", "reaper-fxfolders.ini"],
+        "default": True
+    },
+    "scripts": {
+        "name": "Suite de Scripts ReaScripts",
+        "desc": "FTC Tools, HeDa Track Inspector 2, Lokasenna GUI v2, Zaibuyidao, ReaFull Updater",
+        "folders": [("Scripts", "Scripts"), ("ReaPack", "ReaPack"), ("reaper_www_root", "reaper_www_root")],
+        "inis": ["reaper-extstate.template.ini", "reapack.ini"],
+        "default": True
+    },
+    "presets": {
+        "name": "Presets y Cadenas FXChains",
+        "desc": "Presets de fábrica analógicos y digitales, cadenas de masterización y mezcla",
+        "folders": [("presets", "presets"), ("FXChains", "FXChains"), ("Grooves", "Grooves"), ("MIDINoteNames", "MIDINoteNames")],
+        "inis": ["reaper-defpresets.ini", "reaper-fxoptions.ini", "reaper-fxtags.ini", "reaper-pinstates.ini"],
+        "default": True
+    },
+    "fonts": {
+        "name": "Tipografías de Estudio (Fonts)",
+        "desc": "Fuentes TrueType/OpenType instaladas en ~/.local/share/fonts/ReaFull/",
+        "folders": [("Fonts", "Fonts")],
+        "inis": [],
+        "default": True
+    },
+    "audio_tuning": {
+        "name": "Optimización del Motor de Audio Linux",
+        "desc": "Ajuste ALSA Directo (hw:U192k), prioridad Realtime (90), RAM locking y HQ Resampling",
+        "folders": [],
+        "inis": [],
+        "default": True
+    },
+    "docs": {
+        "name": "Manuales y Documentación PDF",
+        "desc": "Guía de usuario de REAPER y manuales técnicos (29 MB)",
+        "folders": [("Docs", "Docs")],
+        "inis": [],
+        "default": False
+    },
+}
 
-def log_success(msg):
-    print(f"{Colors.GREEN}[+]{Colors.ENDC} {msg}")
+class Logger:
+    def __init__(self, log_path):
+        self.log_path = log_path
+        self.log_file = None
+        try:
+            os.makedirs(os.path.dirname(os.path.abspath(log_path)), exist_ok=True)
+            self.log_file = open(log_path, "w", encoding="utf-8")
+            self._write_raw(f"=== ReaFull Installation Log - {datetime.now().isoformat()} ===\n")
+        except Exception as e:
+            print(f"{Colors.YELLOW}[!] Could not open log file: {e}{Colors.ENDC}")
 
-def log_warn(msg):
-    print(f"{Colors.YELLOW}[!]{Colors.ENDC} {msg}")
+    def _write_raw(self, text):
+        if self.log_file:
+            self.log_file.write(text + "\n")
+            self.log_file.flush()
 
-def log_err(msg):
-    print(f"{Colors.RED}[ERROR]{Colors.ENDC} {msg}")
+    def info(self, msg):
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        print(f"{Colors.BLUE}[{timestamp} INFO]{Colors.ENDC} {msg}")
+        self._write_raw(f"[{timestamp} INFO] {msg}")
+
+    def success(self, msg):
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        print(f"{Colors.GREEN}[{timestamp} OK]{Colors.ENDC} {msg}")
+        self._write_raw(f"[{timestamp} OK] {msg}")
+
+    def warn(self, msg):
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        print(f"{Colors.YELLOW}[{timestamp} WARN]{Colors.ENDC} {msg}")
+        self._write_raw(f"[{timestamp} WARN] {msg}")
+
+    def error(self, msg):
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        print(f"{Colors.RED}[{timestamp} ERROR]{Colors.ENDC} {msg}")
+        self._write_raw(f"[{timestamp} ERROR] {msg}")
+
+    def action(self, tag, msg):
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        print(f"{Colors.CYAN}[{timestamp} {tag}]{Colors.ENDC} {msg}")
+        self._write_raw(f"[{timestamp} {tag}] {msg}")
+
+    def close(self):
+        if self.log_file:
+            self._write_raw(f"\n=== Installation finished at {datetime.now().isoformat()} ===")
+            self.log_file.close()
+
+def format_size(bytes_val):
+    if bytes_val < 1024:
+        return f"{bytes_val} B"
+    elif bytes_val < 1024 * 1024:
+        return f"{bytes_val / 1024:.1f} KB"
+    elif bytes_val < 1024 * 1024 * 1024:
+        return f"{bytes_val / (1024 * 1024):.1f} MB"
+    else:
+        return f"{bytes_val / (1024 * 1024 * 1024):.2f} GB"
+
+def calculate_component_size(comp_id):
+    comp = COMPONENTS[comp_id]
+    total_bytes = 0
+    total_files = 0
+
+    for src_rel, _ in comp["folders"]:
+        src_path = os.path.join(ASSETS_DIR, src_rel)
+        if os.path.isfile(src_path):
+            total_bytes += os.path.getsize(src_path)
+            total_files += 1
+        elif os.path.isdir(src_path):
+            for root, _, files in os.walk(src_path):
+                for f in files:
+                    fp = os.path.join(root, f)
+                    try:
+                        total_bytes += os.path.getsize(fp)
+                        total_files += 1
+                    except Exception:
+                        pass
+
+    for ini in comp["inis"]:
+        ini_path = os.path.join(CONFIG_TEMPLATES_DIR, ini)
+        if os.path.exists(ini_path):
+            total_bytes += os.path.getsize(ini_path)
+            total_files += 1
+
+    return total_bytes, total_files
 
 def is_reaper_running():
     try:
@@ -55,37 +229,113 @@ def is_reaper_running():
 def detect_reaper_dir():
     native_dir = os.path.expanduser("~/.config/REAPER")
     flatpak_dir = os.path.expanduser("~/.var/app/fm.reaper.Reaper/config/REAPER")
-    
     if os.path.exists(native_dir):
         return native_dir
     elif os.path.exists(flatpak_dir):
         return flatpak_dir
     return native_dir
 
-def create_backup(target_dir, dry_run=False):
+def interactive_menu():
+    keys = list(COMPONENTS.keys())
+    selected = {k: COMPONENTS[k]["default"] for k in keys}
+
+    while True:
+        os.system('clear' if os.name == 'posix' else 'cls')
+        print(f"{Colors.BOLD}{Colors.CYAN}")
+        print("  ____            _____       _ _ ")
+        print(" |  _ \\ ___  __ _|  ___|   _ | | |")
+        print(" | |_) / _ \\/ _` | |_ | | | || | |")
+        print(" |  _ <  __/ (_| |  _|| |_| || | |")
+        print(" |_| \\_\\___|\\__,_|_|   \\__,_||_|_|")
+        print("                                  ")
+        print(f"  Instalador Modular e Interactivo para Linux (v{VERSION})")
+        print(f"{Colors.ENDC}")
+        print(f"{Colors.BOLD}Selecciona los componentes que deseas instalar:{Colors.ENDC}\n")
+
+        total_selected_size = 0
+        total_selected_files = 0
+
+        for idx, k in enumerate(keys, 1):
+            status = f"{Colors.GREEN}[X]{Colors.ENDC}" if selected[k] else f"{Colors.DIM}[ ]{Colors.ENDC}"
+            size, files = calculate_component_size(k)
+            size_str = format_size(size) if size > 0 else "0 KB"
+            if selected[k]:
+                total_selected_size += size
+                total_selected_files += files
+
+            name_col = f"{idx:2d}. {COMPONENTS[k]['name']}"
+            print(f"  {status} {Colors.BOLD}{name_col:<55}{Colors.ENDC} {Colors.CYAN}({size_str}){Colors.ENDC}")
+            print(f"       {Colors.DIM}{COMPONENTS[k]['desc']}{Colors.ENDC}")
+
+        print("\n" + "-" * 70)
+        print(f"  Total a instalar: {Colors.BOLD}{Colors.GREEN}{format_size(total_selected_size)}{Colors.ENDC} ({total_selected_files} archivos)")
+        print("-" * 70)
+        print(f"  {Colors.BOLD}Comandos:{Colors.ENDC}")
+        print("  - Escribe el número del componente para activar/desactivar (ej: '1', '2 5 8')")
+        print("  - 'a' / 'all'   : Seleccionar todos")
+        print("  - 'm' / 'min'   : Perfil mínimo (Temas, Audio Tuning, Fuentes, Atajos)")
+        print("  - 'f' / 'fx'    : Solo Efectos y Plugins")
+        print("  - 'c' / 'enter' : CONTINUAR con la instalación")
+        print("  - 'q' / 'exit'  : Cancelar y salir\n")
+
+        choice = input(f"{Colors.BOLD}Opción > {Colors.ENDC}").strip().lower()
+
+        if choice in ['c', '']:
+            # Validate at least one component
+            if not any(selected.values()):
+                print(f"{Colors.RED}Debes seleccionar al menos un componente.{Colors.ENDC}")
+                time.sleep(1.5)
+                continue
+            break
+        elif choice in ['q', 'exit']:
+            print("Instalación cancelada por el usuario.")
+            sys.exit(0)
+        elif choice in ['a', 'all']:
+            for k in keys:
+                selected[k] = True
+        elif choice in ['m', 'min']:
+            for k in keys:
+                selected[k] = k in ["themes", "fonts", "menus_toolbars", "audio_tuning"]
+        elif choice in ['f', 'fx']:
+            for k in keys:
+                selected[k] = k in ["analog_fx", "digital_fx", "community_fx", "presets", "audio_tuning"]
+        else:
+            parts = choice.replace(",", " ").split()
+            for p in parts:
+                if p.isdigit():
+                    num = int(p)
+                    if 1 <= num <= len(keys):
+                        comp_k = keys[num - 1]
+                        selected[comp_k] = not selected[comp_k]
+
+    return [k for k, v in selected.items() if v]
+
+def create_backup(target_dir, logger, dry_run=False):
     if not os.path.exists(target_dir):
-        log_info(f"Target directory {target_dir} does not exist yet. Creating it.")
+        logger.info(f"Target directory {target_dir} does not exist yet. Creating it.")
         if not dry_run:
             os.makedirs(target_dir, exist_ok=True)
         return None
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     backup_path = f"{target_dir}_backup_pre_reafull_{timestamp}"
-    log_info(f"Creating backup of current REAPER configuration:\n    -> {backup_path}")
+    logger.action("BACKUP", f"Creando copia de respaldo de seguridad completa:")
+    logger.action("BACKUP", f"  -> Destino: {backup_path}")
+    
     if not dry_run:
         shutil.copytree(target_dir, backup_path, symlinks=True)
-        log_success("Backup created successfully.")
+        logger.success(f"Respaldo creado con éxito en: {backup_path}")
     return backup_path
 
-def install_fonts(dry_run=False):
+def install_fonts(logger, dry_run=False):
     fonts_src = os.path.join(ASSETS_DIR, "Fonts")
     fonts_dst = os.path.expanduser("~/.local/share/fonts/ReaFull")
     
     if not os.path.exists(fonts_src):
-        log_warn("Fonts folder not found in assets, skipping font installation.")
+        logger.warn("Carpeta de fuentes no encontrada en assets, omitiendo.")
         return
 
-    log_info("Installing required audio/UI fonts into ~/.local/share/fonts/ReaFull/...")
+    logger.action("FONTS", f"Instalando fuentes de estudio en {fonts_dst}...")
     if not dry_run:
         os.makedirs(fonts_dst, exist_ok=True)
         for font in os.listdir(fonts_src):
@@ -93,72 +343,81 @@ def install_fonts(dry_run=False):
             dst_f = os.path.join(fonts_dst, font)
             if os.path.isfile(src_f):
                 shutil.copy2(src_f, dst_f)
+                logger.info(f"  -> Fuente instalada: {font}")
         subprocess.run(["fc-cache", "-f", fonts_dst], capture_output=True)
-        log_success("Fonts installed and fontconfig cache refreshed.")
+        logger.success("Fuentes tipográficas instaladas y caché fontconfig actualizado.")
 
-def safe_copy_tree(src_dir, dst_dir, dry_run=False):
+def safe_copy_item(src_path, dst_path, logger, dry_run=False):
     if dry_run:
         return
-    os.makedirs(dst_dir, exist_ok=True)
-    for root, dirs, files in os.walk(src_dir):
-        rel_path = os.path.relpath(root, src_dir)
-        target_dir = os.path.join(dst_dir, rel_path)
-        os.makedirs(target_dir, exist_ok=True)
-        for f in files:
-            src_file = os.path.join(root, f)
-            dst_file = os.path.join(target_dir, f)
-            if os.path.islink(dst_file):
-                continue
-            try:
-                shutil.copy2(src_file, dst_file)
-            except Exception as e:
-                log_warn(f"Notice copying {f}: {e}")
+    if os.path.isfile(src_path):
+        os.makedirs(os.path.dirname(dst_path), exist_ok=True)
+        if not os.path.islink(dst_path):
+            shutil.copy2(src_path, dst_path)
+            logger.info(f"  -> Archivo: {os.path.relpath(dst_path, os.path.expanduser('~'))} ({format_size(os.path.getsize(src_path))})")
+    elif os.path.isdir(src_path):
+        os.makedirs(dst_path, exist_ok=True)
+        for root, dirs, files in os.walk(src_path):
+            rel = os.path.relpath(root, src_path)
+            target_sub = os.path.join(dst_path, rel)
+            os.makedirs(target_sub, exist_ok=True)
+            for f in files:
+                sf = os.path.join(root, f)
+                df = os.path.join(target_sub, f)
+                if not os.path.islink(df):
+                    try:
+                        shutil.copy2(sf, df)
+                    except Exception as e:
+                        logger.warn(f"Aviso copiando {f}: {e}")
 
-def deploy_assets(target_dir, dry_run=False):
-    log_info(f"Deploying ReaFull assets to {target_dir}...")
-    
-    subdirs = [
-        "ColorThemes",
-        "Data",
-        "Docs",
-        "Effects",
-        "FXChains",
-        "Grooves",
-        "KeyMaps",
-        "LangPack",
-        "Licences",
-        "MenuSets",
-        "MIDINoteNames",
-        "MouseMaps",
-        "OSC",
-        "presets",
-        "ProjectTemplates",
-        "ReaImGui",
-        "ReaPack",
-        "reaper_www_root",
-        "Scripts",
-        "TrackTemplates",
-    ]
+def deploy_components(selected_keys, target_dir, logger, dry_run=False):
+    logger.action("DEPLOY", f"Desplegando componentes seleccionados en: {target_dir}")
 
-    for folder in subdirs:
-        src = os.path.join(ASSETS_DIR, folder)
-        dst = os.path.join(target_dir, folder)
-        if os.path.exists(src):
-            safe_copy_tree(src, dst, dry_run=dry_run)
+    # 1. Folders
+    for comp_id in selected_keys:
+        comp = COMPONENTS[comp_id]
+        if comp_id == "fonts":
+            install_fonts(logger, dry_run=dry_run)
+            continue
+        if comp_id == "audio_tuning":
+            continue
 
-    # UserPlugins
-    userplugins_src = os.path.join(ASSETS_DIR, "UserPlugins")
+        logger.action("COMPONENT", f"Instalando: {comp['name']}...")
+        for src_rel, dst_rel in comp["folders"]:
+            src_full = os.path.join(ASSETS_DIR, src_rel)
+            dst_full = os.path.join(target_dir, dst_rel)
+            if os.path.exists(src_full):
+                safe_copy_item(src_full, dst_full, logger, dry_run=dry_run)
+
+    # 2. Config templates associated with selected components
+    active_inis = set()
+    for comp_id in selected_keys:
+        for ini in COMPONENTS[comp_id]["inis"]:
+            active_inis.add(ini)
+
+    logger.action("CONFIG", "Aplicando plantillas de configuración sanitizadas...")
+    for ini in active_inis:
+        src = os.path.join(CONFIG_TEMPLATES_DIR, ini)
+        if ini.endswith(".template.ini"):
+            dst_name = ini.replace(".template.ini", ".ini")
+            dst = os.path.join(target_dir, dst_name)
+            if os.path.exists(src) and not dry_run:
+                with open(src, "r", encoding="utf-8") as f:
+                    content = f.read()
+                content = content.replace("{{REAPER_CONFIG_DIR}}", target_dir)
+                with open(dst, "w", encoding="utf-8") as f:
+                    f.write(content)
+                logger.info(f"  -> Plantilla dinámica procesada: {dst_name}")
+        else:
+            dst = os.path.join(target_dir, ini)
+            if os.path.exists(src) and not dry_run:
+                shutil.copy2(src, dst)
+                logger.info(f"  -> Configuración copiada: {ini}")
+
+    # 3. Native Extension Symlinks
     userplugins_dst = os.path.join(target_dir, "UserPlugins")
-    if os.path.exists(userplugins_src):
-        safe_copy_tree(userplugins_src, userplugins_dst, dry_run=dry_run)
-
-    # Splash Image
-    splash_src = os.path.join(ASSETS_DIR, "branding", "Splash ReaFull.png")
-    if os.path.exists(splash_src) and not dry_run:
-        shutil.copy2(splash_src, os.path.join(target_dir, "Splash ReaFull.png"))
-
-    # Link native extension libraries if available on system
     if not dry_run:
+        os.makedirs(userplugins_dst, exist_ok=True)
         for sws_path in ["/usr/lib/sws/reaper_sws-x86_64.so", "/usr/lib/REAPER/Plugins/reaper_sws-x86_64.so"]:
             if os.path.exists(sws_path):
                 link_dst = os.path.join(userplugins_dst, "reaper_sws-x86_64.so")
@@ -179,85 +438,27 @@ def deploy_assets(target_dir, dry_run=False):
                         pass
                 break
 
-    log_success("All asset files, plugins, and templates deployed.")
+    # 4. Merge reaper.ini
+    merge_reaper_ini(selected_keys, target_dir, logger, dry_run=dry_run)
 
-def deploy_configurations(target_dir, dry_run=False):
-    log_info("Configuring settings and applying cross-platform path resolution...")
-    
-    direct_inis = [
-        "BR.ini",
-        "reapack.ini",
-        "reaper-defpresets.ini",
-        "reaper-fxfolders.ini",
-        "reaper-fxoptions.ini",
-        "reaper-fxtags.ini",
-        "reaper-kb.ini",
-        "reaper-menu.ini",
-        "reaper-mouse.ini",
-        "reaper-pinstates.ini",
-        "reaper-recentfx.ini",
-        "reaper-render.ini",
-        "reaper-screensets.ini",
-        "reaper-themeconfig.ini",
-        "screensets.ini",
-        "sws-autocoloricon.ini",
-        "Xenakios_Commands.ini",
-    ]
-
-    for ini in direct_inis:
-        src = os.path.join(CONFIG_TEMPLATES_DIR, ini)
-        dst = os.path.join(target_dir, ini)
-        if os.path.exists(src) and not dry_run:
-            shutil.copy2(src, dst)
-
-    # Process templates with variable expansion
-    extstate_tpl = os.path.join(CONFIG_TEMPLATES_DIR, "reaper-extstate.template.ini")
-    extstate_dst = os.path.join(target_dir, "reaper-extstate.ini")
-    if os.path.exists(extstate_tpl) and not dry_run:
-        with open(extstate_tpl, "r", encoding="utf-8") as f:
-            content = f.read()
-        content = content.replace("{{REAPER_CONFIG_DIR}}", target_dir)
-        with open(extstate_dst, "w", encoding="utf-8") as f:
-            f.write(content)
-
-    sm_tpl = os.path.join(CONFIG_TEMPLATES_DIR, "S&M.template.ini")
-    sm_dst = os.path.join(target_dir, "S&M.ini")
-    if os.path.exists(sm_tpl) and not dry_run:
-        with open(sm_tpl, "r", encoding="utf-8") as f:
-            content = f.read()
-        content = content.replace("{{REAPER_CONFIG_DIR}}", target_dir)
-        with open(sm_dst, "w", encoding="utf-8") as f:
-            f.write(content)
-
-    # Smart Merge of reaper.ini
-    merge_reaper_ini(target_dir, dry_run=dry_run)
-    log_success("Configurations applied cleanly.")
-
-def detect_best_audio_settings():
-    """
-    Detects the optimal pro audio engine settings on Linux:
-    - ALSA hardware interface detection
-    - Realtime CPU threading & priority
-    - Mastering-grade resampling and anticipative FX buffering
-    """
+def detect_best_audio_settings(logger):
     cpu_cores = os.cpu_count() or 4
     audio_settings = {
         "workthreads": str(cpu_cores),
         "afx": "1",
         "afxb": "200",
         "afxrender": "1",
-        "playresamplemode": "5",  # r8brain free / 512pt Sinc (Highest Quality playback)
-        "projrenderresample": "6",  # r8brain / 768pt Sinc (Mastering-grade offline export)
-        "audio_closeifidle": "0",  # Prevent interface reinit clicks
+        "playresamplemode": "5",  # r8brain / 512pt Sinc HQ
+        "projrenderresample": "6",  # r8brain / 768pt Sinc
+        "audio_closeifidle": "0",
         "audio_mute": "1",
-        "audio_mute_db": "18.0",  # Auto-mute runaway feedback >= +18dB
-        "linux_mlockall": "1",  # Lock audio memory in RAM
-        "linux_disable_pm": "1",  # Disable power management throttling on audio threads
-        "linux_auto_pasuspend": "1",  # Suspend competing sound daemons during DAW use
-        "alsa_rtprio": "90",  # High realtime scheduling priority
+        "audio_mute_db": "18.0",
+        "linux_mlockall": "1",
+        "linux_disable_pm": "1",
+        "linux_auto_pasuspend": "1",
+        "alsa_rtprio": "90",
     }
 
-    # Check ALSA hardware devices
     try:
         res = subprocess.run(["aplay", "-l"], capture_output=True, text=True)
         if "U192k" in res.stdout or "UMC404HD" in res.stdout:
@@ -272,6 +473,7 @@ def detect_best_audio_settings():
                 "linux_audio_srate": "48000",
                 "linux_audio_srateor": "1",
             })
+            logger.info("  [Audio Hardware] Interfaz detectada: Behringer UMC404HD 192k (hw:U192k, 4 in/4 out, 32-bit, 48kHz).")
         elif "AudioBox" in res.stdout:
             audio_settings.update({
                 "alsa_indev": "hw:USB",
@@ -284,12 +486,13 @@ def detect_best_audio_settings():
                 "linux_audio_srate": "48000",
                 "linux_audio_srateor": "1",
             })
-    except Exception:
-        pass
+            logger.info("  [Audio Hardware] Interfaz detectada: Presonus AudioBox USB (hw:USB).")
+    except Exception as e:
+        logger.warn(f"No se pudo consultar aplay: {e}")
 
     return audio_settings
 
-def merge_reaper_ini(target_dir, dry_run=False):
+def merge_reaper_ini(selected_keys, target_dir, logger, dry_run=False):
     cur_ini_path = os.path.join(target_dir, "reaper.ini")
     tpl_ini_path = os.path.join(CONFIG_TEMPLATES_DIR, "reaper.template.ini")
 
@@ -315,60 +518,22 @@ def merge_reaper_ini(target_dir, dry_run=False):
     cur_sections = parse_ini(cur_ini_path)
     tpl_sections = parse_ini(tpl_ini_path)
 
-    # 1. Protect all project history and user environment keys
     project_and_system_keys = {
-        # Recent projects & session state
-        "lastproject",
-        "lastprojuiref",
-        "projecttab1",
-        "projecttab2",
-        "projecttab3",
-        "projecttab4",
-        "projecttab5",
-        "projecttabs",
-        "hasrecentsec",
-        "maxrecent",
-        "numrecent",
+        "lastproject", "lastprojuiref",
+        "projecttab1", "projecttab2", "projecttab3", "projecttab4", "projecttab5", "projecttabs",
+        "hasrecentsec", "maxrecent", "numrecent",
         "recent01", "recent02", "recent03", "recent04", "recent05",
         "recent06", "recent07", "recent08", "recent09", "recent10",
-        "projdefrecpath",
-        "lastrenderpath", "lastrenderpath2", "lastrenderpath3", "lastrenderpath4", "lastrenderpath5", "lastrenderpath6",
+        "projdefrecpath", "lastrenderpath", "lastrenderpath2", "lastrenderpath3", "lastrenderpath4", "lastrenderpath5", "lastrenderpath6",
         "render_pattern_0", "render_pattern_1", "render_pattern_2", "render_pattern_3",
         "SWSProjectList",
-        
-        # Audio & Hardware state
-        "alsa_indev",
-        "alsa_outdev",
-        "alsa_rtprio",
-        "jack_launchcmd",
-        "jack_rtprio",
-        "linux_audio_bits",
-        "linux_audio_bsize",
-        "linux_audio_bufs",
-        "linux_audio_nch_in",
-        "linux_audio_nch_out",
-        "linux_audio_srate",
-        "linux_audio_srateor",
-        "linux_auto_pasuspend",
-        "linux_disable_pm",
-        "linux_mlockall",
-        "workthreads",
-        "playresamplemode",
-        "projrenderresample",
-        "afx",
-        "afxb",
-        "afxrender",
-        
-        # UI & License state
-        "nag",
-        "pspage_last",
-        "prefs_x",
-        "prefs_y",
-        "wnd_h",
-        "wnd_w",
-        "wnd_x",
-        "wnd_y",
-        "wnd_state",
+        "alsa_indev", "alsa_outdev", "alsa_rtprio",
+        "jack_launchcmd", "jack_rtprio",
+        "linux_audio_bits", "linux_audio_bsize", "linux_audio_bufs",
+        "linux_audio_nch_in", "linux_audio_nch_out", "linux_audio_srate", "linux_audio_srateor",
+        "linux_auto_pasuspend", "linux_disable_pm", "linux_mlockall",
+        "workthreads", "playresamplemode", "projrenderresample", "afx", "afxb", "afxrender",
+        "nag", "pspage_last", "prefs_x", "prefs_y", "wnd_h", "wnd_w", "wnd_x", "wnd_y", "wnd_state",
     }
 
     preserved_kvs = {}
@@ -380,28 +545,24 @@ def merge_reaper_ini(target_dir, dry_run=False):
                 if k_trim in project_and_system_keys:
                     preserved_kvs[k_trim] = v.strip()
 
-    # Detect if audio settings were empty or unconfigured, and apply professional audio defaults
-    best_audio = detect_best_audio_settings()
-    has_custom_audio = bool(preserved_kvs.get("alsa_indev") or preserved_kvs.get("alsa_outdev") or preserved_kvs.get("jack_launchcmd"))
-    
-    if not has_custom_audio:
-        log_info("Applying optimal Linux professional audio engine defaults (ALSA 48kHz, Low Latency, HQ Sinc)...")
-        for k, v in best_audio.items():
-            preserved_kvs[k] = v
-    else:
-        # Enhance existing custom audio config with pro Linux realtime & HQ resampling parameters
-        log_info(f"Custom audio device detected ({preserved_kvs.get('alsa_indev', 'custom')}). Preserving device and tuning realtime engine...")
-        for opt_k in ["alsa_rtprio", "linux_mlockall", "linux_disable_pm", "linux_auto_pasuspend", "workthreads", "playresamplemode", "projrenderresample", "afx", "afxb", "afxrender"]:
-            if opt_k not in preserved_kvs or preserved_kvs[opt_k] in ["", "0", "-1", "50"]:
-                preserved_kvs[opt_k] = best_audio.get(opt_k, preserved_kvs.get(opt_k, "1"))
+    if "audio_tuning" in selected_keys:
+        best_audio = detect_best_audio_settings(logger)
+        has_custom = bool(preserved_kvs.get("alsa_indev") or preserved_kvs.get("alsa_outdev") or preserved_kvs.get("jack_launchcmd"))
+        if not has_custom:
+            logger.action("AUDIO", "Aplicando configuración óptima para motor de audio en Linux...")
+            for k, v in best_audio.items():
+                preserved_kvs[k] = v
+        else:
+            logger.action("AUDIO", f"Dispositivo de audio personalizado detectado ({preserved_kvs.get('alsa_indev')}). Optimizando hilos y tiempo real...")
+            for opt_k in ["alsa_rtprio", "linux_mlockall", "linux_disable_pm", "linux_auto_pasuspend", "workthreads", "playresamplemode", "projrenderresample", "afx", "afxb", "afxrender"]:
+                if opt_k not in preserved_kvs or preserved_kvs[opt_k] in ["", "0", "-1", "50"]:
+                    preserved_kvs[opt_k] = best_audio.get(opt_k, preserved_kvs.get(opt_k, "1"))
 
-    # Preserve custom sections
     preserved_sections = {}
     for sec_name in [".swell", ".swell_recent_path", "Recent", "RecentFX", "recentmetropat", "reaper_video", "midihw"]:
         if sec_name in cur_sections:
             preserved_sections[sec_name] = cur_sections[sec_name]
 
-    # Build merged [reaper] section
     merged_reaper_lines = []
     seen_reaper_keys = set()
 
@@ -413,11 +574,11 @@ def merge_reaper_ini(target_dir, dry_run=False):
                 if k_trim in preserved_kvs:
                     merged_reaper_lines.append(f"{k_trim}={preserved_kvs[k_trim]}\n")
                     seen_reaper_keys.add(k_trim)
-                elif k_trim == "lastthemefn5":
+                elif k_trim == "lastthemefn5" and "themes" in selected_keys:
                     theme_path = os.path.join(target_dir, "ColorThemes/ReaFull Pro.ReaperThemeZip")
                     merged_reaper_lines.append(f"lastthemefn5={theme_path}\n")
                     seen_reaper_keys.add(k_trim)
-                elif k_trim == "splashimage":
+                elif k_trim == "splashimage" and "themes" in selected_keys:
                     splash_path = os.path.join(target_dir, "Splash ReaFull.png")
                     merged_reaper_lines.append(f"splashimage={splash_path}\n")
                     seen_reaper_keys.add(k_trim)
@@ -427,17 +588,16 @@ def merge_reaper_ini(target_dir, dry_run=False):
             else:
                 merged_reaper_lines.append(line)
 
-    # Append remaining preserved keys
     for k, v in preserved_kvs.items():
         if k not in seen_reaper_keys:
             merged_reaper_lines.append(f"{k}={v}\n")
 
-    if "lastthemefn5" not in seen_reaper_keys:
-        merged_reaper_lines.append(f"lastthemefn5={os.path.join(target_dir, 'ColorThemes/ReaFull Pro.ReaperThemeZip')}\n")
-    if "splashimage" not in seen_reaper_keys:
-        merged_reaper_lines.append(f"splashimage={os.path.join(target_dir, 'Splash ReaFull.png')}\n")
+    if "themes" in selected_keys:
+        if "lastthemefn5" not in seen_reaper_keys:
+            merged_reaper_lines.append(f"lastthemefn5={os.path.join(target_dir, 'ColorThemes/ReaFull Pro.ReaperThemeZip')}\n")
+        if "splashimage" not in seen_reaper_keys:
+            merged_reaper_lines.append(f"splashimage={os.path.join(target_dir, 'Splash ReaFull.png')}\n")
 
-    # Write merged reaper.ini
     with open(cur_ini_path, "w", encoding="utf-8") as f:
         for sec in [".swell", ".swell_recent_path"]:
             if sec in preserved_sections:
@@ -466,47 +626,80 @@ def merge_reaper_ini(target_dir, dry_run=False):
                     f.write("\n")
 
 def main():
-    parser = argparse.ArgumentParser(description="ReaFull Linux Installer for REAPER")
-    parser.add_argument("--target", type=str, default=None, help="Target REAPER config directory (default: auto-detected)")
-    parser.add_argument("--no-backup", action="store_true", help="Skip creating a pre-installation backup")
-    parser.add_argument("--no-fonts", action="store_true", help="Skip font installation")
-    parser.add_argument("--dry-run", action="store_true", help="Simulate installation without writing files")
-    parser.add_argument("--quiet", "-q", action="store_true", help="Non-interactive mode")
+    parser = argparse.ArgumentParser(description="ReaFull: Instalador Modular e Interactivo para REAPER en Linux")
+    parser.add_argument("--target", type=str, default=None, help="Directorio destino de configuración de REAPER")
+    parser.add_argument("--all", "-a", action="store_true", help="Instalar todos los componentes (Modo Completo)")
+    parser.add_argument("--components", "-c", type=str, default=None, help="Lista de componentes separados por coma (ej: themes,analog_fx,audio_tuning)")
+    parser.add_argument("--preset", "-p", choices=["full", "minimal", "fx-only", "themes-only"], help="Perfil de instalación predefinido")
+    parser.add_argument("--no-backup", action="store_true", help="Omitir la creación del respaldo previo")
+    parser.add_argument("--dry-run", action="store_true", help="Simular sin modificar archivos")
+    parser.add_argument("--log-file", type=str, default=None, help="Ruta personalizada del archivo de log")
+    parser.add_argument("--quiet", "-q", action="store_true", help="Modo silencioso no interactivo")
     parser.add_argument("--version", "-v", action="version", version=f"ReaFull Installer {VERSION}")
 
     args = parser.parse_args()
 
     target_dir = args.target or detect_reaper_dir()
+    log_path = args.log_file or os.path.join(target_dir, f"reafull_install_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
+    logger = Logger(log_path)
 
+    # Component Selection Resolution
+    if args.all:
+        selected_keys = list(COMPONENTS.keys())
+    elif args.preset == "full":
+        selected_keys = list(COMPONENTS.keys())
+    elif args.preset == "minimal":
+        selected_keys = ["themes", "fonts", "menus_toolbars", "audio_tuning"]
+    elif args.preset == "fx-only":
+        selected_keys = ["analog_fx", "digital_fx", "community_fx", "presets", "audio_tuning"]
+    elif args.preset == "themes-only":
+        selected_keys = ["themes", "fonts", "menus_toolbars"]
+    elif args.components:
+        selected_keys = [k.strip() for k in args.components.split(",") if k.strip() in COMPONENTS]
+    elif args.quiet:
+        selected_keys = [k for k, v in COMPONENTS.items() if v["default"]]
+    else:
+        selected_keys = interactive_menu()
+
+    # Pre-Flight Summary
+    total_bytes = sum(calculate_component_size(k)[0] for k in selected_keys)
+    total_files = sum(calculate_component_size(k)[1] for k in selected_keys)
+
+    print(f"\n{Colors.BOLD}{Colors.CYAN}======================================================{Colors.ENDC}")
+    print(f"{Colors.BOLD}{Colors.CYAN}           Resumen de Instalación de ReaFull          {Colors.ENDC}")
     print(f"{Colors.BOLD}{Colors.CYAN}======================================================{Colors.ENDC}")
-    print(f"{Colors.BOLD}{Colors.CYAN}          ReaFull Suite Installer for Linux           {Colors.ENDC}")
-    print(f"{Colors.BOLD}{Colors.CYAN}======================================================{Colors.ENDC}")
-    print(f"Target Directory : {Colors.BOLD}{target_dir}{Colors.ENDC}")
-    print(f"Mode             : {'DRY RUN' if args.dry_run else 'INSTALL'}")
-    print("------------------------------------------------------")
+    print(f"  Directorio Destino  : {Colors.BOLD}{target_dir}{Colors.ENDC}")
+    print(f"  Archivo de Registro : {Colors.DIM}{log_path}{Colors.ENDC}")
+    print(f"  Modo de Operación   : {'SIMULACIÓN (DRY RUN)' if args.dry_run else 'INSTALACIÓN REAL'}")
+    print(f"  Espacio en Disco    : {Colors.BOLD}{Colors.GREEN}{format_size(total_bytes)}{Colors.ENDC} ({total_files} archivos)")
+    print(f"  Componentes ({len(selected_keys)} seleccionados):")
+    for k in selected_keys:
+        sz, _ = calculate_component_size(k)
+        print(f"    - {COMPONENTS[k]['name']} {Colors.DIM}({format_size(sz)}){Colors.ENDC}")
+    print("------------------------------------------------------\n")
 
     if is_reaper_running():
-        log_warn("REAPER is currently running.")
+        logger.warn("REAPER está ejecutándose actualmente.")
         if not args.quiet:
-            print(f"{Colors.YELLOW}Important: REAPER must be closed to properly apply configurations.{Colors.ENDC}")
-            ans = input("Do you want to proceed anyway? [y/N]: ").strip().lower()
+            ans = input(f"{Colors.YELLOW}¿Deseas continuar de todas formas? [y/N]: {Colors.ENDC}").strip().lower()
             if ans not in ['y', 'yes', 's', 'si']:
-                print("Aborted. Please save your projects, close REAPER and run again.")
+                logger.info("Instalación abortada por el usuario para cerrar REAPER.")
+                logger.close()
                 sys.exit(0)
 
     if not args.no_backup:
-        create_backup(target_dir, dry_run=args.dry_run)
+        create_backup(target_dir, logger, dry_run=args.dry_run)
 
-    if not args.no_fonts:
-        install_fonts(dry_run=args.dry_run)
+    deploy_components(selected_keys, target_dir, logger, dry_run=args.dry_run)
 
-    deploy_assets(target_dir, dry_run=args.dry_run)
-    deploy_configurations(target_dir, dry_run=args.dry_run)
+    logger.success("Instalación modular de ReaFull completada exitosamente.")
+    logger.info(f"Registro completo guardado en: {log_path}")
+    logger.close()
 
     print(f"\n{Colors.BOLD}{Colors.GREEN}======================================================{Colors.ENDC}")
-    print(f"{Colors.BOLD}{Colors.GREEN}  ReaFull Installation Completed Successfully!        {Colors.ENDC}")
+    print(f"{Colors.BOLD}{Colors.GREEN}  ¡Instalación Modular de ReaFull Finalizada!          {Colors.ENDC}")
     print(f"{Colors.BOLD}{Colors.GREEN}======================================================{Colors.ENDC}")
-    print(f"\n{Colors.CYAN}Start REAPER now to enjoy your new ReaFull environment.{Colors.ENDC}\n")
+    print(f"\nInicia REAPER para disfrutar de tus nuevos componentes personalizados.\n")
 
 if __name__ == "__main__":
     main()

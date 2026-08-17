@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
 #  ReaFull: The Ultimate REAPER Production Suite for Linux
-#  Installer Script
+#  Interactive & Modular Installer Wrapper
 # ==============================================================================
 
 set -e
@@ -17,21 +17,7 @@ C_CYAN='\033[96m'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo -e "${C_BOLD}${C_CYAN}"
-cat << "EOF"
-  ____            _____       _ _ 
- |  _ \ ___  __ _|  ___|   _ | | |
- | |_) / _ \/ _` | |_ | | | || | |
- |  _ <  __/ (_| |  _|| |_| || | |
- |_| \_\___|\__,_|_|   \__,_||_|_|
-                                  
-  Professional DAW Suite for Linux
-EOF
-echo -e "${C_RESET}"
-
 # 1. Dependency checks
-echo -e "${C_BOLD}${C_BLUE}[*] Checking system dependencies...${C_RESET}"
-
 MISSING_DEPS=()
 
 if ! command -v python3 &>/dev/null; then
@@ -47,15 +33,12 @@ if ! command -v curl &>/dev/null; then
 fi
 
 if [ ${#MISSING_DEPS[@]} -ne 0 ]; then
-    echo -e "${C_YELLOW}[!] Warning: Missing recommended dependencies: ${MISSING_DEPS[*]}${C_RESET}"
-    echo -e "    Please install them with your package manager (e.g. pacman -S ${MISSING_DEPS[*]} / apt install ${MISSING_DEPS[*]})."
+    echo -e "${C_YELLOW}[!] Advertencia: Faltan dependencias recomendadas: ${MISSING_DEPS[*]}${C_RESET}"
+    echo -e "    Instálalas con tu gestor de paquetes (ej: sudo pacman -S ${MISSING_DEPS[*]} o apt install ${MISSING_DEPS[*]})."
 fi
 
-# Check SWS and ReaPack
-if [ ! -f "/usr/lib/sws/reaper_sws-x86_64.so" ] && [ ! -f "$HOME/.config/REAPER/UserPlugins/reaper_sws-x86_64.so" ]; then
-    echo -e "${C_YELLOW}[i] SWS extension not found in system paths. We recommend installing it via your package manager or ReaPack.${C_RESET}"
-fi
+# Make scripts executable
+chmod +x "$SCRIPT_DIR/install.py" "$SCRIPT_DIR/uninstall.sh" 2>/dev/null || true
 
-# Run the installer engine
-chmod +x "$SCRIPT_DIR/install.py"
-python3 "$SCRIPT_DIR/install.py" "$@"
+# Run Python interactive/modular installer
+exec python3 "$SCRIPT_DIR/install.py" "$@"

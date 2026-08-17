@@ -1,7 +1,7 @@
 # ReaFull 🎛️🐧
 
 > **The Ultimate REAPER Production, Mixing & Mastering Suite for Linux.**  
-> *100% Native, Fully Sanitized, Battery-Included, and Automated.*
+> *100% Native, Modular, Battery-Included, and Automated.*
 
 ![ReaFull Splash](assets/branding/Splash%20ReaFull.png)
 
@@ -9,112 +9,107 @@
 
 ## 🌟 Overview
 
-**ReaFull** is a comprehensive, analog-modeled digital audio workstation distribution and configuration suite tailored specifically for **Cockos REAPER on Linux**.
+**ReaFull** is a comprehensive, modular digital audio workstation distribution tailored specifically for **Cockos REAPER on Linux**.
 
-It transforms REAPER into an out-of-the-box studio workstation:
-- **100% Linux Native**: All Windows paths (`C:\...`), backslashes, user-specific caches, and broken VST references are completely eradicated and replaced with dynamic variables.
-- **Battery-Included**: Ships with full analog and digital JSFX processing suites, complete GUI assets, and curated presets.
-- **Smart Non-Destructive Installer**: Backs up your existing environment and preserves your ALSA, JACK, and Pipewire audio device hardware settings, buffer sizes, licenses, and recent projects.
-- **Automated Typography**: Automatically installs studio-grade fonts into fontconfig.
-
----
-
-## 🎨 Themes & Aesthetics
-
-ReaFull features 4 curated theme flavors:
-- **ReaFull Pro** — Flagship dark studio console aesthetic with high-contrast metering and refined channel strips.
-- **ReaFull Dark** — Ultra-dark obsidian theme for long nighttime mixing sessions.
-- **ReaFull Gray** — Balanced neutral gray theme inspired by modern analog hardware.
-- **ReaFull Light** — Clean, high-visibility daylight editing theme.
+- **100% Linux Native**: Eradicates all Windows path artifacts (`C:\...`), backslashes, user-specific caches, and broken VST references.
+- **Modular & Interactive**: Choose exactly which components to install with real-time size calculations, transparent transfer notifications, and detailed logging.
+- **Battery-Included**: Ships with full analog and digital JSFX processing suites, GUI assets, and curated presets.
+- **Smart Non-Destructive Installer**: Backs up your existing environment and preserves your ALSA/JACK audio device settings, buffer sizes, licenses, and recent projects.
 
 ---
 
-## 🎛️ Included Processing Suites (JSFX)
+## 🧩 Modularity & Component Breakdown
 
-### 📻 ReaFull Analog FX
-- **SolidBus:** Classic British SSL G-Master Bus compressor emulation.
-- **DisTres-C / Distres:** Empirical Labs Distressor-style punch compressor with detector curves.
-- **Pulse-EQ:** Pultec EQP-1A style passive tube equalizer with simultaneous boost/attenuation.
-- **Fat-Tape / Tape-Dly:** Analog magnetic tape saturation, head bump, and warm tape delay.
-- **Tube-Pre:** Warm tube preamp harmonic saturation.
-- **FET-76 & Opto-2A:** 1176-style peak limiter and LA-2A optical leveling amplifier.
-- **Sum-Desk / Sum-Mix / Sum-Strip / Mix-Chan:** Console channel and bus summing modules.
-- **VU Zeno & VU-TK:** Calibrated analog needle VU meters.
-
-### 💻 ReaFull Digital FX
-- **D-Comp & D-MSComp:** Modern precision digital compressor with Mid/Side matrixing.
-- **D-DynEQ & D-EQ:** Dynamic surgical parametric equalizer.
-- **Reflex 1, 2, 3:** Studio reverb suite (Plates, Rooms, and Large Halls).
-- **D-Meter:** Integrated LUFS, RMS, and Peak loudness metering for streaming and broadcast standards.
-- **T-FFT Analyzer:** High-resolution real-time spectrum visualizer.
-- **Test Tone & Calibration Tools:** Pure tone, pink noise, and white noise signal generators.
+| # | Componente | Descripción | Tamaño Aprox. |
+| :-: | :--- | :--- | :-: |
+| **1** | **Temas y Splash** | `ReaFull Pro`, `Dark`, `Gray`, `Light` y splash de inicio | ~15 MB |
+| **2** | **ReaFull Analog FX** | SolidBus, DisTres-C, Pulse-EQ, Tape, Tube-Pre, FET-76, Summing | ~380 MB |
+| **3** | **ReaFull Digital FX** | D-DynEQ, D-MSComp, D-Meter LUFS, Reflex 1/2/3 Reverbs, T-FFT | ~220 MB |
+| **4** | **Community FX Suites**| Saike, Sonic Anomaly, Tilr, Liteon, Loser, Stillwell | ~65 MB |
+| **5** | **Plantillas (Templates)**| 17 categorías de TrackTemplates + Proyectos por Género | ~6.5 MB |
+| **6** | **SWS AutoColor & Icons**| 310+ reglas de auto-color, iconos de pista eduserra/, toolbar icons HiDPI | ~49 MB |
+| **7** | **Menús y Screensets** | Barras de herramientas flotantes, atajos de teclado y espacios de trabajo | ~4.3 MB |
+| **8** | **ReaScripts Suite** | FTC Tools, HeDa Track Inspector 2, Lokasenna GUI v2, Zaibuyidao, ReaFull Updater | ~156 MB |
+| **9** | **Presets y FXChains** | Presets de fábrica analógicos y digitales, cadenas de master/mezcla | ~12 MB |
+| **10**| **Tipografías (Fonts)** | Fuentes TrueType/OpenType instaladas en `~/.local/share/fonts/ReaFull/` | ~1.1 MB |
+| **11**| **Audio Engine Tuning** | Prioridad Realtime (90), ALSA 48kHz, RAM memory lock y HQ Resampling | 0 B |
+| **12**| **Manuales y Docs PDF** | Guía de usuario completa de REAPER y manuales técnicos | ~29 MB |
 
 ---
 
-## 🚀 Quick Installation (Linux)
-
-### 1. Requirements
-- **REAPER for Linux** (Native build or Flatpak).
-- **Python 3** & **Bash**.
-- Recommended: `sws` and `reapack` extensions.
-- `fontconfig` (`fc-cache`) & `curl`.
-
-### 2. Install
+## 🚀 Quick Start (Modo Interactivo)
 
 ```bash
-# 1. Clone the repository
+# 1. Clonar el repositorio
 git clone https://github.com/julesklord/ReaFull.git
 cd ReaFull
 
-# 2. Run the installer (Make sure REAPER is closed)
+# 2. Iniciar el instalador interactivo
 ./install.sh
 ```
 
-Open REAPER and enjoy your complete ReaFull studio workstation!
+El instalador abrirá una interfaz interactiva donde podrás:
+- Activar o desactivar componentes individuales mediante casillas `[X]`.
+- Ver en tiempo real el tamaño exacto en disco que ocupará cada elemento.
+- Seleccionar perfiles rápidos: **Completo (`a`)**, **Mínimo (`m`)** o **Solo Efectos (`f`)**.
 
 ---
 
-## ⚙️ Advanced CLI Options
+## ⚙️ Perfiles y Opciones CLI
+
+Para instalaciones automatizadas, servidores o entornos CI/CD:
 
 ```bash
-# Dry run simulation (checks what would be changed without writing)
-python3 install.py --dry-run
+# Instalar con un perfil predefinido
+./install.sh --preset full         # Todos los componentes (~1.5 GB)
+./install.sh --preset minimal      # Solo Temas, Audio Tuning, Atajos y Fuentes (~20 MB)
+./install.sh --preset fx-only      # Solo Suites de Plugins JSFX y Presets (~1.2 GB)
+./install.sh --preset themes-only  # Solo Temas e Iconos
 
-# Target a custom REAPER directory (e.g. Flatpak)
-python3 install.py --target ~/.var/app/fm.reaper.Reaper/config/REAPER
+# Instalar componentes específicos
+./install.sh --components themes,analog_fx,audio_tuning
 
-# Silent non-interactive installation
-python3 install.py --quiet --no-backup
+# Simular sin escribir en disco (Dry-Run)
+./install.sh --dry-run --preset full
 
-# Restore previous backup
-./uninstall.sh
+# Especificar directorio destino personalizado (ej: Flatpak)
+./install.sh --target ~/.var/app/fm.reaper.Reaper/config/REAPER
+
+# Modo silencioso no interactivo
+./install.sh --quiet --no-backup
 ```
 
 ---
 
-## 🔄 In-DAW Updater
+## 📜 Registros Transparentes (Logs)
 
-ReaFull includes an in-DAW script located in `assets/Scripts/ReaFull/ReaFull_Updater.lua` to check for GitHub updates, trigger ReaPack synchronization, and refresh themes on the fly.
-
----
-
-## 🙏 Credits & Acknowledgments
-
-**ReaFull** is maintained, packaged, and adapted for Linux by **Jules Martins** ([@julesklord](https://github.com/julesklord)).
-
-Special recognition and full credit to:
-- **Edu Serra** (*ReArtist Pro*): Original conceptual design, workflow structure, and custom JSFX DSP DSP algorithms.
-- **Cockos**: For the incredible REAPER DAW and JSFX language.
-- **The REAPER Community**:
-  - **FeedTheCat (FTC)** (*MIDI Editor Magic, Folder Magic, Smart Freeze, Razor Edits*).
-  - **HeDa** (*Track Inspector 2, HeDaScripts*).
-  - **Lokasenna** (*Lokasenna GUI v2*).
-  - **Michael Pilyavskiy (MPL)**, **X-Raym**, **Archie**, **Zaibuyidao**, **Saike**, **Sonic Anomaly**, **Tilr**, and **StevieKeys**.
-- **SWS Extension Team** and **Christian Fillion (cfillion / ReaPack)**.
+Cada instalación genera automáticamente un archivo de registro detallado con fecha y hora:
+- Ubicación por defecto: `~/.config/REAPER/reafull_install_<TIMESTAMP>.log`
+- Contiene: cada archivo copiado con su tamaño en bytes, plantillas procesadas, hardware de audio detectado y estado del respaldo.
 
 ---
 
-## 📄 License
+## 🛡️ Restauración de Copias de Seguridad
 
-This repository and its installation tooling are released under the [MIT License](LICENSE).  
-Bundled JSFX and ReaScripts maintain their respective open-source licenses and author attributions.
+Si en algún momento deseas volver al estado anterior:
+```bash
+./uninstall.sh
+```
+El script listará todos los respaldos automáticos disponibles (`REAPER_backup_pre_reafull_*`) y te permitirá restaurar con un solo clic.
+
+---
+
+## 🙏 Créditos & Atribución
+
+**ReaFull** es mantenido, empaquetado y adaptado para Linux por **Jules Martins** ([@julesklord](https://github.com/julesklord)).
+
+Crédito y agradecimiento especial a:
+- **Edu Serra** (*ReArtist Pro*): Diseño conceptual original, estructura de flujos de trabajo y algoritmos de procesamiento DSP en JSFX.
+- **Cockos**: Por la plataforma REAPER y el lenguaje JSFX.
+- **Comunidad de desarrolladores**: *FeedTheCat (FTC), HeDa, Lokasenna, Archie, MPL, X-Raym, Saike, Sonic Anomaly, Tilr, StevieKeys*, y los equipos de **SWS Extension** y **ReaPack**.
+
+---
+
+## 📄 Licencia
+
+Este repositorio y sus herramientas de instalación están licenciados bajo la [Licencia MIT](LICENSE).
