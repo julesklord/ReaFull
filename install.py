@@ -81,13 +81,13 @@ def create_backup(target_dir, dry_run=False):
 
 def install_fonts(dry_run=False):
     fonts_src = os.path.join(ASSETS_DIR, "Fonts")
-    fonts_dst = os.path.expanduser("~/.local/share/fonts/ReArtist")
+    fonts_dst = os.path.expanduser("~/.local/share/fonts/ReaFull")
     
     if not os.path.exists(fonts_src):
         log_warn("Fonts folder not found in assets, skipping font installation.")
         return
 
-    log_info("Installing required audio/UI fonts into ~/.local/share/fonts/ReArtist/...")
+    log_info("Installing required audio/UI fonts into ~/.local/share/fonts/ReaFull/...")
     if not dry_run:
         os.makedirs(fonts_dst, exist_ok=True)
         for font in os.listdir(fonts_src):
@@ -155,9 +155,9 @@ def deploy_assets(target_dir, dry_run=False):
         safe_copy_tree(userplugins_src, userplugins_dst, dry_run=dry_run)
 
     # Splash Image
-    splash_src = os.path.join(ASSETS_DIR, "branding", "Splash ReArtist Pro.png")
+    splash_src = os.path.join(ASSETS_DIR, "branding", "Splash ReaFull.png")
     if os.path.exists(splash_src) and not dry_run:
-        shutil.copy2(splash_src, os.path.join(target_dir, "Splash ReArtist Pro.png"))
+        shutil.copy2(splash_src, os.path.join(target_dir, "Splash ReaFull.png"))
 
     # Link native extension libraries if available on system
     if not dry_run:
@@ -328,11 +328,11 @@ def merge_reaper_ini(target_dir, dry_run=False):
                     merged_reaper_lines.append(f"{k_trim}={preserved_kvs[k_trim]}\n")
                     seen_reaper_keys.add(k_trim)
                 elif k_trim == "lastthemefn5":
-                    theme_path = os.path.join(target_dir, "ColorThemes/ReArtist 2.0 Pro.ReaperThemeZip")
+                    theme_path = os.path.join(target_dir, "ColorThemes/ReaFull Pro.ReaperThemeZip")
                     merged_reaper_lines.append(f"lastthemefn5={theme_path}\n")
                     seen_reaper_keys.add(k_trim)
                 elif k_trim == "splashimage":
-                    splash_path = os.path.join(target_dir, "Splash ReArtist Pro.png")
+                    splash_path = os.path.join(target_dir, "Splash ReaFull.png")
                     merged_reaper_lines.append(f"splashimage={splash_path}\n")
                     seen_reaper_keys.add(k_trim)
                 else:
@@ -346,9 +346,9 @@ def merge_reaper_ini(target_dir, dry_run=False):
             merged_reaper_lines.append(f"{k}={v}\n")
 
     if "lastthemefn5" not in seen_reaper_keys:
-        merged_reaper_lines.append(f"lastthemefn5={os.path.join(target_dir, 'ColorThemes/ReArtist 2.0 Pro.ReaperThemeZip')}\n")
+        merged_reaper_lines.append(f"lastthemefn5={os.path.join(target_dir, 'ColorThemes/ReaFull Pro.ReaperThemeZip')}\n")
     if "splashimage" not in seen_reaper_keys:
-        merged_reaper_lines.append(f"splashimage={os.path.join(target_dir, 'Splash ReArtist Pro.png')}\n")
+        merged_reaper_lines.append(f"splashimage={os.path.join(target_dir, 'Splash ReaFull.png')}\n")
 
     # Write merged reaper.ini
     with open(cur_ini_path, "w", encoding="utf-8") as f:

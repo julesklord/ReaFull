@@ -1,0 +1,13 @@
+ABOUT THIS PLUGINS
+
+The plugins contained in this collection are versions modified by Edu Serra for the ReArtist configuration for Reaper. Most of them are limited to modifying the graphical interface of the original plugin (skinning) creating new knobs, backgrounds, texts and repositioning elements.
+
+Tukan Studios plugins are originals from Mr. John Matthews. The Sonic Anomaly plugins are originals from Mr. Stige T. The REEQ and RESpectrum plugins are original from Mr. Justin Johnson and the Loudness Meter plugin is original from Cockos. The persons mentioned are the copyright owners.
+
+At no time are the mentioned persons responsible for the modifications made to the plugins and Reaper in the ReArtist configuration.
+
+The storage of the plugins in this folder called REARTIST is strictly due to the interest of keeping them organized and not confused with the originals. At no moment Edu Serra is suggesting he is the author/owner of the plugins. This plugins are distributed for free.
+
+All the licences of the code in this plugins are OPEN SOURCE, that means that you can modify them or create new products but you should cite the author of the original code in the header.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

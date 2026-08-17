@@ -26,27 +26,31 @@ def check_reafull(target_dir=None):
     print("[OK] REAPER config directory exists.")
 
     # 2. Check Themes
-    theme_pro = os.path.join(target_dir, "ColorThemes", "ReArtist 2.0 Pro.ReaperThemeZip")
-    if os.path.exists(theme_pro):
-        print("[OK] ReArtist 2.0 Pro theme installed.")
+    theme_pro = os.path.join(target_dir, "ColorThemes", "ReaFull Pro.ReaperThemeZip")
+    theme_fallback = os.path.join(target_dir, "ColorThemes", "ReArtist 2.0 Pro.ReaperThemeZip")
+    if os.path.exists(theme_pro) or os.path.exists(theme_fallback):
+        print("[OK] ReaFull / ReArtist Pro theme installed.")
     else:
-        print("[WARN] ReArtist 2.0 Pro theme not found in ColorThemes.")
+        print("[WARN] ReaFull Pro theme not found in ColorThemes.")
         all_ok = False
 
     # 3. Check JSFX Suites
-    analog_fx = os.path.join(target_dir, "Effects", "ReArtist Analog FX")
-    digital_fx = os.path.join(target_dir, "Effects", "ReArtist Digital FX")
-    if os.path.exists(analog_fx) and os.path.exists(digital_fx):
-        print("[OK] ReArtist Analog FX and Digital FX JSFX suites installed.")
+    analog_fx = os.path.join(target_dir, "Effects", "ReaFull Analog FX")
+    analog_fallback = os.path.join(target_dir, "Effects", "ReArtist Analog FX")
+    digital_fx = os.path.join(target_dir, "Effects", "ReaFull Digital FX")
+    digital_fallback = os.path.join(target_dir, "Effects", "ReArtist Digital FX")
+    
+    if (os.path.exists(analog_fx) or os.path.exists(analog_fallback)) and (os.path.exists(digital_fx) or os.path.exists(digital_fallback)):
+        print("[OK] ReaFull Analog FX & Digital FX JSFX suites verified.")
     else:
-        print("[WARN] ReArtist JSFX suites missing in Effects/.")
+        print("[WARN] JSFX suites missing in Effects/.")
         all_ok = False
 
     # 4. Check Fonts
     try:
         res = subprocess.run(["fc-list"], capture_output=True, text=True)
         if "Electrolize" in res.stdout and "Frozen Crystal" in res.stdout:
-            print("[OK] ReArtist typography installed in fontconfig.")
+            print("[OK] ReaFull typography installed in fontconfig.")
         else:
             print("[WARN] Some typography fonts missing from fc-list.")
     except Exception as e:
@@ -70,7 +74,7 @@ def check_reafull(target_dir=None):
 
     print("\n------------------------------------------------------")
     if all_ok:
-        print("Status: ALL CORE COMPONENTS VERIFIED HEALTHY!")
+        print("Status: ALL REAFULL COMPONENTS VERIFIED HEALTHY!")
     else:
         print("Status: Some components have warnings. Check details above.")
     print("------------------------------------------------------")
