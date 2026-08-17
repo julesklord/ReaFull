@@ -95,6 +95,12 @@ Complete session routing, VCA groups, and master bus processing for:
 
 ### 4.1 Quick Start
 
+**Direct One-Liner Installation (cURL):**
+```bash
+curl -fsSL https://raw.githubusercontent.com/julesklord/ReaFull/main/install.sh | bash
+```
+
+*Or via Git:*
 ```bash
 git clone https://github.com/julesklord/ReaFull.git
 cd ReaFull
