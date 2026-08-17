@@ -18,13 +18,9 @@ ReaFull transforms Cockos REAPER on Linux into a studio-ready workstation for pr
 
 ## 2. Studio Interface & Workflow Showcase
 
-<p align="center">
-  <a href="docs/demo.mp4">
-    <img src="docs/demo_preview.gif" alt="ReaFull Studio Console Demo" width="920" style="max-width: 100%; border-radius: 12px;"/>
-  </a>
-  <br>
-  <em>🎬 Haz clic en la imagen o descarga el vídeo completo en alta definición: <a href="docs/demo.mp4"><b>docs/demo.mp4</b></a> (o <a href="docs/demo.webm"><b>docs/demo.webm</b></a>)</em>
-</p>
+[![ReaFull Studio Console Demo](https://raw.githubusercontent.com/julesklord/ReaFull/main/docs/demo_preview.gif)](https://github.com/julesklord/ReaFull/raw/main/docs/demo.mp4)
+
+> 🎬 **Vídeo Demo Completo en Alta Definición:** [Ver / Descargar `docs/demo.mp4`](https://github.com/julesklord/ReaFull/raw/main/docs/demo.mp4) · [Versión WebM `docs/demo.webm`](https://github.com/julesklord/ReaFull/raw/main/docs/demo.webm)
 
 ---
 
@@ -107,44 +103,37 @@ cd ReaFull
 
 ### 4.2 Interactive CLI Experience & Automated Verification
 
-<table>
-  <tr>
-    <td align="center" width="50%"><b>1. Selector Modular Interactivo</b></td>
-    <td align="center" width="50%"><b>2. Despliegue y Verificación de Salud</b></td>
-  </tr>
-  <tr>
-    <td><img src="docs/terminal_interactive.png" alt="Selector Modular Interactivo" width="100%"/></td>
-    <td><img src="docs/terminal_install.png" alt="Despliegue y Verificación de Salud" width="100%"/></td>
-  </tr>
-</table>
+| 1. Interactive Modular Selector | 2. Deployment & Health Verification |
+| :---: | :---: |
+| ![Interactive Modular Selector](https://raw.githubusercontent.com/julesklord/ReaFull/main/docs/terminal_interactive.png) | ![Deployment & Health Verification](https://raw.githubusercontent.com/julesklord/ReaFull/main/docs/terminal_install.png) |
 
 ---
 
 ## 5. CLI Reference & Profiles
 
 ```bash
-# Perfil Overlay (Por defecto si ya tienes REAPER configurado: preserva tus atajos y menús)
+# Overlay Profile (Default if REAPER is already configured: preserves your shortcuts and menus)
 ./install.sh --profile overlay
 
-# Perfil Fresh Studio (Configuración limpia de estudio: despliega todos los valores por defecto)
+# Fresh Studio Profile (Clean studio configuration: deploys all defaults)
 ./install.sh --profile fresh
 
-# Presets Predefinidos
-./install.sh --preset full         # Instalación completa (~858 MB)
-./install.sh --preset minimal      # UI esencial, fuentes y tuning de audio (~20 MB)
-./install.sh --preset fx-only      # Suites de plugins JSFX y presets (~640 MB)
-./install.sh --preset themes-only  # Temas e iconos exclusivamente (~20 MB)
+# Preset Selections
+./install.sh --preset full         # Full installation (~858 MB)
+./install.sh --preset minimal      # Essential UI, fonts, and audio tuning (~20 MB)
+./install.sh --preset fx-only      # JSFX plugin suites and presets (~640 MB)
+./install.sh --preset themes-only  # Themes and icons only (~20 MB)
 
-# Forzar sobrescritura de atajos de teclado y menús personalizados
+# Force overwrite of keyboard shortcuts and custom menus
 ./install.sh --force
 
-# Especificar destino personalizado (ej: Flatpak)
+# Specify custom target (e.g. Flatpak)
 ./install.sh --target ~/.var/app/fm.reaper.Reaper/config/REAPER
 
-# Simulación / Dry Run sin modificar archivos
+# Simulation / Dry Run without modifying files
 ./install.sh --dry-run --preset full
 
-# Instalación silenciosa no interactiva
+# Silent non-interactive installation
 ./install.sh --quiet
 ```
 
