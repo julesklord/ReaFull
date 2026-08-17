@@ -1,0 +1,71 @@
+name: ReaFull CI & Quality Gate
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-and-test:
+    name: Lint, Sanitize Check & Test Installation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fontconfig
+
+      - name: Python Syntax & Compilation Check
+        run: |
+          python3 -m py_compile install.py
+          python3 -m py_compile scripts/verify_installation.py
+          python3 -m py_compile scripts/clean_fxfolders.py
+          python3 -m py_compile scripts/apply_rebranding.py
+          python3 -m py_compile scripts/clean_templates_final.py
+
+      - name: Audit for Windows Drive Paths (Linter Gate)
+        run: |
+          echo "=== Auditing templates and scripts for leftover Windows paths ==="
+          python3 -c '
+          import os, re, sys
+          errors = []
+          for scan_dir in ["config_templates", "assets/Scripts/ReaFull"]:
+              for root, _, files in os.walk(scan_dir):
+                  for f in files:
+                      if f.endswith((".ini", ".lua", ".py")):
+                          fp = os.path.join(root, f)
+                          with open(fp, "r", encoding="utf-8", errors="ignore") as file:
+                              for i, line in enumerate(file, 1):
+                                  if re.search(r"^[a-zA-Z]:[\\/]", line.strip()) and not ("http://" in line or "https://" in line):
+                                      errors.append(f"{fp}:{i}: {line.strip()}")
+          if errors:
+              print(f"FAILED: Found {len(errors)} Windows drive paths:")
+              for err in errors:
+                  print(f"  {err}")
+              sys.exit(1)
+          else:
+              print("PASSED: Zero Windows drive paths found.")
+          '
+
+      - name: Test Installer Dry Run (Full Preset)
+        run: |
+          ./install.sh --quiet --dry-run --preset full --target /tmp/reafull_ci_dryrun
+
+      - name: Test Installer Dry Run (Minimal Preset)
+        run: |
+          ./install.sh --quiet --dry-run --preset minimal --target /tmp/reafull_ci_min_dryrun
+
+      - name: Test Real Deployment & Health Verification
+        run: |
+          ./install.sh --quiet --all --target /tmp/reafull_ci_test
+          python3 scripts/verify_installation.py /tmp/reafull_ci_test

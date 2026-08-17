@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""
+r"""
 Sanitizes reaper-fxfolders.ini to remove broken Windows C:\Program Files paths
 while preserving JSFX plugins, Cockos plugins, and clean folder structures.
 """
 import os
 import re
 
-CONFIG_TEMPLATES_DIR = "/mnt/DEV/projects/repos/julesklord/ReaFull/config_templates"
+REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CONFIG_TEMPLATES_DIR = os.path.join(REPO_DIR, "config_templates")
 FXFOLDERS_PATH = os.path.join(CONFIG_TEMPLATES_DIR, "reaper-fxfolders.ini")
 
 def clean_fxfolders():
@@ -29,23 +30,20 @@ def clean_fxfolders():
             for item in items_in_sec:
                 out_lines.append(item)
         else:
-            # Re-index items 0..N
             idx = 0
             for item in items_in_sec:
                 if "=" in item:
                     k, v = item.split("=", 1)
                     v_clean = v.strip()
-                    # Skip Windows absolute paths
                     if re.match(r'^[a-zA-Z]:\\', v_clean):
-                        # If it's a standard Cockos DLL like reacomp.dll, re-format as native
                         m = re.search(r'\\(rea[a-z0-9_]+)\.dll', v_clean, re.IGNORECASE)
                         if m:
                             v_clean = f"VST:{m.group(1)} (Cockos)"
                         else:
                             continue
-                    # Convert backslashes in JS paths
                     if v_clean.startswith("JS:"):
                         v_clean = v_clean.replace("\\", "/")
+                    v_clean = v_clean.replace("ReArtist Analog FX", "ReaFull Analog FX").replace("ReArtist Digital FX", "ReaFull Digital FX")
                     out_lines.append(f"Item{idx}={v_clean}\n")
                     idx += 1
                 else:

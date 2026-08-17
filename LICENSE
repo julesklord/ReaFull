@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2025 Jules Martins (julesklord)
+Copyright (c) 2025-2026 Jules Martins (julesklord)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,10 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+### Third-Party Bundled Content Notice
+The MIT License above applies to the ReaFull installer, deployment scripts, and original configuration assets.
+Bundled third-party JSFX audio effects, ReaScripts, extensions, and fonts remain under their respective open-source licenses (GPL, LGPL, Apache 2.0, SIL Open Font License).
+Please refer to NOTICE.md and THIRD_PARTY.md for complete copyright notices and license attributions.

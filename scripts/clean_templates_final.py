@@ -6,8 +6,9 @@ Ensures zero hardcoded Windows paths across all templates.
 import os
 import re
 
-CONFIG_TEMPLATES_DIR = "/mnt/DEV/projects/repos/julesklord/ReaFull/config_templates"
-ASSETS_DIR = "/mnt/DEV/projects/repos/julesklord/ReaFull/assets"
+REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CONFIG_TEMPLATES_DIR = os.path.join(REPO_DIR, "config_templates")
+ASSETS_DIR = os.path.join(REPO_DIR, "assets")
 
 def clean_sm_ini():
     fpath = os.path.join(CONFIG_TEMPLATES_DIR, "S&M.template.ini")
@@ -59,25 +60,15 @@ def clean_recent_fx():
     for line in lines:
         if "=" in line:
             k, v = line.split("=", 1)
-            # Remove Windows file paths
-            if re.match(r'^[a-zA-Z]:\\', v.strip()):
-                continue
-        out_lines.append(line)
+            v_clean = v.replace("\\", "/").replace("ReArtist Analog FX", "ReaFull Analog FX").replace("ReArtist Digital FX", "ReaFull Digital FX")
+            out_lines.append(f"{k}={v_clean}")
+        else:
+            out_lines.append(line)
     with open(fpath, "w", encoding="utf-8") as f:
         f.writelines(out_lines)
     print("[+] reaper-recentfx.ini cleaned.")
-
-def remove_cache_files():
-    print("[*] Removing stale cache files from assets...")
-    for root, dirs, files in os.walk(ASSETS_DIR):
-        for f in files:
-            if "Cache" in f and f.endswith(".ini"):
-                cache_file = os.path.join(root, f)
-                print(f"  -> Removing {cache_file}")
-                os.remove(cache_file)
 
 if __name__ == "__main__":
     clean_sm_ini()
     clean_xenakios()
     clean_recent_fx()
-    remove_cache_files()

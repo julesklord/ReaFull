@@ -4,41 +4,36 @@
 #  Interactive & Modular Installer Wrapper
 # ==============================================================================
 
-set -e
+set -euo pipefail
 
-# Colors
 C_RESET='\033[0m'
 C_BOLD='\033[1m'
 C_RED='\033[91m'
 C_GREEN='\033[92m'
 C_YELLOW='\033[93m'
-C_BLUE='\033[94m'
 C_CYAN='\033[96m'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# 1. Dependency checks
-MISSING_DEPS=()
-
-if ! command -v python3 &>/dev/null; then
-    MISSING_DEPS+=("python3")
+# 1. Check Python3 (Mandatory)
+if ! command -v python3 >/dev/null 2>&1; then
+    echo -e "${C_RED}[ERROR] Python 3 no está instalado.${C_RESET}"
+    echo "Instala Python 3 mediante el gestor de paquetes de tu distribución Linux (ej: sudo apt install python3 / sudo pacman -S python)."
+    exit 1
 fi
 
-if ! command -v fc-cache &>/dev/null; then
-    MISSING_DEPS+=("fontconfig")
+# 2. Check Optional Tools
+RECOMMENDED_MISSING=()
+if ! command -v fc-cache >/dev/null 2>&1; then
+    RECOMMENDED_MISSING+=("fontconfig")
 fi
 
-if ! command -v curl &>/dev/null; then
-    MISSING_DEPS+=("curl")
+if [ ${#RECOMMENDED_MISSING[@]} -ne 0 ]; then
+    echo -e "${C_YELLOW}[!] Paquetes recomendados ausentes: ${RECOMMENDED_MISSING[*]}${C_RESET}"
+    echo -e "    (Recomendado para actualizar la caché de fuentes tipográficas automáticamente)\n"
 fi
 
-if [ ${#MISSING_DEPS[@]} -ne 0 ]; then
-    echo -e "${C_YELLOW}[!] Advertencia: Faltan dependencias recomendadas: ${MISSING_DEPS[*]}${C_RESET}"
-    echo -e "    Instálalas con tu gestor de paquetes (ej: sudo pacman -S ${MISSING_DEPS[*]} o apt install ${MISSING_DEPS[*]})."
-fi
+# 3. Permissions & Exec
+chmod +x "$SCRIPT_DIR/install.py" "$SCRIPT_DIR/uninstall.sh" "$SCRIPT_DIR/scripts/verify_installation.py" 2>/dev/null || true
 
-# Make scripts executable
-chmod +x "$SCRIPT_DIR/install.py" "$SCRIPT_DIR/uninstall.sh" 2>/dev/null || true
-
-# Run Python interactive/modular installer
 exec python3 "$SCRIPT_DIR/install.py" "$@"

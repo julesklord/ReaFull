@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""
+r"""
 ReaFull: Asset sanitizer and packager for Linux REAPER.
 Extracts, cleans, and sanitizes all ReArtist Pro 2025 resources:
 - Replaces Windows paths with dynamic Linux paths
