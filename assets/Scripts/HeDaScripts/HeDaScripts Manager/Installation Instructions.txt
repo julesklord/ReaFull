@@ -1,0 +1,72 @@
+--------------------------------------------------------------------------------------------
+  HeDaScripts Manager - INSTALLATION INSTRUCTIONS
+--------------------------------------------------------------------------------------------
+
+	* Extract the Scripts and Data folders inside this zip to your REAPER resources folder.
+	If you are not sure how to find the Resources folder, the best way is to run the command
+	from REAPER. It's in the Options menu "Show REAPER resource path in explorer/finder..."
+
+	It will be installed in the subdirectory
+	"*REAPER_resources_path*/Scripts/HeDaScripts/HeDaScripts Manager"
+	so the lua file path will be
+	"*REAPER_resources_path*/Scripts/HeDaScripts/HeDaScripts Manager/HeDaScripts Manager.lua"
+
+	there should be another directory which will be empty by default but it is needed as it saves
+	there some configuration files:
+	"*REAPER_resources_path*/Scripts/HeDaScripts/HeDaScripts Manager settings"
+
+	And the Data directory is just the toolbar icon.
+	*REAPER_resources_path*/Data/toolbar_icons/HeDa_HSM.png
+
+	
+
+Installation for MacOS:
+--------------------------------------------------------------------------------------------
+	
+	A window "7zz cannot be opened because the developer cannot be verified" This is nomal. Press cancel and then go to 
+	System Preferences / Security and Privacy and it says 7zz has been blocked. There, click the "Allow Anyway" button
+	Open HeDaScripts Manager again and it asks if you are sure to open 7zz. Yes. we need it to extract the scripts, 
+	so click "open" to continue.
+
+	7zz is the command line version of 7-zip for MacOS. Downloaded from https://7-zip.org/download.html
+	in case you want to download it yourself, you can copy the 7zz file into the settings folder inside a 7z folder.
+	like this: "REAPER_resources_folder/Scripts/HeDaScripts/HeDaScripts Manager settings/7z/7zz"
+
+	Alternatively you could use unar instead of 7-zip 
+	Download unar from https://theunarchiver.com/command-line
+	and copy unar to the script settings folder:
+	"REAPER_resources_folder/Scripts/HeDaScripts/HeDaScripts Manager settings/unar"
+
+
+Installation for Windows:	
+--------------------------------------------------------------------------------------------
+
+	You don't need to install anything else. curl and 7za libraries are included.
+
+
+Installation for Linux:
+--------------------------------------------------------------------------------------------
+	
+	Install the utilities used to download and install the packages:
+	For Manjaro they are already preinstalled, for other distributions they are also probably
+	installed
+  
+      sudo apt-get install p7zip-full
+  
+      sudo apt-get install curl
+  
+
+--------------------------------------------------------------------------------------------
+Run the script
+--------------------------------------------------------------------------------------------
+
+	* In REAPER, load the script:
+	Go to Actions, Show Actions list...  and click "Load" and 
+	select the file "HeDaScripts Manager.lua" 
+	Now you can run the action and the HeDaScripts Manager window appears and downloads 
+	the list of scripts available to install/upgrade. 
+	You can add it as a toolbar button using the included toolbar icon image that will be 
+	installed in Data folder, filter by "HeDa" when searching in the icons list.
+		
+	* All downloads are managed by curl, if you are using a firewall, make sure you 
+	allow connections for curl

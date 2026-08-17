@@ -1,0 +1,177 @@
+// to use by HeDa_Track Inspector
+// v1.41: 
+// fix Direction meter
+// v1.4: 
+// added Direction
+// added Correlation
+// optimizations
+
+desc:Track Inspector
+
+slider1:0<0,1,0.000001>Max Peak left
+slider2:0<0,1,0.000001>Max Peak right
+slider3:3<0,1000,0.1>Peak hold (s) (user input)
+slider4:0<0,1,0.000001>WFL
+slider5:0<0,1,0.000001>WFR
+slider6:0<-144,3,0.1>RMS L(dB)
+slider7:0<-144,3,0.1>RMS R(dB)
+slider8:300<5,5000,1.0>RMS Window (ms) (user input)
+slider9:0<0,1,0.000001>Amp Left
+slider10:0<0,1,0.000001>Amp Right
+slider11:0.0500<0,0.15,0.0001>Peaks (s) (user input)
+slider12:0.5<0,1,0.001> Direction
+slider13:20<1,40,0.1> Angle Speed (user input)
+slider14:0<0,180,1> Phase
+slider15:1<0,1,1> Use Correlation (user input)
+slider16:1<0,1,1> Use Direction (user input)
+slider17:1<0,1,1> Use WF (user input)
+slider18:1<0,1,1> Use Max Peaks (user input)
+slider19:1<0,1,1> Use Peaks (user input)
+slider20:1<0,1,1> Use RMS (user input)
+
+@init
+  // change these if you like 
+  RMS_MS = slider8;
+  decay = exp(-1.0/(RMS_MS*srate*0.001));
+  DB_LO = -144.0;
+  buf = 0;
+  buflen = (RMS_MS*srate*0.001)|0;
+  memset(p, 0, 2*buflen);
+  pos = 0;
+  
+  peak0 = peak1 = 0.0;
+  sumsq0 = sumsq1 = 0.0;
+  peakdb0 = peakdb1 = rmsdb0 = rmsdb1 = DB_LO;
+  
+  dyn = sumdyn = meandyn = 0.0;
+  ndyn = 0;
+  
+  //phase
+  off = 500000;
+  rot=-45*0.017453292;
+  DOTS = 0;
+  LINES = 1;
+  RAYS = 2;
+  MAXDRAWSPLS = 10000;
+  PHASEUPDATERATE = srate/8;
+  n = 0;
+  phC = 0;
+  ph = 0;
+  _rad2 = 0;
+
+@block
+  _max_L = 0;
+  _max_R = 0;
+  _maxMid =0;
+  _maxSideL =0;
+  _maxSideR =0;
+
+//RMS
+  slider20 == 1 ? (
+   rms0 == 0.0 ? rmsdb0 = DB_LO : rmsdb0 = 8.6562*log(rms0);
+   slider6 = rmsdb0;
+   rms1 == 0.0 ? rmsdb1 = DB_LO : rmsdb1 = 8.6562*log(rms1);
+   slider7 = rmsdb1;
+  );
+  
+//direction
+  slider16 == 1 ? slider12 = slider12 + (_rad2 - slider12 ) / slider13 : slider12=0;
+  
+//phase
+  slider15 == 1 ? slider14=ph*180 : slider14=0;
+
+@slider
+  win_len = slider8*srate*0.001;
+  b1 = exp(-1/win_len);
+  a0 = 1 - b1;
+
+@sample
+    ampL = abs(spl0);
+    ampR = abs(spl1);
+
+// max peaks
+    slider18 == 1 ? (
+      time_precise()-tlp > slider3 ? ( 
+          peakL = 0;
+          peakR = 0;
+          tlp=time_precise();
+      );
+      peakL = max(peakL, ampL);
+      peakR = max(peakR, ampR);
+      slider1 = peakL;
+      slider2 = peakR;
+    );
+    
+// Peaks:
+      slider19 == 1 ? (
+        time_precise()-tlw2 > slider11 ? ( 
+                  ampLpeak = 0;
+                  ampRpeak = 0;
+                  tlw2=time_precise();
+        );
+       ampLpeak = max(ampLpeak, ampL);
+       ampRpeak = max(ampRpeak, ampR);
+       slider9 = ampLpeak;
+       slider10 = ampRpeak;
+   
+    );            
+   
+    
+    // Waveform:
+    slider17 == 1 ? (
+       time_precise()-tlw > 0.02 ? ( 
+               SL = 0;
+               SR = 0;
+               tlw=time_precise();
+       );
+       SL = max(SL, ampL);
+       SR = max(SR, ampR);
+       
+      slider4 = SL;
+      slider5 = SR;
+    );
+
+//RMS    
+ slider20 == 1 ? (    
+   cur_spl0 = spl0;
+   fout0 = a0*(cur_spl0*cur_spl0) + b1*fout0;
+   rms0 = sqrt(fout0);
+   
+   cur_spl1 = spl1;
+   fout1 = a0*(cur_spl1*cur_spl1) + b1*fout1;
+   rms1 = sqrt(fout1);
+   
+  );
+  
+//direction
+  slider16 == 1 ? (
+	_max_L = min(max(abs(spl0),_max_L),10.0);
+	_max_R = min(max(abs(spl1),_max_R),10.0);
+	rad = atan2( _max_L,_max_R);
+	_rad2 = 1.0 - rad/($pi/2) ;
+  );
+
+//phase
+  slider15 == 1 ? (
+    s0 = sign(spl0);
+    s1 = sign(spl1);
+    angle = atan( spl0 / spl1 );
+    (s0 == 1 && s1 == -1) || (s0 == -1 && s1 == -1) ? angle += 3.141592654;
+    s0 == -1 && s1 == 1 ? angle += 6.283185307;
+    spl1 == 0 ? spl0 > 0 ? angle = 1.570796327 : angle = 4.71238898;
+    spl0 == 0 ? spl1 > 0 ? angle = 0 : angle = 3.141592654;
+    radius = sqrt( sqr(spl0)+sqr(spl1) ) ;
+    angle -= rot;
+    vert = 0[b] = cos(angle)*radius;
+    horiz = off[b] = sin(angle)*radius;
+    b<MAXDRAWSPLS ? b += 1;
+    
+    
+    s0 != s1 ? phC-=1:phC+=1;
+    (n+=1) > PHASEUPDATERATE ? (
+      ph = (1-(phC/n))/2;
+      phC = n = 0;
+    );
+  
+  );
+

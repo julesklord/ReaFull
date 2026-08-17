@@ -1,0 +1,1603 @@
+--[[
+		Settings for Lokasenna_Radial Menu.lua
+	
+		This file is written as a Lua table, and must use the appropriate 
+	syntax with regard to tables, indices, keys, strings, etc, etc. If
+	you run Radial Menu and get an error loading the menu, it either
+	couldn't find this file or you've got some incorrect Lua in it.
+
+	A few general notes:
+
+	- Due to quirks with the function that loads these settings into 
+	the script, all indices must include square brackets and/or quotation 
+	marks rather than being left bare, i.e. 
+
+					[3]				not		3
+					["col_main"]	not		col_main
+	
+	
+	- Colors can be specified per button, per menu, or globally (see
+	table index [-1]). Buttons with no colors specified will use their
+	menu's settings, menus will use the global settings.
+	
+	- When a button is assigned to an action that's toggled On, the button
+	  will light up; if the mouse is hovering or clicked on it, the toggle 
+	  color will be blended with the hover or background color, respectively.
+	
+	- Menus are numbered starting from 0, and menu numbers do NOT need to
+	  be contiguous - that is, 1 2 3 4 9 11 15 20 25 is fine, so feel free
+	  to organize your menus by number however you want.
+	
+	- Buttons are numbered starting from 0, and button numbers DO need to
+	  be contiguous.
+	  
+	- You can add a button in the center of the ring by giving it the
+	  number [-1]
+	  
+	
+	  
+
+
+	Menu #:
+	[0] = {	
+	
+		(There's no limit to the number of menus you can have)
+		
+		["alias"] = "blah",			A name to use for this menu so you don't have
+									to remember menu numbers. Displayed in the
+									menu list, and can be used in button actions
+									and context boxes. (See below)
+	
+		["col_main"] = {			Normal button color for buttons in this menu
+			[1] = 0.0,				R
+			[2] = 1.0,				G	(values are from 0-1)
+			[3] = 1.0,				B
+			
+		["col_tog"] = {				Toggled color, for use with
+			...						i.e. "Options: Toggle metronome"
+			
+		["col_hvr"] = {				Mouse-over color
+			...
+			
+		["col_bg"] = {				Background color
+			...
+		
+	
+	
+		Button #:
+		[0] = {
+		
+			(Maximum of 16 buttons per menu)
+		
+			Button settings:
+			
+			["lbl"] = "cool",			The button's label
+			
+										| or ; will wrap the text to a new line,
+										i.e. "Multi|line;text"
+			
+			["act"] = "menu 1",			Action to perform / menu to open. 
+			
+										Valid commands are...
+										
+										Action IDs:											
+										40364	
+											
+										Script/extension actions:
+										_SWS_AWMPLAYTOG
+										_RS2bf8e77e958d48b42c7d7b585790ee0427a96a7e
+										
+											Note: Because the MIDI Editor uses its own
+											action list, when running MIDI actions you
+											may need to enter them as 'midi 40364' to
+											keep Reaper from getting confused.
+										
+										Open a menu:
+										menu 20		(opens menu 20)
+										menu stuff	(opens the menu with alias 'stuff')
+										
+										back		Return to the previous menu
+										base		Return to the original menu
+													(either menu 0 or the specified menu
+													for a given Reaper context)
+													
+										quit		Close the script
+										
+										
+										Special commands:
+										
+										midi 12345	Send an action to the current MIDI
+													editor rather than the main window
+					
+										xN 12345	Perform the action N times each time
+													the button is clicked.
+										
+													e.g.	x3 40001
+													
+													will insert three new tracks each
+													time the button is clicked
+													
+													
+													
+										repeat N "12345"	Repeats the action every N
+												 '12345'	seconds while the mouse button
+															is held down.
+												 
+													e.g.	repeat 0.5 "40001"
+													
+													will insert a new track every 0.5 seconds
+													
+										The special commands can be combined, in (I think)
+										any order:
+										
+										midi x3 12345		Perform MIDI action 12345 three times
+										
+										repeat 0.5 "x3 12345"	Perform action 12345 three times,
+																every 0.5 seconds.
+																
+										
+										
+													
+													
+					
+					
+
+					
+										
+										
+	
+			["col_main"] = {			Normal button color
+				[1] = 0.0,				R
+				[2] = 1.0,				G	(values are from 0-1)
+				[3] = 1.0,				B
+				
+			["col_tog"] = {				Toggled color, for use with
+				...						i.e. "Options: Toggle metronome"
+				
+			["col_hvr"] = {				Mouse-over color
+				...
+				
+				
+				
+	Global settings are stored in index [-1]:
+	[-1] = {
+	
+		["close_time"] = 600,		How long to keep the window open (in ms) on 
+									startup	if no key is being held down. Going
+									lower than 600ms will probably cause the menu 
+									to keep opening and closing.
+	
+	
+									Global color settings:
+		["col_main"] = {			Normal button color for buttons in this menu
+			[1] = 0.0,				R
+			[2] = 1.0,				G	(values are from 0-1)
+			[3] = 1.0,				B
+			
+		["col_tog"] = {				Toggled color, for use with
+			...						i.e. "Options: Toggle metronome"
+			
+		["col_hvr"] = {				Mouse-over color
+			...
+			
+		["col_bg"] = {				Background color
+			...
+			
+		["contexts"] = {			What menu to open on startup for a given mouse
+			["mcp|empty"] = 10,		context. Contexts can be assigned with menu 
+									numbers or aliases, i.e.
+										20
+										stuff
+									
+									If a particular context isn't given a menu, 
+									it will	look up one 'level' at a time until
+									it finds a match.
+									
+									Example:									
+									The menu was opened with the mouse cursor over 
+									an empty area of a track in the Arrange view.
+									The script will look for:
+										["arrange|track|empty"]
+									then:
+										["arrange|track"]
+									then:
+										["arrange"]
+									
+									If there's still no match, it will open menu 0.				
+									(see the Setup script's Context tab for a list
+									of available contexts)
+									
+		["fonts"] = {				Font settings
+		
+			[1] = 	{				1 - Normal buttons
+									2 - Menus
+									3 - Preview text
+									
+				"Calibri", 			Font face. See the note below.
+				
+				16, 				Size
+				
+				"b"					Flags. Just a string listing:
+										b	bold
+										i	italics
+										u	underline
+										
+									The order doesn't matter, i.e. this would be
+									perfectly fine: "iub"
+									
+										
+									Important: Font names are really picky, and will
+									default back to Arial if you get them wrong. The
+									Setup script provides a green/red light for each
+									font to let you know if it's correct or not.
+									
+									Unfortunately, the names are often not what you
+									see when using them in Office, etc...
+									
+									To get a font's name in Windows:
+									1. Find the .ttf file in your Windows\Fonts folder
+									2. Right-click it, select Properties
+									3. Select the Details tab
+									4. The first field, "Name", is what you want to
+									   be using here.
+									   
+									Mac users - I have no idea. 
+									   
+									   
+									I know, it's stupid.
+				
+			
+		
+		["hvr_click"] = false,		Boolean - hover over a button to 'click' it
+		["hvr_time"] = 200,			Hover time for ^^^ (in ms)
+		
+		
+		["key_binds"] = {			Key bind settings
+		
+			["enabled"] = true,		Boolean - enables the assigned key binds
+		
+			["hints"] =	true,		Boolean - display key binds outside the menu ring
+			
+			["last_num"] = 1,		Last menu size selected in the setup script (1-13)
+		
+			[4] =	{				Menu size for each set of bindings. (4-16)
+			
+				[1] = "r",			Key bind for the given button number.
+				
+										-1	=	Center button
+										1	=	Always the button facing right
+		
+		
+		["key_mode"] = 1,			What to do when the shortcut key is released
+									(1-3, see the options in the Setup script)
+									
+		["last_tab"] = 1,			The last tab that was active in the Setup script
+									
+		["mouse_mode"] = 1,			What to do when the mouse is clicked
+									(1-3, see the options in the Setup script)
+									
+									
+		["num_btns"] = 8,			Number of buttons for new menus to start with
+		
+		["preview"] = true,			Whether or not to preview a menu's buttons when
+									hovering the mouse over it.
+									
+		
+									Button radiuses/target areas:
+		["ra"] = 48,				Center button
+		["rb"] = 60,				Currently unused
+		["rc"] = 116,				Inside of the button ring
+		["rd"] = 192,				Outside of the button ring
+		["re"] = 192,				Threshold for tracking Swipes
+		
+									Note that the preview labels when hovering over
+									a menu are drawn with a radius of (rc - ra), so
+									adjusting these will affect the labels as well.
+		
+		["swipe"] = {				Parameters for the Swiping feature:
+		
+			["accel"] = 65,			Start sensitivity
+			["actions"]	= true,		Whether Swipes can trigger actions, or just menus
+			["decel"] = 10,			Stop sensitivity
+			["enabled"] = true,		Whether Swiping mode is active or not
+			["menu"] = 0,			What menu to use for Swipe actions...
+			["mode"] = 1,		...if this is set to 2. Setting it to 1 will always
+									use the current menu
+			["stop"] = 20,			Stop time for Swipes, in milliseconds
+			
+		
+]]--
+
+
+return {
+	[-1] = {
+		["close_time"] = 600,
+		["col_bg"] = {
+			[1] = 0.2,
+			[2] = 0.2,
+			[3] = 0.2,
+		},
+		["col_hvr"] = {
+			[1] = 0.878,
+			[2] = 0.878,
+			[3] = 0.878,
+		},
+		["col_main"] = {
+			[1] = 0.753,
+			[2] = 0.753,
+			[3] = 0.753,
+		},
+		["col_tog"] = {
+			[1] = 0,
+			[2] = 0.753,
+			[3] = 0,
+		},
+		["contexts"] = {
+			["mcp"] = "",
+		},
+		["fonts"] = {
+			[1] = {
+				[1] = "Roboto",
+				[2] = 16,
+				[3] = "b",
+			},
+			[2] = {
+				[1] = "Roboto",
+				[2] = 16,
+				[3] = "b",
+			},
+			[3] = {
+				[1] = "Roboto",
+				[2] = 12,
+				[3] = "",
+			},
+		},
+		["hvr_click"] = false,
+		["hvr_time"] = 200,
+		["key_binds"] = {
+			[4] = {
+				[-1] = "",
+				[1] = "",
+				[2] = "",
+				[3] = "",
+				[4] = "",
+			},
+			[5] = {
+				[-1] = "",
+				[1] = "",
+				[2] = "",
+				[3] = "",
+				[4] = "",
+				[5] = "",
+			},
+			[6] = {
+				[-1] = "",
+				[1] = "",
+				[2] = "",
+				[3] = "",
+				[4] = "",
+				[5] = "",
+				[6] = "",
+			},
+			[7] = {
+				[-1] = "",
+				[1] = "",
+				[2] = "",
+				[3] = "",
+				[4] = "",
+				[5] = "",
+				[6] = "",
+				[7] = "",
+			},
+			[8] = {
+			},
+			[9] = {
+				[-1] = "",
+				[1] = "",
+				[2] = "",
+				[3] = "",
+				[4] = "",
+				[5] = "",
+				[6] = "",
+				[7] = "",
+				[8] = "",
+				[9] = "",
+			},
+			[10] = {
+				[-1] = "",
+				[1] = "",
+				[2] = "",
+				[3] = "",
+				[4] = "",
+				[5] = "",
+				[6] = "",
+				[7] = "",
+				[8] = "",
+				[9] = "",
+				[10] = "",
+			},
+			[11] = {
+				[-1] = "",
+				[1] = "",
+				[2] = "",
+				[3] = "",
+				[4] = "",
+				[5] = "",
+				[6] = "",
+				[7] = "",
+				[8] = "",
+				[9] = "",
+				[10] = "",
+				[11] = "",
+			},
+			[12] = {
+				[-1] = "",
+				[1] = "",
+				[2] = "",
+				[3] = "",
+				[4] = "",
+				[5] = "",
+				[6] = "",
+				[7] = "",
+				[8] = "",
+				[9] = "",
+				[10] = "",
+				[11] = "",
+				[12] = "",
+			},
+			[13] = {
+				[-1] = "",
+				[1] = "",
+				[2] = "",
+				[3] = "",
+				[4] = "",
+				[5] = "",
+				[6] = "",
+				[7] = "",
+				[8] = "",
+				[9] = "",
+				[10] = "",
+				[11] = "",
+				[12] = "",
+				[13] = "",
+			},
+			[14] = {
+				[-1] = "",
+				[1] = "",
+				[2] = "",
+				[3] = "",
+				[4] = "",
+				[5] = "",
+				[6] = "",
+				[7] = "",
+				[8] = "",
+				[9] = "",
+				[10] = "",
+				[11] = "",
+				[12] = "",
+				[13] = "",
+				[14] = "",
+			},
+			[15] = {
+				[-1] = "",
+				[1] = "",
+				[2] = "",
+				[3] = "",
+				[4] = "",
+				[5] = "",
+				[6] = "",
+				[7] = "",
+				[8] = "",
+				[9] = "",
+				[10] = "",
+				[11] = "",
+				[12] = "",
+				[13] = "",
+				[14] = "",
+				[15] = "",
+			},
+			[16] = {
+				[-1] = "",
+				[1] = "",
+				[2] = "",
+				[3] = "",
+				[4] = "",
+				[5] = "",
+				[6] = "",
+				[7] = "",
+				[8] = "",
+				[9] = "",
+				[10] = "",
+				[11] = "",
+				[12] = "",
+				[13] = "",
+				[14] = "",
+				[15] = "",
+				[16] = "",
+			},
+			["enabled"] = false,
+			["hints"] = false,
+			["last_num"] = 5.0,
+		},
+		["key_mode"] = 3,
+		["last_pos"] = {
+			[1] = 1245.0,
+			[2] = 353.0,
+		},
+		["last_tab"] = 5,
+		["mnu_0_on_act"] = false,
+		["mouse_mode"] = 1,
+		["num_btns"] = 8,
+		["preview"] = true,
+		["ra"] = 48,
+		["rb"] = 84,
+		["rc"] = 116,
+		["rd"] = 192,
+		["re"] = 192,
+		["swipe"] = {
+			["accel"] = 65,
+			["actions"] = false,
+			["decel"] = 10,
+			["enabled"] = false,
+			["menu"] = 0,
+			["menu_mode"] = 1,
+			["stop"] = 20,
+		},
+		["win_pos"] = 2,
+	},
+	[0] = {
+		[-1] = {
+			["act"] = "",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.07843137254902,
+				[2] = 0.07843137254902,
+				[3] = 0.07843137254902,
+			},
+			["lbl"] = "HOME",
+			["r_act"] = "_b5b3123a20646244b0f2ac2293dd7ed1",
+		},
+		[0] = {
+			["act"] = "menu 4",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.50196078431373,
+				[2] = 0.25098039215686,
+				[3] = 0.25098039215686,
+			},
+			["lbl"] = "ANALOG|SIMS",
+		},
+		[1] = {
+			["act"] = "menu 5",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.57647058823529,
+				[2] = 0.0,
+				[3] = 0.57647058823529,
+			},
+			["lbl"] = "REVERB",
+		},
+		[2] = {
+			["act"] = "menu 6",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.65882352941176,
+				[2] = 0.32941176470588,
+				[3] = 0.0,
+			},
+			["lbl"] = "DELAY",
+		},
+		[3] = {
+			["act"] = "menu 7",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.50196078431373,
+				[2] = 0.0,
+				[3] = 1.0,
+			},
+			["lbl"] = "MODULATE",
+		},
+		[4] = {
+			["act"] = "menu 9",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.87843137254902,
+				[2] = 0.12156862745098,
+				[3] = 0.19607843137255,
+			},
+			["lbl"] = "GUITAR|&|BASS",
+		},
+		[5] = {
+			["act"] = "menu 11",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.44313725490196,
+				[3] = 0.11372549019608,
+			},
+			["lbl"] = "METERING",
+		},
+		[6] = {
+			["act"] = "menu 12",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.007843137254902,
+				[2] = 0.49411764705882,
+				[3] = 0.68235294117647,
+			},
+			["lbl"] = "TOOLS",
+		},
+		[7] = {
+			["act"] = "menu 1",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.44313725490196,
+				[3] = 0.44313725490196,
+			},
+			["lbl"] = "EQ",
+		},
+		[8] = {
+			["act"] = "menu 2",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.28235294117647,
+				[2] = 0.28235294117647,
+				[3] = 1.0,
+			},
+			["lbl"] = "COMP",
+		},
+		[9] = {
+			["act"] = "menu 3",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.50196078431373,
+				[3] = 0.75294117647059,
+			},
+			["lbl"] = "DYNAMICS",
+		},
+	},
+	[1] = {
+		[-1] = {
+			["act"] = "back",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.07843137254902,
+				[2] = 0.07843137254902,
+				[3] = 0.07843137254902,
+			},
+			["lbl"] = "HOME",
+		},
+		[0] = {
+			["act"] = "_FXedbbf299d4b37d6fd6cfab1ca3250209584a8dc6",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.50196078431373,
+				[3] = 0.50196078431373,
+			},
+			["lbl"] = "D-EQ",
+		},
+		[1] = {
+			["act"] = "_FXe59bc3b0b0abbfa59c73ad3b65e49b22d91c5603",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.50196078431373,
+				[2] = 0.0,
+				[3] = 1.0,
+			},
+			["lbl"] = "D-DynEQ",
+		},
+		[2] = {
+			["act"] = "_FX327865547f0524027a899f5590855c5709da0a0d",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.17647058823529,
+				[2] = 0.17647058823529,
+				[3] = 1.0,
+			},
+			["lbl"] = "Pulse EQ",
+		},
+		[3] = {
+			["act"] = "_FX309613f1f0d81aec7417e4a541546e441c85e633",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.5843137254902,
+				[2] = 0.0,
+				[3] = 0.5843137254902,
+			},
+			["lbl"] = "ReaEQ",
+		},
+		[4] = {
+			["act"] = "_FXdb684529584c5d5855367dee70422661cff05775",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.25098039215686,
+				[2] = 0.25098039215686,
+				[3] = 1.0,
+			},
+			["lbl"] = "D-ReEQ",
+		},
+	},
+	[2] = {
+		[-1] = {
+			["act"] = "back",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.07843137254902,
+				[2] = 0.07843137254902,
+				[3] = 0.07843137254902,
+			},
+			["lbl"] = "HOME",
+		},
+		[0] = {
+			["act"] = "_FXdac1ef8aa933fc14ec149391e54ccb5969d98653",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.25490196078431,
+				[2] = 0.27843137254902,
+				[3] = 0.31372549019608,
+			},
+			["lbl"] = "OPTO-2A",
+		},
+		[1] = {
+			["act"] = "_FX5ad02605ae1b9cd9ae5a03c423b23f01f51a8203",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.16078431372549,
+				[2] = 0.16078431372549,
+				[3] = 0.16078431372549,
+			},
+			["lbl"] = "FET-76",
+		},
+		[2] = {
+			["act"] = "_FXc0317031898111ce6e6e2880a03bd4dac735c805",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.36862745098039,
+				[3] = 0.36862745098039,
+			},
+			["lbl"] = "VCA-160",
+		},
+		[3] = {
+			["act"] = "_FX1ae914b234ca4f1c3c1e987d7438729ce1257067",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.56862745098039,
+				[2] = 0.28235294117647,
+				[3] = 0.0,
+			},
+			["lbl"] = "VARI-MU",
+		},
+		[4] = {
+			["act"] = "_FX15c1538bd27d08262488f3c9b91fcc038d0dcbc7",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.20392156862745,
+				[2] = 0.20392156862745,
+				[3] = 0.33725490196078,
+			},
+			["lbl"] = "SOLID|BUS",
+		},
+		[5] = {
+			["act"] = "_FXb817bb83f2c70155f891f845fc9d1d785fa2ce88",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.10980392156863,
+				[2] = 0.1921568627451,
+				[3] = 0.51764705882353,
+			},
+			["lbl"] = "DISTRESS",
+		},
+		[6] = {
+			["act"] = "_FX790766bbbafbd64a76d87af745dfa497f533dec4",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.50196078431373,
+				[3] = 0.25098039215686,
+			},
+			["lbl"] = "ReaComp",
+		},
+		[7] = {
+			["act"] = "_FXcf2c8a165bc4b6ec191479be98c03f73487f0257",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.3843137254902,
+				[3] = 0.76862745098039,
+			},
+			["lbl"] = "D-Comp",
+		},
+		[8] = {
+			["act"] = "_FXc93c36ccab3e526df921ad72928785e62219f768",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.50196078431373,
+				[2] = 0.0,
+				[3] = 1.0,
+			},
+			["lbl"] = "D-Mid Side|Comp",
+		},
+	},
+	[3] = {
+		[-1] = {
+			["act"] = "back",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.07843137254902,
+				[2] = 0.07843137254902,
+				[3] = 0.07843137254902,
+			},
+			["lbl"] = "HOME",
+		},
+		[0] = {
+			["act"] = "_FX535f245d487c03f59cc14268c5dbc99e94d99c58",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.023529411764706,
+				[2] = 0.35686274509804,
+				[3] = 0.51764705882353,
+			},
+			["lbl"] = "D-GATE",
+		},
+		[1] = {
+			["act"] = "_FX1ef325183fd85dab27bf3fcd9211a7338190cd50",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.50196078431373,
+				[3] = 0.25098039215686,
+			},
+			["lbl"] = "ReaGate",
+		},
+		[2] = {
+			["act"] = "_FXf6c051d6437d7a195595e22a4cbb4592b3becb9b",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.42352941176471,
+				[3] = 0.0,
+			},
+			["lbl"] = "D-SHAPER",
+		},
+		[3] = {
+			["act"] = "_FXaf6d1ea13b6afc044c3f9e9400adc36c6cc7c4c5",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.25098039215686,
+				[3] = 0.50196078431373,
+			},
+			["lbl"] = "D-LIMITER",
+		},
+		[4] = {
+			["act"] = "_FX25eeb57aff7f0c8d48e12c3e8f1d6381456dbbf7",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.25098039215686,
+				[2] = 0.0,
+				[3] = 0.50196078431373,
+			},
+			["lbl"] = "ReaLimit",
+		},
+		[5] = {
+			["act"] = "_FXeae5fb8adbb10a8d30f6e456e69ec5c55cce9a7b",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.50196078431373,
+				[2] = 0.0,
+				[3] = 1.0,
+			},
+			["lbl"] = "ReaX-Comp",
+		},
+		[6] = {
+			["act"] = "_FX63ce48a701258a3c640cc385e5e973a01cf1a775",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.53333333333333,
+				[2] = 0.0,
+				[3] = 0.53333333333333,
+			},
+			["lbl"] = "D-MULTI|BAND",
+		},
+		[7] = {
+			["act"] = "_FXc477947f68ea73d7e20a3df7ea15be86c68405f9",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.50196078431373,
+				[3] = 0.75294117647059,
+			},
+			["lbl"] = "D-ESSER",
+		},
+	},
+	[4] = {
+		[-1] = {
+			["act"] = "back",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.07843137254902,
+				[2] = 0.07843137254902,
+				[3] = 0.07843137254902,
+			},
+			["lbl"] = "HOME",
+		},
+		[0] = {
+			["act"] = "_FXf9825ee9aa3df2419cf378f12eb3d0ec260420d4",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.25098039215686,
+				[3] = 0.50196078431373,
+			},
+			["lbl"] = "MIX|CHANNEL|STRIP",
+		},
+		[1] = {
+			["act"] = "_FXc1e683b9b0f3c5be2036fabaababf4a9b701c4b3",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.50196078431373,
+				[3] = 0.75294117647059,
+			},
+			["lbl"] = "FAT-TAPE",
+		},
+		[2] = {
+			["act"] = "_FX01eef95a950167dffd44bd09141212a392d98e45",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.50196078431373,
+				[2] = 0.0,
+				[3] = 1.0,
+			},
+			["lbl"] = "TUBE PREAMP",
+		},
+		[3] = {
+			["act"] = "_FX178d5248bb8330c5d2a4f73271893e104cb666d2",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.50196078431373,
+				[2] = 0.25098039215686,
+				[3] = 0.0,
+			},
+			["lbl"] = "SUM-STRIP",
+		},
+		[4] = {
+			["act"] = "_FX55f1040f87abcd22dbb5896390dc860deedb1b50",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.50196078431373,
+				[3] = 0.0,
+			},
+			["lbl"] = "SUM-MIX",
+		},
+		[5] = {
+			["act"] = "_FX086a800f5e222a73a2f05b727a8415cf6871dade",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.25098039215686,
+				[3] = 0.50196078431373,
+			},
+			["lbl"] = "SUM-DESK",
+		},
+		[6] = {
+			["act"] = "_FXb2e1020bbf0a6bd1d09cb82b5d3eee116da91c02",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.20392156862745,
+				[2] = 0.20392156862745,
+				[3] = 0.31372549019608,
+			},
+			["lbl"] = "MIX-BUS",
+		},
+	},
+	[5] = {
+		[-1] = {
+			["act"] = "back",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.07843137254902,
+				[2] = 0.07843137254902,
+				[3] = 0.07843137254902,
+			},
+			["lbl"] = "HOME",
+		},
+		[0] = {
+			["act"] = "_FX3056885fef39c0b3dde034c7e7dc713df8341f56",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.2,
+				[2] = 0.2,
+				[3] = 1.0,
+			},
+			["lbl"] = "REFLEX-2",
+		},
+		[1] = {
+			["act"] = "_FXfb966a0fbfc5cf38feef81feacb1ec730fd26c2e",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.34901960784314,
+				[3] = 0.34901960784314,
+			},
+			["lbl"] = "REFLEX-3",
+		},
+		[2] = {
+			["act"] = "_FXa00985866ae3153218baca5865d69035d5624958",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.31764705882353,
+				[2] = 0.0,
+				[3] = 0.90196078431373,
+			},
+			["lbl"] = "REFLEX-1",
+		},
+	},
+	[6] = {
+		[-1] = {
+			["act"] = "back",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.07843137254902,
+				[2] = 0.07843137254902,
+				[3] = 0.07843137254902,
+			},
+			["lbl"] = "HOME",
+		},
+		[0] = {
+			["act"] = "_FXb90debf5a667aa669fd29c56e93165f20b6b9fbb",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.25098039215686,
+				[3] = 0.50196078431373,
+			},
+			["lbl"] = "TAPE|DELAY",
+		},
+		[1] = {
+			["act"] = "_FX63468d2a9367d5d5d07dffbcc5cf82ca95e53dbb",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.50196078431373,
+				[3] = 0.50196078431373,
+			},
+			["lbl"] = "ReaDelay",
+		},
+		[2] = {
+			["act"] = "_FX756cf739e7208c45a13e85a94adbd38da805b1ff",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.50196078431373,
+				[2] = 0.0,
+				[3] = 0.50196078431373,
+			},
+			["lbl"] = "D-DELAY",
+		},
+	},
+	[7] = {
+		[-1] = {
+			["act"] = "back",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.07843137254902,
+				[2] = 0.07843137254902,
+				[3] = 0.07843137254902,
+			},
+			["lbl"] = "HOME",
+		},
+		[0] = {
+			["act"] = "_FX202aa9b05c98d8521e3554ec534ce0e069dd2517",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.50196078431373,
+				[3] = 0.25098039215686,
+			},
+			["lbl"] = "MODULATE|B",
+		},
+		[1] = {
+			["act"] = "_FX46bd823fdcee672092e1ea209a93fcbddf52c5b9",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.50196078431373,
+				[3] = 0.50196078431373,
+			},
+			["lbl"] = "MODULATE|A",
+		},
+	},
+	[9] = {
+		[-1] = {
+			["act"] = "back",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.07843137254902,
+				[2] = 0.07843137254902,
+				[3] = 0.07843137254902,
+			},
+			["lbl"] = "HOME",
+		},
+		[0] = {
+			["act"] = "_FXf9883d84b49f6bf96d526982f8facf7c02984fca",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.50196078431373,
+				[2] = 0.0,
+				[3] = 0.25098039215686,
+			},
+			["lbl"] = "GUITAR|STATION",
+		},
+		[1] = {
+			["act"] = "_FX1a8a9f95be5858b327f03a8fa7e07238e58db59f",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.50196078431373,
+				[3] = 0.75294117647059,
+			},
+			["lbl"] = "BASS|STATION",
+		},
+		[2] = {
+			["act"] = "_FX30357bda2454a16678870e6ffb31f7fb3f925caf",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.32941176470588,
+				[3] = 0.65882352941176,
+			},
+			["lbl"] = "ReaTune",
+		},
+	},
+	[10] = {
+		[-1] = {
+			["act"] = "back",
+			["lbl"] = "Back",
+		},
+		[0] = {
+			["act"] = "",
+			["lbl"] = "menu 10 0",
+		},
+		[1] = {
+			["act"] = "",
+			["lbl"] = "menu 10 1",
+		},
+		[2] = {
+			["act"] = "",
+			["lbl"] = "menu 10 2",
+		},
+		[3] = {
+			["act"] = "",
+			["lbl"] = "menu 10 3",
+		},
+		[4] = {
+			["act"] = "",
+			["lbl"] = "menu 10 4",
+		},
+		[5] = {
+			["act"] = "",
+			["lbl"] = "menu 10 5",
+		},
+		[6] = {
+			["act"] = "",
+			["lbl"] = "menu 10 6",
+		},
+		[7] = {
+			["act"] = "",
+			["lbl"] = "menu 10 7",
+		},
+	},
+	[11] = {
+		[-1] = {
+			["act"] = "back",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.07843137254902,
+				[2] = 0.07843137254902,
+				[3] = 0.07843137254902,
+			},
+			["lbl"] = "HOME",
+		},
+		[0] = {
+			["act"] = "_FXd999cccd54202b90c2c76e7ea5791ddb169bc2ee",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.25098039215686,
+				[3] = 0.50196078431373,
+			},
+			["lbl"] = "Z-VU|METER",
+		},
+		[1] = {
+			["act"] = "_FXa5471a503cd43471f8918755792e7155c3d1f4cb",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.50196078431373,
+				[2] = 0.0,
+				[3] = 1.0,
+			},
+			["lbl"] = "MULTI LEVEL|METER",
+		},
+		[2] = {
+			["act"] = "_FXa3e12381e71d2b74ccf2c3ded747435066dc43ab",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.50196078431373,
+				[3] = 0.75294117647059,
+			},
+			["lbl"] = "VU|METER",
+		},
+		[3] = {
+			["act"] = "_FX9e081e5f56fbb318b57ea048ad86821340497a26",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.50196078431373,
+				[3] = 0.25098039215686,
+			},
+			["lbl"] = "PEAK|METER",
+		},
+	},
+	[12] = {
+		[-1] = {
+			["act"] = "back",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.07843137254902,
+				[2] = 0.07843137254902,
+				[3] = 0.07843137254902,
+			},
+			["lbl"] = "HOME",
+		},
+		[0] = {
+			["act"] = "_FX168caeacb96982ed281919c473817db03d6531da",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.25098039215686,
+				[3] = 0.50196078431373,
+			},
+			["lbl"] = "TONE|GENERATOR",
+		},
+		[1] = {
+			["act"] = "_FXd165677ccaead1e21ba2fbbf5bae68549e2ae31c",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.15686274509804,
+				[2] = 0.15686274509804,
+				[3] = 0.31372549019608,
+			},
+			["lbl"] = "PINK|NOISE",
+		},
+		[2] = {
+			["act"] = "_FX59e6fdedc476a063b8069e81f4a3bbee00a5de68",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.10196078431373,
+				[2] = 0.14117647058824,
+				[3] = 0.63529411764706,
+			},
+			["lbl"] = "T-CHANNEL|TOOL",
+		},
+		[3] = {
+			["act"] = "_FX30357bda2454a16678870e6ffb31f7fb3f925caf",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.34117647058824,
+				[3] = 0.50980392156863,
+			},
+			["lbl"] = "ReaTune",
+		},
+		[4] = {
+			["act"] = "_FXd32943d322bbad5d7ddd001add9439de10346e16",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.0,
+				[2] = 0.50196078431373,
+				[3] = 0.75294117647059,
+			},
+			["lbl"] = "D-NOISER",
+		},
+		[5] = {
+			["act"] = "_FX2f6b894dc2aad149f3ea3a76aacdc2c6ec882a4c",
+			["col_hvr"] = {
+				[1] = 0.21960784313725,
+				[2] = 0.81960784313725,
+				[3] = 0.46666666666667,
+			},
+			["col_main"] = {
+				[1] = 0.10196078431373,
+				[2] = 0.10196078431373,
+				[3] = 1.0,
+			},
+			["lbl"] = "T-FFT|SPECTRUM",
+		},
+	},
+}

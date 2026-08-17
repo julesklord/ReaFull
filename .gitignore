@@ -1,0 +1,25 @@
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+
+# REAPER user runtime caches & temporary files
+*Cache*.ini
+*.bak
+*.bak-*
+*.tmp
+reaper-install-rev.txt
+reaper-license.rk
+reaper-reginfo2.ini
+reaper-midihw-*.ini
+
+# Test folders
+temp/
+wine_test/
+reartist_out/

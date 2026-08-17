@@ -1,0 +1,301 @@
+/* 
+   * ReaScript Name:True Stereo Takes Test
+   * EEL script for Cockos REAPER
+   * Author: EUGEN27771
+   * Author URI: http://forum.cockos.com/member.php?u=50462
+   * Licence: GPL v3
+   * Version: 1.05
+*/
+
+
+
+
+/*----------------------------------------------------------
+=== Get mouse functions ====================================
+----------------------------------------------------------*/
+function pointIN(p_x, p_y)
+  instance(x,y,w,h)
+(
+  p_x >= x && p_x <= x+w && p_y >= y && p_y <= y+h;
+);
+//------------------
+function mouseIN()
+(
+  this.pointIN(mouse_x, mouse_y);
+);
+//------------------
+function mouseDown()
+(
+  mouse_down && this.mouseIN();
+);
+//------------------
+function mouseUp()
+(
+  mouse_up && this.mouseIN();
+);
+//------------------
+function mouseClick()
+( 
+  this.mouseUp() && this.pointIN(mouse_down_x, mouse_down_y);
+);
+
+/*----------------------------------------------------------
+=== BUTTON =================================================
+----------------------------------------------------------*/
+//-- New button --------------
+function button_New(x,y,w,h, r,g,b,a, lbl)
+(
+  this.x = x; this.y = y; this.w = w; this.h = h; // coord
+  this.r = r; this.g = g; this.b = b; this.a = a; // color
+  this.lbl = lbl;
+);
+//-- Draw button -------------
+function button_draw()
+  instance(x,y,w,h, r,g,b,a, lbl, val)
+  local(aa)
+( 
+  aa = a;
+  this.mouseIN() ? aa = a + 0.1;
+  this.mouseDown() ? aa = a + 0.2; 
+  this.mouseClick() ? this.click=1 : this.click=0;
+  
+  //-- draw body, frame ---
+  gfx_set(r,g,b,aa);
+  gfx_rect(x,y,w-1,h-1, 1);
+  gfx_rect(x,y,w,h, 0);      // frame1
+  //-- draw label ---------
+  gfx_set(0.9,0.8,0.5,0.9);  // font col
+  gfx_x = x; gfx_y = y;
+  gfx_drawstr(lbl, 5, x+w, y+h);
+
+);
+
+
+/*----------------------------------------------------------
+=== SLIDER =================================================
+----------------------------------------------------------*/
+//-- New slider --------------
+function slider_New(x,y,w,h, r,g,b,a, lbl, val,min_val,max_val,val_unit)
+(
+  this.x = x; this.y = y; this.w = w; this.h = h; // coord
+  this.r = r; this.g = g; this.b = b; this.a = a; // color
+  this.lbl = lbl;
+  this.min_val = min_val; 
+  this.max_val = max_val;
+  this.val = val;
+  this.val_unit = val_unit;
+  this.norm_val = (val - min_val)/(max_val - min_val);; // norm value
+);
+
+//-- set val on drag  --------
+function slider_set_value()
+  instance(x,y,w,h, norm_val, val, min_val, max_val)
+  local(K)
+(
+  K = 20; // K = coeff(when Ctrl pressed)
+  Ctrl ? (
+    norm_val = norm_val + (mouse_x-mouse_last_x)/(w*K);
+  ) : (
+    norm_val = (mouse_x-x)/w;
+  );
+   
+  norm_val = min( max(norm_val,0), 1 ); // verify and set value
+  val = min_val + (max_val - min_val) * norm_val;
+  val = floor(val); // floor for this script only
+); 
+
+//-- Draw slider -------------
+function slider_draw()
+  instance(x,y,w,h, r,g,b,a, lbl, norm_val, val, val_unit)
+  local(aa, str)
+( 
+  aa = a;
+  mouse_up ? this.isCaptured = 0;
+  this.mouseIN() ? aa = a + 0.1;
+  this.mouseDown() ? this.isCaptured = 1;
+  this.isCaptured ? (
+    aa = a + 0.2; 
+    this.slider_set_value();
+  );
+  
+  //-- draw body, frame ---
+  gfx_set(r, g, b, aa);
+  gfx_rect(x, y, w, h, 0);
+  gfx_rect(x, y, w*norm_val, h, 1);
+  //-- draw label ---------
+  gfx_set(0.9,0.8,0.5,0.9); // font col
+  gfx_x = x + 5; gfx_y = y;
+  gfx_drawstr(lbl, 4, x+w, y+h);
+  //-- draw value ---------
+  str = sprintf(#, "%d %s", val, val_unit); // "%d" for this script only
+  gfx_x = x + 5; gfx_y = y;
+  gfx_drawstr(str, 6, x+w-5, y+h); // draw Slider Value
+
+);
+
+
+/*----------------------------------------------------------------------------------------
+=== Create controls ======================================================================
+----------------------------------------------------------------------------------------*/
+
+//-- Create Sliders --------------------
+//-- args = (x,y,w,h, r,g,b,a, lbl, val,min_val,max_val,val_unit)
+Diff_sldr.slider_New(10,10,240,18,   0.4,0.4,0.4,0.2, "Difference threshold ",   -80, -150,  -60, " dB" );
+
+//-- Create Buttons --------------------
+//-- args = (x,y,w,h, r,g,b,a, lbl)
+Start_btn.button_New(10,45,240,25,   0.5,0.5,0.5,0.2, "Set false-stereo to mono");
+
+//======================================================================================//
+
+
+//----------------------------------------------------------
+function Stereo_Test(item, take, srate, minDiff ) 
+  local(Stereo, item_len,len_smpls, 
+        block_size, n_blocks, last_block_size, AA, 
+        starttime_sec, smplbuf, cur_block, smpl)
+( 
+    item_len  = GetMediaItemInfo_Value(item, "D_LENGTH"); // item length
+    //------------------------------------------------------
+    len_smpls = floor(item_len*srate);                    // length to samples 
+    block_size = 32768;                                   // full block size(samples)
+    n_blocks = floor(len_smpls/block_size);               // number of full blocks
+    last_block_size = len_smpls - block_size*n_blocks;    // rest(incomplete last block)
+    // -----------------------------------------------------
+    AA = CreateTakeAudioAccessor(take);
+    starttime_sec = 0; // first block start 
+    smplbuf = 0;       // smplbuf
+    cur_block = 0;     // cur block
+    Stereo = 0;        // init state
+
+    // -- Test ---------------------------------------------
+    while(!Stereo && cur_block <= n_blocks+1) (
+        memset(smplbuf, 0, block_size*2); // clear sample buffer
+        cur_block == n_blocks ? block_size = last_block_size; // last block = rested samples  
+        
+        // -- for each L-R sample in block -------
+        GetAudioAccessorSamples(AA, srate, 2, starttime_sec, block_size, smplbuf);
+        smpl=0;
+        loop(block_size,
+          abs(smplbuf[smpl] - smplbuf[smpl+1]) > minDiff ? Stereo = 1;
+          smpl+=2;   
+        );
+            
+        starttime_sec+=block_size/srate; // next block starttime
+        cur_block+=1; // block counter
+
+    );
+    
+    DestroyAudioAccessor(AA);
+  
+  Stereo; // return
+);
+
+// ---------------------------------------------------------
+function RunTest()
+  local(minDiff, item_cnt, i, item, take, PCM_source, srate, n_chans,chan_mode, mute_state, fake_stereo)  
+(
+  minDiff = 10^(Diff_sldr.val/20); // dB to norm value
+  item_cnt = CountSelectedMediaItems(0);
+  fake_stereo = 0;
+  Undo_BeginBlock();
+  i = 0;
+  loop(item_cnt, 
+    //-- item, take data -----
+    item = GetSelectedMediaItem(0, i);            // get sel item
+    take = GetActiveTake(item);                   // active take
+    PCM_source = GetMediaItemTake_Source(take);   // source
+    srate = GetMediaSourceSampleRate(PCM_source); // source srate(MIDI ret zero)
+      
+      //----------------------
+      srate ? (
+        n_chans = GetMediaSourceNumChannels(PCM_source);            // source num channels
+        chan_mode = GetMediaItemTakeInfo_Value(take, "I_CHANMODE"); // current chan mode
+        //--------------------
+        n_chans == 2 && chan_mode == 0 ? (
+          mute_state = GetMediaItemInfo_Value(item, "B_MUTE");    // item mute_state
+          mute_state ? SetMediaItemInfo_Value(item, "B_MUTE", 0); // unmute for test if muted
+          !Stereo_Test(item, take, srate, minDiff) ? (
+            fake_stereo += 1;
+            SetMediaItemTakeInfo_Value(take, "I_CHANMODE", 3);    // set to "mono (left)"
+            UpdateItemInProject(item);
+          ); 
+          mute_state ? SetMediaItemInfo_Value(item, "B_MUTE", 1); // restore orig mute_state
+        );
+      
+      );
+      //----------------------
+    
+    i+=1;
+  );
+  Undo_EndBlock("True Stereo Takes Test", -1);
+  
+  fake_stereo; // ret
+);
+
+//---------------------------------------------------------
+function Info(msg, upd_gfx)
+(
+  gfx_x = 15; gfx_y = 85;
+  gfx_drawstr(msg);
+  upd_gfx ? gfx_update();
+);
+
+//----------------------------
+function Draw_Controls()
+  local(fake_stereo)
+(
+  //-- sliders ---------------
+  Diff_sldr.slider_draw(); 
+  //-- buttons ---------------
+  Start_btn.button_draw();
+  Start_btn.click ? (
+    info_msg = "Test running, expect...";
+    Info(info_msg, 1);
+    fake_stereo = RunTest();
+    info_msg = sprintf(#,"%s %d %s", "Test finished,", fake_stereo, "takes fixed!");
+  );
+  Info(info_msg, 0)
+);
+
+//-- mainloop ----------------
+function mainloop()
+(
+  //-- get mouse  -------
+  mouse_down = (mouse_cap&1)  && !(mouse_last_cap&1);  // L mouse
+  mouse_up = (mouse_last_cap&1)  && !(mouse_cap&1);    // L mouse
+  mouse_down ? (mouse_down_x = mouse_x; mouse_down_y = mouse_y;);
+  Ctrl = mouse_cap&4;
+  
+  //---------------------
+  Draw_Controls();
+  
+  //-- upd last mouse ---
+  mouse_last_cap = mouse_cap; // upd last_cap
+  mouse_last_x = mouse_x;     // upd last_x
+  mouse_last_y = mouse_y;     // upd last_y
+  
+  //---------------------
+  char = gfx_getchar();
+  char ==26 ? Main_OnCommandEx(40029, 0, 0); //-- undo
+  char == 32 ? Main_OnCommandEx(40044, 0, 0); //-- play
+  char >= 0 ? defer("mainloop();");  //-- defer
+  gfx_update();
+);
+
+//-- init --------------------
+function Init()
+  local(width, height, dockstate, xpos, ypos)
+( //-- window -----------
+  width = 260; height = 120; dockstate = 0; xpos = 650; ypos = 350;
+  gfx_init("True Stereo Takes Test",width,height,dockstate,xpos,ypos);
+  gfx_clear = 20 + 20*256 + 20*65536; // bg
+  gfx_setfont(1, "Tahoma", 14);
+  info_msg = "Press button for run test!";
+);
+
+/*---------------------------------------
+--- Start Script ------------------------
+---------------------------------------*/
+Init();
+mainloop();

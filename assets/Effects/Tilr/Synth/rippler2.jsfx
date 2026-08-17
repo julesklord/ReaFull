@@ -1,0 +1,830 @@
+desc:Rippler2
+author: tilr
+version: 2.0.3
+changelog:
+  Remove high frequencies push
+provides:
+  rippler2.jsfx.RPL
+  rippler2/logo.png
+  rippler2/on.png
+  rippler2/off.png
+  rippler2/rippler2.array.jsfx-inc
+  rippler2/rippler2.envlib.jsfx-inc
+  rippler2/rippler2.gfxlib.jsfx-inc
+  rippler2/rippler2.modal.jsfx-inc
+  rippler2/rippler2.rbj_filter.jsfx-inc
+screenshot: https://raw.githubusercontent.com/tiagolr/tilr_jsfx/master/doc/rippler2.png
+about:
+  # Rippler 2
+
+  A physical modeled synth
+
+  **Features:**
+  * Dual resonator with parallel and serial coupling.
+  * 9 Models of acoustic resonators: String, Beam, Squared, Membrane, Drumhead, Plate, Marimba, Closed and Open Tube.
+  * Inharmocity, Tone, Ratio and Material sliders to shape the timbre.
+  * Mallet impulse generator based on stiffness.
+  * Noise generator with filter and ADSR.
+  * Up to 64 partials (configurable).
+  * Up to 16 polyphony (configurable).
+tags: synth, instrument
+
+<? npartials < 1 ? npartials = 32 ?>
+<? npolyphony < 1 ? npolyphony = 8 ?>
+config: npartials "Partials" 32 4 16 32 64
+config: npolyphony "Polyphony" 8 4 8 12 16
+
+options:gfx_hz=60
+
+import rippler2.array.jsfx-inc
+import rippler2.modal.jsfx-inc
+import rippler2.rbj_filter.jsfx-inc
+import rippler2.envlib.jsfx-inc
+import rippler2.gfxlib.jsfx-inc
+
+filename:0,rippler2/logo.png
+filename:1,rippler2/on.png
+filename:2,rippler2/off.png
+
+slider2:click_mix=0<0,1,.0001>-Mallet Mix
+slider3:click_res=.8<0,1,.0001>-Mallet Resonance
+slider4:click_freq=1500<40,5000,1:log>-Mallet Stiffness
+
+slider9:a_on=1<0,1,1{False,True}>-A ON
+slider10:model=0<0,6,1{String,Beam,Squared,Membrane,Plate,Drumhead,Marimba}>-A Model
+slider11:decay=1<0.01,100,.01:log>-A Decay
+slider12:freq_damp=0<-1,1,.001>-A Material
+slider13:tone=0<-1,1,0.1>-A Tone
+slider14:hit_position=26<2,50,0.1>-A Hit Position
+slider15:release=1<0,1,.001>-A Release
+slider16:inharmonic=0.0001<0.0001,1,.001:log>-A Inharmonic
+slider17:ratio=1<0.1,10,0.01:log>-A Ratio
+slider18:lowcut=20<20,20000,1:log>-A Low Cut
+
+slider20:noise_mix=0<0,1,.0001>-Noise Mix
+slider21:noise_res=0<0,1,.0001>-Noise Res
+slider22:noise_filter_mode=2<0,2,1{LP,BP,HP}>-Noise Filter Mode
+slider23:noise_filter_freq=20<20,20000,1:log>-Noise Filter Freq
+slider24:noise_filter_q=.707<0.707,4,.01:log>-Noise Filter Q
+slider25:noise_att=1<1, 5000, 1:log>-Noise Attack
+slider26:noise_dec=500<1, 5000, 1:log>-Noise Decay
+slider27:noise_sus=0<0, 100, 0.1>-Noise Sustain
+slider28:noise_rel=500<1, 5000, 1:log>-Noise Release
+slider29:_tube_radius=50<0,100,0.01>-Tube radius
+
+slider39:vel_click_freq=0<0,1,0.01>-Vel Mallet Stiffness
+slider40:vel_click_mix=0<0,1,0.01>-Vel Mallet Mix
+slider41:vel_click_res=0<0,1,0.01>-Vel Mallet Res
+slider43:vel_noise_mix=0<0,1,0.01>-Vel Noise Mix
+slider44:vel_noise_res=0<0,1,0.01>-Vel Noise Res
+slider46:vel_res_decay=0<0,1,0.01>-Vel A Decay
+slider47:vel_res_hit=0<0,1,0.01>-Vel A Hit
+slider48:vel_res_inharm=0<0,1,0.01>-Vel A Inharm
+slider49:b_vel_res_decay=0<0,1,0.01>-Vel B Decay
+slider50:b_vel_res_hit=0<0,1,0.01>-Vel B Hit
+slider51:b_vel_bres_inharm=0<0,1,0.01>-Vel B Inharm
+
+slider60:b_on=0<0,1,1{False,True}>-B ON
+slider61:b_model=0<0,6,1{String,Beam,Squared,Membrane,Plate,Drumhead,Marimba}>-B Model
+slider62:b_decay=1<0.01,100,.01:log>-B Decay
+slider63:b_freq_damp=0<-1,1,.001>-B Material
+slider64:b_tone=0<-1,1,0.1>-B Tone
+slider65:b_hit_position=26<2,50,0.1>-B Hit Position
+slider66:b_release=1<0,1,.001>-B Release
+slider67:b_inharmonic=0.0001<0.0001,1,.001:log>-B Inharmonic
+slider68:b_ratio=1<0.1,10,0.01:log>-B Ratio
+slider69:b_lowcut=20<20,20000,1:log>-B Low Cut
+slider70:_b_tube_radius=50<0,100,0.01>-B Tube radius
+
+slider80:couple=1<0,1,1{Parallel,Serial}>-Coupling
+slider81:ab_mix=0.5<0,1,0.01>-AB Mix
+slider82:freq_split=1<1,100,0.01:log>-Freq Split
+slider83:_res_gain=0<-24,24,0.01>-Res Gain
+
+@init
+ext_noinit = 1;
+<? printf("npartials = %d;\n", npartials); ?>
+<? printf("npolyphony = %d;\n", npolyphony); ?>
+lmodel = model;
+nstring = 0;
+vel_mapping = 0;
+click_env = exp(-100/srate);
+
+// limiter
+log2db = 8.6858896380650365530225783783321; // 20 / ln(10)
+db2log = 0.11512925464970228420089957273422; // ln(10) / 20
+attime=0.0002; //200us
+reltime=0.300; //300ms
+rmstime=0.000050; //50us
+maxover=0;
+limratio=0;
+cratio=0;
+rundb=0;
+overdb=0;
+maxover=0;
+atcoef=exp(-1/(attime * srate));
+relcoef=exp(-1/(reltime * srate));
+rmscoef=exp(-1/(rmstime * srate));
+leftright = 0;
+latvert = 1;
+
+freemem = 100000;
+freemem = init_models(freemem);
+
+models = freemem; freemem += 9;
+models[0] = string;
+models[1] = beam;
+models[2] = metal;
+models[3] = membrane;
+models[4] = plate;
+models[5] = drumhead;
+models[6] = marimba;
+models[7] = open_tube; // open tube uses no modals, models used for frequency shifts
+models[8] = closed_tube; // closed tube uses no modals, models used for frequency shifts
+
+b_models = freemem; freemem += 9;
+b_models[0] = b_string;
+b_models[1] = b_beam;
+b_models[2] = b_metal;
+b_models[3] = b_membrane;
+b_models[4] = b_plate;
+b_models[5] = b_drumhead;
+b_models[6] = b_marimba;
+b_models[7] = b_open_tube; // open tube uses no modals
+b_models[8] = b_closed_tube; // closed tube uses no modals
+
+freemem = poly.array_init(freemem, 128, 7); // [note, velocity, freq, impulse, elapsed, nstring, release]
+freemem = midi.array_init(freemem, 256, 4); // [offset, status, note, vel]
+combbuf = freemem; // comb used for stereo effect
+combpos = 0;
+combsize = (20 * srate / 1000)|0;
+freemem += combsize;
+tube_buf = freemem;
+tube_len = 20000; // buffer size, 20000 allows for 10Hz at 200k srate (max_size = srate / freq_min)
+freemem += tube_len * npolyphony; // allocate npolyphony buffers for tube waveguides
+b_tube_buf = freemem;
+b_tube_len = 20000;
+freemem += b_tube_len * npolyphony;
+f_shifts = freemem; freemem += 64; // frequency shifts buffer used for serial coupling freq split calculations
+
+function db2gain (db) local (val) (
+  val = 10^(db / 20);
+  val <= 0.001 ? 0 : val;
+);
+
+function normalize_vol_slider(val) ( val * 60 / 100 - 60 );
+function note2freq(n) ( 440 * pow(2, (n - 69) / 12); );
+
+function on_slider()
+(
+  lmodel != model ? (
+    ratio = model == 1 ? 2 : 0.78;
+    <?
+      loop(i=1;npolyphony,
+        printf("s%02d.string_clear(%d);\n", i, i); // clear resonator A
+        printf("b_s%02d.string_clear(%d);\n", i, i); // clear resonator B
+        printf("noise_env%02d.env_reset();\n", i);
+        i+=1;
+      );
+    ?>
+  );
+  b_lmodel != b_model ? (
+    b_ratio = b_model == 1 ? 2 : 0.78;
+    <?
+      loop(i=1;npolyphony,
+        printf("s%02d.string_clear(%d);\n", i, i); // clear resonator A
+        printf("b_s%02d.string_clear(%d);\n", i, i); // clear resonator B
+        printf("noise_env%02d.env_reset();\n", i);
+        i+=1;
+      );
+    ?>
+  );
+  lmodel = model;
+  b_lmodel = b_model;
+  model == 1 ? recalc_beam(beam, ratio);
+  model == 3 ? recalc_membrane(membrane, ratio);
+  model == 4 ? recalc_plate(plate, ratio);
+
+  b_model == 1 ? recalc_beam(b_beam, b_ratio);
+  b_model == 3 ? recalc_membrane(b_membrane, b_ratio);
+  b_model == 4 ? recalc_plate(b_plate, b_ratio);
+
+  res_gain = 10^(_res_gain / 20);
+  tube_radius = 0.01 + _tube_radius * 0.89 / 100; // map tube radius [0,100] to [0.01, 0.9]
+  b_tube_radius = 0.01 + _b_tube_radius * 0.89 / 100; // map tube radius [0,100] to [0.01, 0.9]
+  playback_speed = 2^((click_pitch / 12) | 0);
+  lowcut_filter.rbj_hp(lowcut, 0.707);
+  b_lowcut_filter.rbj_hp(b_lowcut, 0.707);
+  combsize = (20 * srate / 1000)|0;
+
+  // limiter
+  thresh = 0;
+  threshv = exp(thresh * db2log);
+  limratio = 20;
+  bias = 80 * 70 / 100;
+  cthresh = thresh - bias;
+  cthreshv = exp(cthresh * db2log);
+  makeup = 0;
+  makeupv = exp(makeup * db2log);
+  agc = 0;
+  capsc = log2db;
+  attime = 0.0002;
+  reltime = 0.300;
+  atcoef = exp(-1 / (attime * srate));
+  relcoef = exp(-1 / (reltime * srate));
+  rmstime = 100 / 1000000;
+  rmscoef=exp(-1/(rmstime * srate));
+
+  noise_filter_mode == 0 ? (
+    <?
+      loop(i=1;npolyphony,
+        printf("noise_gen%02d.rbj_lp(noise_filter_freq, noise_filter_q);\n",i);
+        i+=1;
+      );
+    ?>
+  );
+  noise_filter_mode == 1 ? (
+    <?
+      loop(i=1;npolyphony,
+        printf("noise_gen%02d.rbj_bp(noise_filter_freq, noise_filter_q);\n",i);
+        i+=1;
+      );
+    ?>
+  );
+  noise_filter_mode == 2 ? (
+    <?
+      loop(i=1;npolyphony,
+        printf("noise_gen%02d.rbj_hp(noise_filter_freq, noise_filter_q);\n",i);
+        i+=1;
+      );
+    ?>
+  );
+  <?
+    loop(i=1;npolyphony,
+      printf("noise_env%02d.env_adsr(noise_att, noise_dec, normalize_vol_slider(noise_sus), noise_rel, 0.4, 0.4, 0.4);\n",i);
+      i += 1;
+    );
+  ?>
+  a_on ? (
+    <?
+      loop(i=1;npolyphony,
+        printf("s%02d.string_init(s%02d.f0, s%02d.rel, 1);\n", i, i, i);
+        i += 1;
+      );
+    ?>
+  );
+  b_on ? (
+    <?
+      loop(i=1;npolyphony,
+        printf("b_s%02d.string_init(b_s%02d.f0, b_s%02d.rel, 0);\n", i, i, i);
+        i += 1;
+      );
+    ?>
+  );
+);
+
+function process_noise()
+local (noise)
+(
+  noise = rand(2) - 1;
+  noise_filter_mode == 1 ||
+  (noise_filter_mode == 0 && noise_filter_freq < 20000) ||
+  (noise_filter_mode == 2 && noise_filter_freq > 20) ?
+  (
+    noise = this.rbj_df1(noise);
+  );
+  noise
+);
+
+@slider
+
+on_slider();
+
+@block
+
+// remove queued midi messages that have been processed
+ptr = midi.array_first();
+while (ptr >= 0) (
+  ptr[0] < 0 ? (
+    midi.array_remove(ptr);
+    ptr = midi.array_first();
+  ) : (
+    ptr = midi.array_next(ptr);
+  );
+);
+
+while (midirecv(offset, msg1, note, vel)) (
+  event = msg1 & 0xF0;
+  channel = msg1 & 0x0F;
+
+  // note on/off
+  event == 0x90 || event == 0x80 ? (
+    // prevent midi buffer overflow
+    midi.size == 256 ? (
+      midi.array_remove(midi.array_first());
+    );
+    ptr = midi.array_add();
+    ptr[0] = offset;
+    ptr[1] = msg1;
+    ptr[2] = note;
+    ptr[3] = vel;
+  );
+
+  // All notes off
+  event == 0xB0 && note == 123 ? (
+    poly.array_clear();
+  );
+
+  midisend(offset, msg1, note, vel);
+);
+
+@sample
+function on_note(p)
+local (ptr, note_repeat, note, vel, env, freq, click_f)
+(
+  note = p[2];
+  vel = p[3];
+
+  // remove note if it is already playing
+  ptr = poly.array_find(note);
+  ptr >= 0 ? poly.array_remove(ptr);
+
+  freq = note2freq(note);
+  ptr = poly.array_add();
+  ptr[0] = note;
+  ptr[1] = vel / 127;
+  ptr[2] = freq / srate;
+  ptr[3] = 1; // impulse
+  ptr[4] = (srate/10)|0; // elapsed (countdown 100ms)
+  ptr[5] = nstring;
+  ptr[6] = 0; // note release
+
+  // normalize velocity contribution on a logarithmic scale
+  click_f = min(5000, exp(log(click_freq) + vel / 127 * vel_click_freq * (log(5000) - log(40))));
+
+  <?
+    loop(i=1;npolyphony,
+      printf("nstring == %d ? (\n", i-1);
+      printf("  s%02d.vel = ptr[1];\n", i);
+      printf("  s%02d.string_init(freq, 0, 1);\n", i);
+      printf("  s%02d.active = 1; s%02d.silence = 0;\n", i, i);
+      printf("  click_filter%02d.rbj_bp(click_f, 0.707);\n",i);
+      printf("  b_s%02d.string_init(freq, 0, 0);\n", i);
+      printf("  b_s%02d.active = 1; b_s%02d.silence = 0;\n", i, i);
+      printf("  noise_env%02d.env_a(1);\n", i);
+      printf("  noise_env%02d.vel = ptr[1];\n", i);
+      printf(");\n");
+      i += 1;
+    );
+  ?>
+
+  nstring = (nstring + 1) % npolyphony;
+);
+
+function off_note(p)
+local(ptr, note, pp, freq)
+(
+  note = p[2];
+  ptr = poly.array_find(note);
+  ptr >= 0 ? (
+    <?
+      loop(i=1;npolyphony,
+        printf("ptr[5] == %d ? s%02d.string_init(s%02d.f0, 1, 1); b_s%02d.string_init(b_s%02d.f0, 1, 0);\n", i-1, i, i, i, i);
+        printf("ptr[5] == %d ? noise_env%02d.env_r();\n", i-1, i);
+        i += 1;
+      );
+    ?>
+    ptr[6] = 1;
+  );
+);
+
+function handle_midi(p)
+local(msg1, vel, event)
+(
+  msg1 = p[1];
+  vel = p[3];
+  event = msg1 & 0xF0;
+  event == 0x90 && vel ? on_note(p); // Note on
+  event == 0x80 || (event == 0x90 && !vel) ? off_note(p); // Note off
+);
+
+// process queued midi
+ptr = midi.array_first();
+while(ptr >= 0) (
+  ptr[0] == 0 ? ( // offset has reached zero
+    handle_midi(ptr);
+  );
+  ptr[0] -= 1;
+  ptr = midi.array_next(ptr);
+);
+
+// process notes being played
+ptr = poly.array_first();
+<?
+  loop(i=1;npolyphony,
+    printf("outm_%02d = 0;\n",i); // out mallet into resonance
+    printf("outa_%02d = 0;\n",i); // out resonator A into B (coupled mode)
+    i+=1;
+  );
+?>
+mallet = 0; // total mallet output
+while(ptr >= 0) ( // for each note/voice
+  ptr[4] ? ( // if note is playing sample
+    ptr[4] -= 1;
+    out = 0;
+    <?
+      loop(i=1;npolyphony,
+        printf("ptr[5] == %d ? out = click_filter%02d.rbj_df2(ptr[3]) * 2;\n", i - 1, i);
+        i+=1;
+      );
+    ?>
+
+    mallet += out * min(1, click_mix + vel_click_mix * ptr[1]);
+    ptr[3] *= click_env;
+    <?
+      loop(i=1;npolyphony,
+        printf("ptr[5] == %d ? outm_%02d = out * min(1, click_res + vel_click_res * ptr[1] );\n",i-1, i);
+        i+=1;
+      );
+    ?>
+  );
+  ptr = poly.array_next(ptr);
+);
+
+out_res = 0; // out resonance A
+b_out_res = 0; // out resonance B
+out_noise = 0;
+splmono = (spl1 + spl2) / 2;
+<?
+  loop(i=1;npolyphony,
+    // process noise
+    printf("noise_env%02d.state > 0 ? (\n", i);
+    printf("  noise_env%02d.env_process();\n", i);
+    printf("  n = noise_gen%02d.process_noise();\n", i);
+    printf("  n *= noise_env%02d.env;\n", i);
+    printf("  out_noise += n * min(1, noise_mix + vel_noise_mix * noise_env%02d.vel);\n", i);
+    printf("  outm_%02d += n * min(1, noise_res + vel_noise_res * noise_env%02d.vel);\n", i, i);
+    printf(");\n");
+    i += 1;
+  );
+?>
+
+a_on ? (
+  <?
+    loop(i=1;npolyphony,
+      // process resonance
+      printf("resa = s%02d.string_process(splmono + outm_%02d, %d, 1);\n", i, i, i);
+      printf("out_res += resa;\n");
+      printf("outa_%02d = resa;\n", i); // output into resonator B coupled serial mode
+      i +=1;
+    );
+  ?>
+);
+
+b_on ? (
+  a_on && couple ? (
+    <?
+      loop(i=1;npolyphony,
+        // process resonance B serial coupling
+        printf("b_out_res += b_s%02d.string_process(outa_%02d, %d, 0);\n", i, i, i);
+        i +=1;
+      );
+    ?>
+  ) : (
+    <?
+      loop(i=1;npolyphony,
+        // process resonance B uncoupled
+        printf("b_out_res += b_s%02d.string_process(splmono + outm_%02d, %d, 0);\n", i, i, i);
+        i +=1;
+      );
+    ?>
+  );
+);
+
+a_on && b_on ? (
+  couple ? (
+    // serial mode, discard A output
+    out_res = 0;
+  ) : (
+    // parallel mode
+    out_res *= (1-ab_mix);
+    b_out_res *= ab_mix;
+  );
+);
+
+lowcut > 20 ? out_res = lowcut_filter.rbj_df1(out_res);
+b_lowcut > 20 ? b_out_res = b_lowcut_filter.rbj_df1(b_out_res);
+
+output = mallet + (out_res + b_out_res) * res_gain + out_noise;
+combbuf[combpos] = output; // comb stereo FX similar to Haas
+combpos = (combpos + 1) % combsize;
+spl0 = output + combbuf[combpos] * 0.33;
+spl1 = output - combbuf[combpos] * 0.33;
+
+// Limiter
+aspl0 = abs(spl0+spl1)/2;
+aspl1 = abs(spl0-spl1)/2;
+maxspl = sqr(max(aspl0, aspl1));
+runave = maxspl + rmscoef * (runave - maxspl);
+det = sqrt(max(0,runave));
+overdb = capsc * log(det/threshv);
+overdb = max(0,overdb);
+overdb > rundb ? (
+  rundb = overdb + atcoef * (rundb - overdb);
+) : (
+  rundb = overdb + relcoef * (rundb - overdb);
+);
+overdb = max(rundb,0);
+bias == 0 ? (
+  cratio = limratio;
+) : (
+  cratio = 1 + (limratio-1) * sqrt((overdb + dcoffset) / (bias + dcoffset));
+);
+gr = -overdb * (cratio-1)/cratio;
+grv = exp(gr * db2log);
+sav0 = (spl0 + spl1) * grv;
+sav1 = (spl0 - spl1) * grv;
+spl0 = makeupv * (sav0 + sav1) * 0.5;
+spl1 = makeupv * (sav0 - sav1) * 0.5;
+
+// remove notes that finish playing and are no longer pressed
+ptr = poly.array_first();
+while (ptr >= 0) (
+  !ptr[4] && ptr[6] ? (
+    poly.array_remove(ptr);
+    ptr = poly.array_first();
+  ) : (
+    ptr = poly.array_next(ptr);
+  );
+);
+
+@gfx 890 250
+gfx_clear = COLOR_BG;
+mouse.update_mouse_state();
+
+gfx_a = 0.9;
+gfx_x = 250; gfx_y = 130;
+gfx_blit(0,1,0); // draw logo
+gfx_a = 1;
+show_help && mouse.left_click
+  ? show_help = 0
+  : mouse.left_click && mouse_in_rect(250,130,100,60) ?
+(
+  show_help = 1;
+);
+
+set_color(0x666666);
+gfx_x = 20; gfx_y = 20;
+gfx_drawstr("NOISE");
+
+filter_name = noise_filter_mode == 0 ? "LP" : noise_filter_mode == 1 ? "BP" : "HP";
+draw_button(140,20,40,filter_name, 0);
+mouse.left_click && mouse_in_rect(140, 20 - 2, 40, 10 + 2) ? (
+  gfx_x = 140; gfx_y = 30;
+  choice = gfx_showmenu("LP|BP|HP");
+  choice > 0 ? slider(22) = choice - 1;
+  on_slider();
+);
+
+draw_knob(20, 40, 20, "Mix", 0, 0, 1, 0, 0, sprintf(#, "%i%%", slider(20) * 100), 43);
+draw_knob(80, 40, 21, "Res", 0, 0, 1, 0, 0, sprintf(#, "%i%%", slider(21) * 100), 44);
+draw_knob(140, 40, 23, "Filter", 20, 20, 20000, 1, 0, sprintf(#, "%i Hz", slider(23)), 0);
+
+draw_knob(20, 110, 25, "A", 1, 1, 5000, 1, 0, sprintf(#, "%i ms", slider(25)), 0);
+draw_knob(80, 110, 26, "D", 500, 1, 5000, 1, 0, sprintf(#, "%i ms", slider(26)), 0);
+draw_knob(140, 110, 24, "Q", .707,.707,4, 0,0, sprintf(#, "%.1f", slider(24)), 0);
+
+draw_knob(20, 180, 27, "S", 0, 0, 100, 0, 0, sprintf(#, "%i%%", slider(27)), 0);
+draw_knob(80, 180, 28, "R", 500, 1, 5000, 1, 0, sprintf(#, "%i ms", slider(28)), 0);
+
+set_color(0x666666);
+gfx_line(200, 20, 200, 230);
+gfx_x = 220; gfx_y = 20;
+gfx_drawstr("MALLET");
+
+draw_button_vel(270,220,60,"VelMap", vel_mapping);
+mouse.left_click && mouse_in_rect(270,220-2, 60, 10+2) ? (
+  vel_mapping = !vel_mapping;
+);
+
+draw_knob(220, 40, 2, "Mix", 0, 0, 1, 0, 0, sprintf(#, "%i%%", slider(2) * 100), 40);
+draw_knob(280, 40, 3, "Res", .8, 0, 1, 0, 0, sprintf(#, "%i%%", slider(3) * 100), 41);
+draw_knob(340, 40, 4, "Stiff", 1500, 40, 5000, 1, 0, sprintf(#, "%i Hz", slider(4)), 39);
+
+// RESONATOR A
+
+set_color(0x666666);
+gfx_line(400, 20, 400, 230);
+gfx_x = 420; gfx_y = 20;
+gfx_drawstr("RES A");
+gfx_x = 468; gfx_y = 17;
+gfx_blit(a_on ? 1 : 2,1,0); // draw on/off
+
+mouse.left_click && mouse_in_rect(420, 20-2, 60, 10+2) ? (
+  a_on = !a_on;
+  on_slider();
+);
+
+model_name = model == 0 ? "String"
+  : model == 1 ? "Beam"
+  : model == 2 ? "Squared"
+  : model == 3 ? "Membrane"
+  : model == 4 ? "Plate"
+  : model == 5 ? "Drumhead"
+  : model == 6 ? "Marimba"
+  : model == 7 ? "Open Tube"
+  : "Closed Tube";
+
+gfx_a = a_on ? 1 : 0.5;
+draw_button(490,20,90,model_name,1);
+mouse.left_click && mouse_in_rect(490, 20 - 2, 90, 10 + 2) ? (
+  gfx_x = 500; gfx_y = 30;
+  choice = gfx_showmenu("String|Beam|Squared|Membrane|Plate|Drumhead|Marimba|Open Tube|Closed Tube");
+  choice > 0 ? slider(10) = choice - 1;
+  on_slider();
+);
+
+draw_knob(420, 40, 11, "Decay", 1, 0.01, 100, 1, 0, sprintf(#, "%.2f s", slider(11)), 46);
+draw_knob(540, 40, 15, "Relse", 1, 0, 1, 0, 0, sprintf(#, "%i%%", slider(15) * 100), 0);
+
+model >= 7 ? (
+  draw_knob(480, 40, 29, "Radius", 50, 0, 100, 0, 0, sprintf(#, "%i%%", slider(29)), 0);
+);
+
+model < 7 ? (
+  draw_knob(480, 40, 12, "Matrl", 0, -1, 1, 0, 1, sprintf(#, "%i%%", slider(12) * 100), 0);
+  draw_knob(420, 110, 13, "Tone", 0, -1, 1, 0, 1, sprintf(#, "%i%%", slider(13) * 100), 0);
+  draw_knob(480, 110, 14, "Hit", 26, 2, 50, 0, 0, sprintf(#, "%i%%", slider(14)), 47);
+  draw_knob(540, 110, 16, "Inharm", 0.0001, 0.0001, 1, 1,0, sprintf(#, "%.2f", slider(16) * 100), 48);
+  model == 1 || model == 3 || model == 4 ? (
+    draw_knob(420, 180, 17, "Ratio", 1, 0.1, 10, 1, 0, sprintf(#, "%.1f", slider(17)), 0);
+  );
+);
+
+draw_knob(540, 180, 18, "LowCut", 20, 20, 20000, 1, 0, sprintf(#, "%i Hz", slider(18)), 0);
+gfx_a = 1;
+
+// RESONATOR B
+
+set_color(0x666666);
+gfx_line(400+200, 20, 400+200, 230);
+gfx_x = 420+200; gfx_y = 20;
+gfx_drawstr("RES B");
+gfx_x = 468+200; gfx_y = 17;
+gfx_blit(b_on ? 1 : 2,1,0); // draw on/off
+
+mouse.left_click && mouse_in_rect(420+200, 20-2, 60, 10+2) ? (
+  b_on = !b_on;
+  on_slider();
+);
+
+model_name = b_model == 0 ? "String"
+  : b_model == 1 ? "Beam"
+  : b_model == 2 ? "Squared"
+  : b_model == 3 ? "Membrane"
+  : b_model == 4 ? "Plate"
+  : b_model == 5 ? "Drumhead"
+  : b_model == 6 ? "Marimba"
+  : b_model == 7 ? "Open Tube"
+  : "Closed Tube";
+
+gfx_a = b_on ? 1 : 0.5;
+draw_button(490+200,20,90,model_name,1);
+mouse.left_click && mouse_in_rect(490+200, 20 - 2, 90, 10 + 2) ? (
+  gfx_x = 500+200; gfx_y = 30;
+  choice = gfx_showmenu("String|Beam|Squared|Membrane|Plate|Drumhead|Marimba|Open Tube|Closed Tube");
+  choice > 0 ? slider(61) = choice - 1;
+  on_slider();
+);
+
+draw_knob(420+200, 40, 62, "Decay", 1, 0.01, 100, 1, 0, sprintf(#, "%.2f s", slider(62)), 49);
+draw_knob(540+200, 40, 66, "Relse", 1, 0, 1, 0, 0, sprintf(#, "%i%%", slider(66) * 100), 0);
+
+b_model >= 7 ? (
+  draw_knob(480+200, 40, 70, "Radius", 50, 0, 100, 0, 0, sprintf(#, "%i%%", slider(70)), 0);
+);
+
+b_model < 7 ? (
+  draw_knob(480+200, 40, 63, "Matrl", 0, -1, 1, 0, 1, sprintf(#, "%i%%", slider(64) * 100), 0);
+  draw_knob(420+200, 110, 64, "Tone", 0, -1, 1, 0, 1, sprintf(#, "%i%%", slider(64) * 100), 0);
+  draw_knob(480+200, 110, 65, "Hit", 26, 2, 50, 0, 0, sprintf(#, "%i%%", slider(65)), 50);
+  draw_knob(540+200, 110, 67, "Inharm", 0.0001, 0.0001, 1, 1,0, sprintf(#, "%.2f", slider(67) * 100), 51);
+  b_model == 1 || b_model == 3 || b_model == 4 ? (
+    draw_knob(420+200, 180, 68, "Ratio", 1, 0.1, 10, 1, 0, sprintf(#, "%.1f", slider(68)), 0);
+  );
+);
+
+draw_knob(540+200, 180, 69, "LowCut", 20, 20, 20000, 1, 0, sprintf(#, "%i Hz", slider(69)), 0);
+gfx_a = 1;
+
+// COUPLING
+
+set_color(0x666666);
+gfx_line(800, 20, 800, 230);
+gfx_a = a_on && b_on ? 1 : 0.5;
+draw_button(820, 20, 50, couple ? "A > B" : "A + B", 1);
+mouse.left_click && mouse_in_rect(820, 20-2, 50, 10+2) ? (
+  gfx_x = 820; gfx_y = 30;
+  choice = gfx_showmenu("#Coupling||A + B Parallel|A > B Serial");
+  choice > 0 ? couple = choice - 2;
+  on_slider();
+);
+
+couple ? (
+  draw_knob(825, 40, 82, "Split", 1, 1, 100, 1, 0, sprintf(#, "%i%%", slider(82)), 0);
+) : (
+  draw_knob(825, 40, 81, "AB", 0.5, 0, 1, 0, 1, sprintf(#, "%i:%i", (1-slider(81)) * 100, slider(81) * 100), 0);
+);
+gfx_a = 1;
+
+draw_knob(825, 180, 83, "Gain", 0, -24, 24, 0, 1, sprintf(#, "%idB", slider(83)),0);
+//
+
+function on_knob_move (nslider, slider_min, slider_max, slider_is_log, factor) (
+  factor *= mouse.control ? 0.05 : 1;
+  slider_is_log ? (
+    slider(nslider) = slider(nslider) * pow(100, -factor * 0.01);
+  ) : (
+    inc = (slider_max - slider_min) / 100 * -factor;
+    slider(nslider) += inc;
+  );
+
+  slider(nslider) > slider_max ? slider(nslider) = slider_max;
+  slider(nslider) < slider_min ? slider(nslider) = slider_min;
+  on_slider();
+  sliderchange(slider(nslider));
+  slider_automate(slider(nslider));
+);
+
+function on_velknob_move(nslider, factor) (
+  factor *= mouse.control ? 0.05 : 1;
+  slider(nslider) = max(0,min(1,slider(nslider) + 0.01 * -factor));
+  sliderchange(slider(nslider));
+  slider_automate(slider(nslider));
+);
+
+wheelknob_nslider ? (
+  on_knob_move(wheelknob_nslider, wheelknob_min, wheelknob_max, wheelknob_is_log, mouse.wheel * -7);
+);
+
+selknob_nslider && mouse.left && mouse.dy != 0 ? (
+  on_knob_move(selknob_nslider, selknob_min, selknob_max, selknob_is_log, mouse.dy);
+);
+
+selknob_velslider && mouse.left && mouse.dy ? (
+  on_velknob_move(selknob_velslider, mouse.dy);
+);
+
+doubleclk_nslider ? (
+  on_slider();
+  sliderchange(slider(doubleclk_nslider));
+  slider_automate(slider(doubleclk_nslider));
+  doubleclk_nslider = 0;
+);
+
+gfx_setcursor(selknob_nslider ? 32511 : 0);
+!mouse.wheel ? (
+  wheelknob_nslider = 0;
+  wheelknob_velslider = 0;
+);
+!mouse.left ? (
+  selknob_nslider = 0;
+  selknob_velslider = 0;
+);
+
+function draw_help ()
+local(xsize, ysize, txt, pad)
+(
+  gfx_setfont(1, "Arial", 16);
+  xsize = 400;
+  ysize = 210;
+  pad = 20;
+  gfx_x = 0; gfx_y = 0;
+  gfx_blurto(gfx_w, gfx_h);
+  gfx_x = 0; gfx_y = 0;
+  gfx_blurto(gfx_w, gfx_h);
+  gfx_set(0,0,0,0.8);
+  gfx_rect(gfx_w/2 - xsize/2, gfx_h/2 - ysize/2, xsize, ysize);
+  txt = #;
+  strcpy(txt, "Rippler 2.0.3\nTilr 2025\n\n");
+  strcat(txt, "- Change polyphony and partials in window menu.\n");
+  strcat(txt, "- Ctrl for fine slider adjustments.\n");
+  strcat(txt, "- Shift to adjust velocity mapping.\n");
+  strcat(txt, "- Double click to reset sliders.\n");
+  strcat(txt, "- Rippler supports audio in, press notes to send\nthe signal through to the resonators.\n");
+  gfx_x = gfx_w/2 - xsize/2 + pad;
+  gfx_y = gfx_h/2 - ysize/2 + pad;
+  gfx_set(1,1,1);
+  gfx_drawstr(txt,0,gfx_w/2+xsize/2-pad,gfx_h/2+ysize/2-pad);
+  gfx_setfont(0);
+);
+
+show_help ? draw_help()
+
+
+
+
+
+
+
+

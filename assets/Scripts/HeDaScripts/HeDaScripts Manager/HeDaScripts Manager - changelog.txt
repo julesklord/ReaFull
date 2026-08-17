@@ -1,0 +1,208 @@
+---------------------------------------------------
+  HeDaScripts Manager - Changelog (What's new)     
+---------------------------------------------------
+
+* v1.50 (2025-01-31)
+  + Dark theme
+  + 150% and 200% toolbar icons
+  # fix crash on Windows in some cases
+  # fix for special characters passwords?
+
+* v1.47 (2023-09-08)
+  # fix extstate issue
+
+* v1.46 (2023-08-26)
+  # fixes password not being remembered correctly in some cases 
+
+* v1.45 (2023-08-15)
+  + REAPER 7 support for auto updates checking.
+
+* v1.44 (2023-08-09)
+  + REAPER 7 support
+
+* v1.43 (2023-07-28)
+  # fixes and removing backing up folders when upgrading scripts
+
+* v1.42 (2023-07-18)
+  # do not show latest or current installed version in other versions list
+  # improve display of window while connecting
+  # improve message if it cannot connect and add button to forum support
+
+* v1.41 (2023-07-17)
+  # fixing auto update from Windows
+
+* v1.40 (2023-07-17)
+  # fixes in other versions button
+
+* v1.39 (2023-07-16)
+  + Other versions: button to install previous versions
+
+* v1.38 (2023-07-15)
+  # auto updates checker: do not notify updates from non vip versions if show only vip versions is enabled
+  # auto updates checker: optimizations and bug fixes
+   
+* v1.37 (2023-07-14)
+  # fix to give priority to use windows curl
+
+* v1.36 (2023-07-12)
+  + include 7zz in macos
+  # fix: windows to work with settings variables for 7z and curl if the libs not found in settings folder
+  # fix: first check if unar exists in settings folder to use unar instead of 7z
+ 
+* v1.35 (2023-07-11)
+  # fix using unar on macos
+ 
+* v1.34 (2023-07-10)
+  + Windows version download with curl and 7za incuded.
+  + Predownloaded icons included for faster initial start
+
+* v1.33 (2023-07-09)
+  # bug fix checking if curl is installed
+
+* v1.32 (2023-07-09)
+  # fix in auto-check displaying a 1 in console window
+
+* v1.31 (2023-07-08)
+  # bug fix when using unar on macos
+
+* v1.30 (2023-07-07)
+  + Auto-check for updates (optional)
+  + fix make the Manager upgradebale by itself
+  # settings.cfg file for configuration
+  # custom paths to 7z, curl and sh for each operating system
+  # bug fixes on windows downloading icons and changelogs
+
+* v1.28 (2022-07-08)
+  # added insecure as option 
+
+* v1.27 (2022-06-24)
+  # curl path setting.
+
+* v1.26 (2022-05-15)
+  # error fix
+
+* v1.25 (2022-04-28)
+  # use system curl option
+
+* v1.24 (2021-12-05)
+  # bug adding addon actions
+ 
+* v1.23 (2021-11-30)
+  + support for adding actions for add-ons 
+  # fix an error adding the actions to REAPER
+
+* v1.22 (2021-10-03)
+  # MacOS fix 
+
+* v1.21 (2021-09-25)
+  # fix windows curl
+
+* v1.2 (2021-09-23)
+  + Support new version format vM.m.p 
+  # fix Linux curl 
+
+* v1.10 (2019-06-20)
+  # Fix not executing installation correctly on windows when the path user name included a space. Thanks David!
+
+* v1.09 (2019-06-04)
+  # more detailed log generation if enabled
+  
+* v1.08 (2018-01-17)
+  # Linux: linuxopen variable default to "xdg-open"
+
+* v1.07 (2018-01-16)
+  + Linux: Support for Linux (native Linux, not wine)
+
+* v1.06 (2017-11-18)
+  # fix remembering password correctly.
+
+* v1.05 (2017-11-02)
+  + Support for installing actions in different section ID (MIDI editor, etc)
+  # Password fix to avoid being forgotten after updating
+
+* v1.04 (2017-05-03)
+  # fix: detecting final versions to update (without pre or rc suffix)
+
+* v1.03 (2017-03-22)
+  # fix: check that the manager is installed in the correct folder before starting.
+  # fix: allow password with spaces
+ 
+* v1.02 (2017-02-26)
+  # Increase width of textbox for entering VIP e-mail. 
+  # Password textbox changed to a normal user input window that can handle paste from clipboard.
+  # fix VIP error message after updating HeDaScripts Manager.
+
+* v1.01 (2017-02-02)
+  # fixing adding all actions of the scripts for OSX systems
+
+* v1.0beta12 (2016-09-06)
+  # fix: small change in adding/removing actions
+  # debugging log file option if needed for troubleshooting. 
+  # try to support linux/wine. It may not work.
+  # include x32 and x64 libraries
+
+* v1.0beta11 (2016-07-25)
+  # new method to install/uninstall the actions. Fix for REAPER 32bit.
+
+* v1.0beta10 (2016-07-21)
+  # small cosmetics osx
+
+* v1.0beta9 (2016-07-16)
+  # fix: beta numbers >9
+
+* v1.0beta8 (2016-07-14)
+  # won't crash in REAPERx32, in windows, it installs the files, but it can't add the actions. You can add them manually.
+  
+* v1.0beta7 (2016-07-14)
+  # small fix
+  
+* v1.0beta6 (2016-07-11)
+  # fix: spacing between rows in list.
+
+* v1.0beta5 (2016-07-07)
+  # fix: display fix when installing non VIP scripts being VIP.
+  # prompt to make backups Yes or No when updating scripts.
+  # fix: backup folders when updating scripts were having version suffix of manager, not from the script. 
+
+* v1.0beta4 (2016-07-06)
+  # fix: bug not displaying correctly updates changelogs
+
+* v1.0beta3 (2016-07-05)
+  # fix: error saving VIPuser e-mail
+  
+* v1.0beta2 (2016-07-05)
+  + Support for VIP scripts
+
+* v1.0beta1 (2016-06-28)
+  + Beta release for testing
+  # fix: bug self updating HeDaScripts Manager
+
+* v1.0pre8 (2016-06-21)
+  # fixes
+  + click in icon zooms screenshot
+
+* v1.0pre7 (2016-06-19)
+  + Clicking in Script name, runs the script if installed.
+  + Filter list: Show Installed
+  + Tooltips on buttons
+  # small bugs fixed
+
+* v1.0pre6 (2016-06-17)
+  + filter list options (show all, show updates, show not installed)
+  + sort list options (sort by default, sort by updated date, sort by name)
+
+* v1.0pre5 (2016-06-16)
+  # scrollbar tweaks
+  # osx tweaks
+
+* v1.0pre4 (2016-06-15)
+  # fix: crash when updating free script logged as VIP.
+  
+* v1.0pre3 (2016-06-15)
+  # redesign and optimizations
+  
+* v1.0pre2 (2016-06-07)
+  # osx testing
+
+* v1.0pre1 (2016-05-25)
+  + Initial pre-release

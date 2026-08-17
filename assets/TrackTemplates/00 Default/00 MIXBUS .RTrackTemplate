@@ -1,0 +1,41 @@
+<TRACK
+  NAME MIX
+  PEAKCOL 23331056
+  BEAT -1
+  AUTOMODE 0
+  PANMODE 5
+  VOLPAN 1 0 1 -1 1
+  MUTESOLO 0 0 0
+  IPHASE 0
+  PLAYOFFS 0 1
+  ISBUS 0 0
+  BUSCOMP 0 0 0 0 0
+  SHOWINMIX 1 0.780738 0 1 0.5 0 0 0
+  REC 0 -1 0 2 0 0 0 0
+  VU 2
+  TRACKHEIGHT 57 0 1 0 0 0 0
+  INQ 0 0 0 0.5 100 0 0 100
+  NCHAN 2
+  TRACKIMGFN "eduserra\eduserra_FX_icons_mix_bus.png"
+  FX 1
+  TRACKID {73E8775A-4C2F-4948-B0AE-6F28AFA3D576}
+  PERF 0
+  LAYOUTS "" "1 MIXER A"
+  UNDO_HAS_TRACKENV
+  MIDIOUT -1
+  MAINSEND 1 0
+  <FXCHAIN
+    SHOW 0
+    LASTSEL 0
+    DOCKED 0
+    BYPASS 0 0 0
+    <JS "ReArtist Digital FX/T-Peak/T-PEAK (ReArtist Pro)" ""
+      3 0 0 1 0 0 0 0 -12 -6 1 1 0 1.8 0 - - - - - - - - - - - - - - -150 -103 -103 -103 -103 -103 0 - - - - - - - - - - - - - - - - - - - - - - - - - - - - "EDU Peak + LM"
+    >
+    JS_DIMS 489 455
+    PRESETNAME "EDU Peak + LM"
+    FLOATPOS 510 379 505 494
+    FXID {214CE439-FF7A-4290-9B80-27F4A1F52768}
+    WAK 0 2
+  >
+>

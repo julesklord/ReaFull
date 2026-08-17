@@ -1,0 +1,141 @@
+version:1.3.2
+desc:Odd Saturation
+author: Stephen Boyes
+about:
+  # Odd saturation
+  Two waveshping saturation styles using sin() functions, feturing *odd harmonics*.
+  *Wavy Top, no discontinueties but may fold the wavefom over a bit at some settings.
+  *Flat Top, waveform flatens off at 0dB.
+  Can be used to add vibe or as a maximiser.
+changelog:
+  - Correct gain formula
+
+
+//                                                                
+//  The MIT License (MIT)
+//Copyright © 2023 Stephen Boyes
+//
+//Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”),
+// to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+//The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+//
+//THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                                                                            
+//                                                                              
+//                                                                              
+
+
+
+
+slider1:0<-12,12,0.1>Input
+slider2:0<0,1,0.01>Amount
+slider3:0<-12,6,0.1>Output
+slider4:0<-12,6,0.1>Max Output
+slider6:0<0,1,1{mk1 (Wavy Top),mk2 (Flat Top)}>Waveshape Type
+
+
+
+//in_pin:left input
+//in_pin:right input
+//out_pin:left output
+//out_pin:right output
+
+@init
+ext_tail_size = -1; //automatic silence detection
+halfpi = $pi/2;
+IG = 0.7071;
+channels=num_ch;
+
+function wavytop(x)
+(
+  sin((sin(x)+x*0.5))
+);
+
+function flattop(x)
+(
+  x = max(-$pi,min($pi,x));
+  sin(halfpi*sin(halfpi*sin(0.5*x)))
+);
+
+@block
+channels=num_ch;
+
+@slider
+IG2 = 10^(slider1/20);
+S = slider2;
+D = 1-S;
+OG = 10^(slider3/20);
+MXO = 10^(slider4/20);
+channels=num_ch;
+
+@sample
+//input gain//
+i = 0;
+while (i < channels)
+(
+  spl(i) *= IG2;
+  i += 1;
+);
+dry0 = spl0;
+dry1 = spl1;
+dry2 = spl2;
+dry3 = spl3;
+dry4 = spl4;
+dry5 = spl5;
+
+i = 0;
+while (i < channels)
+(
+  spl(i) *= IG;
+  i += 1;
+);
+
+
+//odd saturation//
+slider6 == 0 ?
+(
+  i = 0;
+  while (i < channels)
+  (
+    spl(i) = wavytop(spl(i));
+    i += 1;
+  );
+  //spl0 = wavytop(spl0);
+  //spl1 = wavytop(spl1);
+):(
+  i = 0;
+  while (i < channels)
+  (
+    spl(i) = flattop(spl(i));
+    i += 1;
+  );
+  //spl0 = flattop(spl0);
+  //spl1 = flattop(spl1);
+);
+
+//mix
+spl0 = dry0*D+spl0*S;
+spl1 = dry1*D+spl1*S;
+spl2 = dry2*D+spl2*S;
+spl3 = dry3*D+spl3*S;
+spl4 = dry4*D+spl4*S;
+spl5 = dry5*D+spl5*S;
+
+
+i = 0;
+while (i < channels)
+(
+  spl(i) *= OG;
+  spl(i) = max(-MXO,min(MXO,spl(i)));
+  i += 1;
+);
+
+//spl0 = spl0*OG;
+//spl1 = spl1*OG;
+
+//spl0 = max(-MXO,min(MXO,spl0));
+//spl1 = max(-MXO,min(MXO,spl1));

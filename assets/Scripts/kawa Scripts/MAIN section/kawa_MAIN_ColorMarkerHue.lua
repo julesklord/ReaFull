@@ -1,0 +1,11 @@
+--====================================================================== 
+--[[ 
+* ReaScript Name: kawa_MAIN_ColorMarkerHue. 
+* Version: 2017/01/16 
+* Author: kawa_ 
+* Author URI: http://forum.cockos.com/member.php?u=105939 
+* Repository: BitBucket - kawaCat - ReaScript-M2B 
+* Repository URI: https://bitbucket.org/kawaCat/reascript-m2bpack/ 
+--]] 
+--====================================================================== 
+local e=0 math.randomseed(reaper.time_precise()*os.time()/1e3)local j="kawa MAIN Color Marker Hue";local M=60 local C=1 local g=1 local function k(i,d,s)local r,n,o,f,h,e,l,t,a local c=i local i=d if(c>360)then c=c-360;elseif(c<0)then c=c+360;end if(i>1)then i=1;elseif(i<0)then i=0;end e=math.floor(255*s)if(e>255)then e=255;elseif(e<0)then e=0;end if(i==0)then r=e;n=e;o=e;else f=math.floor(c/60)h=c/60-f l=math.floor(e*(1-i))if(l<0)then l=0;elseif(l>255)then l=255;end t=math.floor(e*(1-h*i))if(t<0)then t=0;elseif(t>255)then t=255;end a=math.floor(e*(1-(1-h)*i))if(a<0)then a=0;elseif(a>255)then a=255;end if(f==0)then r=e;n=a;o=l;elseif(f==1)then r=t;n=e;o=l;elseif(f==2)then r=l;n=e;o=a;elseif(f==3)then r=l;n=t;o=e;elseif(f==4)then r=a;n=l;o=e;elseif(f==5)then r=e;n=l;o=t;else r=e;n=a;o=l;end end return r,n,o end local function x(e,l,o)local e=string.format("%x",e)local n=string.format("%x",l)local l=string.format("%x",o)if(#e<2)then e="0"..e end if(#n<2)then n="0"..n end if(#l<2)then l="0"..l end local e="01"..l..n..e;return tonumber(e,16)end local function P(r,i,c,e,l)local u={}local m={}local t=e or false;local a=l or false;local l=0 local o,e,n=reaper.CountProjectMarkers(l)local r=r or 60 local f=i or 1 local p=c or 1 if(o and(e~=0 or n~=0))then reaper.Undo_BeginBlock();local i=math.floor(360*math.random());local d=r;for r=0,(e+n)-1 do local e,n,h,c,s,o,g=reaper.EnumProjectMarkers3(l,r)if(e~=nil)then local e={}e.posTime=h e.name=s e.regeonEnd=c e.idx=o e.intColor=x(k(i+d*r,f,p));if(n==false and t==true)then reaper.SetProjectMarker3(l,o,n,e.posTime,e.posTime,e.name,e.intColor)table.insert(u,e)elseif(n==true and a==true)then reaper.SetProjectMarker3(l,o,n,e.posTime,e.regeonEnd,e.name,e.intColor)table.insert(m,e)end end end reaper.Undo_EndBlock(j,-1);reaper.UpdateArrange();end end P(M,C,g,true,false);

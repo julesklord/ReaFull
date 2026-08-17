@@ -1,0 +1,217 @@
+desc:Express Bus Compressor [Stillwell] - Base Mejorada
+//tags: dynamics compressor
+//author: Stillwell (modificado y comentado por Edu)
+
+//-------------------------------------------------------
+// Sliders
+//-------------------------------------------------------
+slider1:0<-60,0,0.1>Threshold (dB)
+slider2:1<1,20,0.1>Ratio
+slider3:0<-20,20,0.1>Gain
+slider4:2<0,3,1{Hard (Blown Capacitor),Soft (Blown Capacitor),Hard,Soft}>Knee
+slider5:0<0,1,1{Normal,Sidechain}>Detector Input
+slider6:0<0,1,1{No,Yes}>Automatic Make-Up
+slider7:0<0,1,1{Peak,RMS}>Detection
+slider8:0<0,1,1{Feedforward,Feedback}>Detection Source
+
+//-------------------------------------------------------
+// Routing de entradas/salidas
+//-------------------------------------------------------
+in_pin:left input
+in_pin:right input
+in_pin:sidechain left input
+in_pin:sidechain right input
+out_pin:left output
+out_pin:right output
+
+//-------------------------------------------------------
+// Sección @init (Inicialización)
+//-------------------------------------------------------
+@init
+  ext_tail_size = -1;
+  ext_gr_meter = 0;
+  
+  // Constantes de conversión dB <-> lineal
+  log2db = 8.6858896380650365530225783783321; // 20 / ln(10)
+  db2log = 0.11512925464970228420089957273422; // ln(10) / 20 
+  
+  // Calcula el arreglo "attimes" evitando división por cero:
+  // Se asigna un valor por defecto en índice 0 y se inicia el loop en 1
+  attimes[0] = 0;
+  i = 1;
+  loop(119,  // Se generan 119 valores (índices 1..119) para completar 120 elementos
+    attimes[i] = (0.08924 / i) + (0.60755 / (i * i)) - 0.00006;
+    i += 1;
+  );
+  
+  // Tiempos de ataque y release (en segundos)
+  attime = 0.010;   // 10 ms
+  reltime = 0.100;  // 100 ms
+  
+  // Variables para el detector y suavizado
+  maxover = 0;
+  ratio = 0;
+  cratio = 0;
+  rundb = 0;
+  overdb = 0;
+  maxover = 0;
+  
+  atcoef = exp(-1/(attime * srate));
+  relcoef = exp(-1/(reltime * srate));
+  
+  // Coeficientes para la detección "opto" (feedback)
+  fbacoef = exp(-1000/(2 * srate)); // ataque de 2 msec.
+  fbrcoef = exp(-1000/(200 * srate)); // release de 200 msec.
+  
+  sidechain = 0;
+  automakeup = 0;
+  
+  // Inicialización de variables usadas en el procesamiento
+  runospl = 0;
+  ospl0 = 0;
+  ospl1 = 0;
+  runave = 0;
+  runmax = 0;
+  
+//-------------------------------------------------------
+// Sección @slider (Actualización de parámetros derivados)
+//-------------------------------------------------------
+@slider
+  // Umbral y conversión a escala lineal
+  thresh = slider1;
+  threshv = exp(thresh * db2log);
+  
+  // Relación de compresión
+  ratio = slider2;
+  
+  // Determina el tipo de knee:
+  // softknee: bit 0 de slider4 (1 = soft)
+  softknee = ((int(slider4) & 1) != 0);
+  // capsc: si se activa el bit 1, se usa un factor especial para emular "Blown Capacitor"
+  if ((int(slider4) & 2) != 0)
+    capsc = log2db;
+  else
+    capsc = log2db * 2.08136898;
+  
+  // Ajuste del umbral para el detector según el tipo de knee
+  if (softknee)
+    cthresh = thresh - 3;
+  else
+    cthresh = thresh;
+  cthreshv = exp(cthresh * db2log);
+  
+  // Selección de entrada para el detector: 0 = Normal, 1 = Sidechain
+  sidechain = slider5;
+  
+  // Make-Up automático de ganancia
+  automakeup = slider6;
+  if (automakeup)
+    autogain = (abs(thresh) - (abs(thresh) / max(1, ratio-1))) / 2;
+  else
+    autogain = 0;
+  
+  // Ganancia (makeup) definida por slider3
+  makeup = slider3;
+  makeupv = exp((makeup + autogain) * db2log);
+  
+  // Selección del detector: 0 = Peak, 1 = RMS
+  RMSdet = slider7;  // Usamos el mismo nombre (todo en minúsculas)
+  if (RMSdet)
+    rmscoef = exp(-1000 / (10 * srate));  // Ventana RMS de 10 ms
+  else
+    rmscoef = exp(-1000 / (0.0025 * srate));  // Ventana para detector Peak (muy rápido)
+  
+  // Fuente de detección: 0 = Feedforward, 1 = Feedback (modo opto)
+  opto = slider8;
+  
+//-------------------------------------------------------
+// Sección @sample (Procesamiento por muestra)
+//-------------------------------------------------------
+@sample
+  // Selección de la fuente para el detector:
+  if (sidechain) (
+    aspl0 = abs(spl2);
+    aspl1 = abs(spl3);
+  ) else (
+    if (opto) (
+      // Procesamiento especial para modo opto:
+      ospl = ospl0 * ospl0 + ospl1 * ospl1;
+      if (ospl > runospl) (
+        runospl = ospl + atcoef * (runospl - ospl);
+      ) else (
+        runospl = ospl + relcoef * (runospl - ospl);
+      );
+      ospl = sqrt(max(0, runospl));
+      ospl *= 0.5;
+      aspl0 = abs(ospl);
+      aspl1 = abs(ospl);
+    ) else (
+      aspl0 = abs(spl0);
+      aspl1 = abs(spl1);
+    )
+  );
+  
+  // Cálculo del nivel del detector: RMS o Peak
+  if (RMSdet) (
+    ave = (aspl0 * aspl0) + (aspl1 * aspl1);
+    runave = ave + rmscoef * (runave - ave);
+    det = sqrt(max(0, runave));
+  ) else (
+    maxspl = max(aspl0, aspl1);
+    maxspl = maxspl * maxspl;
+    runave = maxspl + rmscoef * (runave - maxspl);
+    det = sqrt(max(0, runave));
+  );
+  
+  // Calcula la cantidad de sobrepaso (overdb) en dB, evitando log(0)
+  overdb = capsc * log( max(det, (1e-10)) / cthreshv );
+  
+  // Actualiza el valor máximo de overdb y ajusta dinámicamente el tiempo de release
+  if (overdb > maxover) (
+    maxover = overdb;
+    reltime = overdb / 125; // release a 125 dB/seg
+    relcoef = exp(-1 / (reltime * srate));
+  );
+  overdb = max(0, overdb);
+  
+  // Suaviza el valor de overdb con coeficientes de ataque y release
+  if (overdb > rundb)
+    rundb = overdb + atcoef * (rundb - overdb);
+  else
+    rundb = overdb + relcoef * (rundb - overdb);
+  overdb = rundb;
+  
+  // Calcula el ratio efectivo (cratio). Para soft knee, se mezcla en función de overdb limitado a 6 dB
+  if (softknee)
+    cratio = 1 + (ratio - 1) * min(overdb, 6) / 6;
+  else
+    cratio = ratio;
+  
+  // Calcula la reducción de ganancia (en dB) y la convierte a factor lineal
+  gr = -overdb * (cratio - 1) / cratio;
+  grv = exp(gr * db2log);
+  
+  // Suaviza el pico máximo de overdb para ajustar el release
+  runmax = maxover + relcoef * (runmax - maxover);
+  maxover = runmax;
+  
+  // Aplica la reducción de ganancia y el maquillaje (makeup) a las señales de salida
+  spl0 *= grv * makeupv;
+  spl1 *= grv * makeupv;
+  
+  // Guarda las salidas actuales para el procesamiento opto en el siguiente ciclo
+  ospl0 = spl0;
+  ospl1 = spl1;
+  
+//-------------------------------------------------------
+// Sección @gfx (Interfaz gráfica básica)
+//-------------------------------------------------------
+@gfx 320 240
+gfx_clear = 240;
+gfx_setfont(0, "Arial", 16);
+gfx_drawstr("Gain Reduction (dB): " + sprintf("%.2f", gr));
+gfx_y += 20;
+gfx_drawstr("Effective Ratio: " + sprintf("%.2f", cratio));
+gfx_y += 20;
+gfx_drawstr("Detector Level: " + sprintf("%.2f", 20 * log(max(det, (1e-10))) / log(10)) + " dB");
+

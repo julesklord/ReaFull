@@ -1,0 +1,1398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<index version="1" name="StevieKeys JSFX" commit="3122cf58556b0c40ac761a2f3ef477accfeae696">
+  <category name="Bass">
+    <reapack name="Bass X.jsfx" type="effect" desc="Bass X">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Bass enhancer\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Add harmonics to low frequency sounds to improve percieved bass even on small speakers. Frequencies bellow the Freq slider setting are processed and are then filtered to the harmonic bandwidth amount.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.2pre" time="2024-01-23T18:11:44Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/301dcdf9036a5435d78cc30c58ffbe744c57fbf4/Bass/Bass%20X.jsfx</source>
+      </version>
+      <version name="1.1.0" author="Stephen Boyes" time="2024-01-24T22:39:56Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/35559fd83aa50b4aef09e89bddbe6adf7f959351/Bass/Bass%20X.jsfx</source>
+      </version>
+      <version name="1.1.1" author="Stephen Boyes" time="2024-01-25T17:42:39Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a12941c8027d72d394c3afb361e6ef76062ed9e6/Bass/Bass%20X.jsfx</source>
+      </version>
+      <version name="1.1.2" author="Stephen Boyes" time="2024-08-22T11:51:11Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/b00d3602c00d26960d6cfa192f16a485c6f50fbf/Bass/Bass%20X.jsfx</source>
+      </version>
+      <version name="1.1.3" author="Stephen Boyes" time="2024-08-22T12:00:09Z">
+        <changelog><![CDATA[- CPU boost
+- fix changelog :)]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/1350213b565c4242013791ccec9dd1f9ee04b021/Bass/Bass%20X.jsfx</source>
+      </version>
+    </reapack>
+  </category>
+  <category name="Delay">
+    <reapack name="Big Bad Delay.jsfx" type="effect" desc="Big Bad Delay">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Big Bad Delay\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 LO-FI sampling analogue delay (bucket brigade)\par}
+}
+]]></description>
+      </metadata>
+      <version name="2.0.1" time="2024-01-26T16:53:27Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/0f01d45d0676fa50193c83178d804c5bbf4a6f28/Delay/Big%20Bad%20Delay.jsfx</source>
+        <source file="bigbaddelay/cookdsp.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/0f01d45d0676fa50193c83178d804c5bbf4a6f28/Delay/bigbaddelay/cookdsp.jsfx-inc</source>
+      </version>
+      <version name="2.0.2" author="Stephen Boyes" time="2024-02-02T19:05:15Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/1a4134ff1710c18fd741ca73e07bc0c85e1e3544/Delay/Big%20Bad%20Delay.jsfx</source>
+        <source file="bigbaddelay/cookdsp.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/1a4134ff1710c18fd741ca73e07bc0c85e1e3544/Delay/bigbaddelay/cookdsp.jsfx-inc</source>
+      </version>
+      <version name="2.0.3" author="Stephen Boyes" time="2024-03-15T23:07:42Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a2a47801f10c76e5c471686f9848d66795a6775a/Delay/Big%20Bad%20Delay.jsfx</source>
+        <source file="bigbaddelay/cookdsp.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a2a47801f10c76e5c471686f9848d66795a6775a/Delay/bigbaddelay/cookdsp.jsfx-inc</source>
+      </version>
+      <version name="2.0.5" author="Stephen Boyes" time="2024-03-15T23:19:10Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/Big%20Bad%20Delay.jsfx</source>
+        <source file="bigbaddelay/cookdsp.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp.jsfx-inc</source>
+        <source file="bigbaddelay/cookdsp/analysis.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/analysis.jsfx-inc</source>
+        <source file="bigbaddelay/cookdsp/buffer.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/buffer.jsfx-inc</source>
+        <source file="bigbaddelay/cookdsp/delay.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/delay.jsfx-inc</source>
+        <source file="bigbaddelay/cookdsp/dynamics.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/dynamics.jsfx-inc</source>
+        <source file="bigbaddelay/cookdsp/effects.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/effects.jsfx-inc</source>
+        <source file="bigbaddelay/cookdsp/fft-mono-template">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/fft-mono-template</source>
+        <source file="bigbaddelay/cookdsp/fft-stereo-template">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/fft-stereo-template</source>
+        <source file="bigbaddelay/cookdsp/fftobjects.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/fftobjects.jsfx-inc</source>
+        <source file="bigbaddelay/cookdsp/filters.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/filters.jsfx-inc</source>
+        <source file="bigbaddelay/cookdsp/granulator.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/granulator.jsfx-inc</source>
+        <source file="bigbaddelay/cookdsp/list.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/list.jsfx-inc</source>
+        <source file="bigbaddelay/cookdsp/memalloc.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/memalloc.jsfx-inc</source>
+        <source file="bigbaddelay/cookdsp/midi.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/midi.jsfx-inc</source>
+        <source file="bigbaddelay/cookdsp/mmath.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/mmath.jsfx-inc</source>
+        <source file="bigbaddelay/cookdsp/oscil.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/oscil.jsfx-inc</source>
+        <source file="bigbaddelay/cookdsp/pobjects.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/pobjects.jsfx-inc</source>
+        <source file="bigbaddelay/cookdsp/pv-mono-template">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/pv-mono-template</source>
+        <source file="bigbaddelay/cookdsp/pv-stereo-template">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/pv-stereo-template</source>
+        <source file="bigbaddelay/cookdsp/pvocobjects.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/pvocobjects.jsfx-inc</source>
+        <source file="bigbaddelay/cookdsp/pvtrans-example">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/pvtrans-example</source>
+        <source file="bigbaddelay/cookdsp/random.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/random.jsfx-inc</source>
+        <source file="bigbaddelay/cookdsp/scaling.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/201c638cc899b5d014be4c1d8f85f3d06a907918/Delay/bigbaddelay/cookdsp/scaling.jsfx-inc</source>
+      </version>
+    </reapack>
+    <reapack name="Echo Live Vocal In Stereo.jsfx" type="effect" desc="Echo Live Vocal In Stereo">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Echo Live Vocal In Stereo (ELVIS)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Easy to use slapback tape delay\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.1.0" time="2024-01-25T21:17:46Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2587a697ecdb10af774ab6661ed57effb4b2498c/Delay/Echo%20Live%20Vocal%20In%20Stereo.jsfx</source>
+      </version>
+      <version name="1.1.1" author="Stephen Boyes" time="2024-02-02T19:05:53Z">
+        <changelog><![CDATA[- DC blocker
+- reduce CPU
+- fix coeficient calculation
+- github release]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a18a60544260305517d49ca383fc787e6c449d0e/Delay/Echo%20Live%20Vocal%20In%20Stereo.jsfx</source>
+      </version>
+      <version name="1.1.2" author="Stephen Boyes" time="2024-08-21T20:46:46Z">
+        <changelog><![CDATA[- reduce CPU again]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/875bc12f81d944dc1e0c37547ab1091d288dcbb2/Delay/Echo%20Live%20Vocal%20In%20Stereo.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Wow Tape Delay.jsfx" type="effect" desc="Wow Tape Delay">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Wow Tape Delay\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.1" time="2024-01-25T22:23:17Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/e8a1f5286e7f7ca874e6d4ec3da070b66a76ec1e/Delay/Wow%20Tape%20Delay.jsfx</source>
+      </version>
+      <version name="1.1.0" time="2024-01-26T16:42:51Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/ba976fe170d8aa18a8ea5f4417e1ff7c387b0c11/Delay/Wow%20Tape%20Delay.jsfx</source>
+      </version>
+      <version name="1.1.1" author="Stephen Boyes" time="2024-02-02T19:06:32Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/c4aab274440f5ab979a83d80f546b95ce8109ef7/Delay/Wow%20Tape%20Delay.jsfx</source>
+      </version>
+      <version name="1.1.2" author="Stephen Boyes" time="2024-03-15T23:08:11Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/c9490227dbd24f50db8d0cb0d2de63705b8e5517/Delay/Wow%20Tape%20Delay.jsfx</source>
+      </version>
+      <version name="1.1.3" author="Stephen Boyes" time="2024-03-15T23:20:15Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/80aff59ea4a781d60f2bbd55a093a86243c49ec7/Delay/Wow%20Tape%20Delay.jsfx</source>
+      </version>
+      <version name="1.1.4" author="Stephen Boyes" time="2024-03-17T13:34:57Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/Wow%20Tape%20Delay.jsfx</source>
+        <source file="wowtapedelay/cookdsp.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/analysis.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/analysis.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/buffer.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/buffer.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/delay.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/delay.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/dynamics.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/dynamics.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/effects.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/effects.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/fft-mono-template">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/fft-mono-template</source>
+        <source file="wowtapedelay/cookdsp/fft-stereo-template">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/fft-stereo-template</source>
+        <source file="wowtapedelay/cookdsp/fftobjects.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/fftobjects.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/filters.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/filters.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/granulator.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/granulator.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/list.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/list.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/memalloc.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/memalloc.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/midi.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/midi.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/mmath.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/mmath.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/oscil.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/oscil.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/pobjects.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/pobjects.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/pv-mono-template">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/pv-mono-template</source>
+        <source file="wowtapedelay/cookdsp/pv-stereo-template">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/pv-stereo-template</source>
+        <source file="wowtapedelay/cookdsp/pvocobjects.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/pvocobjects.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/pvtrans-example">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/pvtrans-example</source>
+        <source file="wowtapedelay/cookdsp/random.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/random.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/scaling.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bb22109193c12f139e86c853818ffe3904305e87/Delay/wowtapedelay/cookdsp/scaling.jsfx-inc</source>
+      </version>
+      <version name="1.1.5" author="Stephen Boyes" time="2024-08-21T20:52:18Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/Wow%20Tape%20Delay.jsfx</source>
+        <source file="wowtapedelay/cookdsp.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/analysis.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/analysis.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/buffer.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/buffer.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/delay.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/delay.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/dynamics.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/dynamics.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/effects.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/effects.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/fft-mono-template">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/fft-mono-template</source>
+        <source file="wowtapedelay/cookdsp/fft-stereo-template">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/fft-stereo-template</source>
+        <source file="wowtapedelay/cookdsp/fftobjects.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/fftobjects.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/filters.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/filters.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/granulator.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/granulator.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/list.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/list.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/memalloc.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/memalloc.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/midi.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/midi.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/mmath.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/mmath.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/oscil.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/oscil.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/pobjects.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/pobjects.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/pv-mono-template">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/pv-mono-template</source>
+        <source file="wowtapedelay/cookdsp/pv-stereo-template">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/pv-stereo-template</source>
+        <source file="wowtapedelay/cookdsp/pvocobjects.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/pvocobjects.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/pvtrans-example">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/pvtrans-example</source>
+        <source file="wowtapedelay/cookdsp/random.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/random.jsfx-inc</source>
+        <source file="wowtapedelay/cookdsp/scaling.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/68bfaeb913cd84d8d69bf3b7e59e2f0e72ad40e2/Delay/wowtapedelay/cookdsp/scaling.jsfx-inc</source>
+      </version>
+    </reapack>
+  </category>
+  <category name="Distortion">
+    <reapack name="Hard AntiDerivative AntiAliasing Clipper.jsfx" type="effect" desc="Hard Anti-Derivative Anti-Aliasing Clipper">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 Hard Anti-Derivative Anti-Aliasing Clipper\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Non oversampled clipper based on anti derivative anti aliasing methods as described in this paper (the math is a bit over my head lol)... https://dafx16.vutbr.cz/dafxpapers/20-DAFx-16_paper_41-PN.pdf controls...\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Drive: Level compensated clipping drive\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab High Restore: Restores high frequencies lost by anti derivative method\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Strict Clip: Second clipping stage to catch peaks cuased by high restore\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Out: Output level\sa180\par}
+}
+]]></description>
+      </metadata>
+      <version name="0.6.0beta" author="Stephen Boyes" time="2024-04-22T12:04:15Z">
+        <changelog><![CDATA[- First github version]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/7e38eadb2fece81f132aab1605973b08afe410b0/Distortion/Hard%20AntiDerivative%20AntiAliasing%20Clipper.jsfx</source>
+      </version>
+      <version name="0.7.0beta" author="Stephen Boyes" time="2024-04-23T11:17:54Z">
+        <changelog><![CDATA[- New Meter]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/4e3209d9c971213a77357c61ad246dcb4358dc29/Distortion/Hard%20AntiDerivative%20AntiAliasing%20Clipper.jsfx</source>
+      </version>
+      <version name="0.7.1beta" author="Stephen Boyes" time="2024-05-02T19:10:43Z">
+        <changelog><![CDATA[- New Meter]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/4aeed5fe6a61bc4c2bcb69d965a2b23f3f421d41/Distortion/Hard%20AntiDerivative%20AntiAliasing%20Clipper.jsfx</source>
+      </version>
+      <version name="0.7.2beta" author="Stephen Boyes" time="2024-07-31T10:22:06Z">
+        <changelog><![CDATA[- rectangular function prep work]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/65cb0a24e52909accb1416475a2b9200a1337954/Distortion/Hard%20AntiDerivative%20AntiAliasing%20Clipper.jsfx</source>
+      </version>
+      <version name="0.9.0beta" author="Stephen Boyes" time="2024-07-31T16:52:13Z">
+        <changelog><![CDATA[- rectangular function working
+- now one of the best non oversampling hard clippers available]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/8c54a5fda665547b091248b72dc68df5bc252518/Distortion/Hard%20AntiDerivative%20AntiAliasing%20Clipper.jsfx</source>
+      </version>
+      <version name="0.9.9beta" author="Stephen Boyes" time="2024-08-02T15:40:40Z">
+        <changelog><![CDATA[- rectangular function working
+- now one of the best non oversampling hard clippers available]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/4fc95e7ba7c62e77bdda15daed04769e2d18e3d4/Distortion/Hard%20AntiDerivative%20AntiAliasing%20Clipper.jsfx</source>
+      </version>
+      <version name="1.0.0" author="Stephen Boyes" time="2024-08-03T12:53:15Z">
+        <changelog><![CDATA[- rectangular function working
+- now one of the best non oversampling hard clippers available]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/d014bb37ee805e53be91c44a969a830ffd4e9fab/Distortion/Hard%20AntiDerivative%20AntiAliasing%20Clipper.jsfx</source>
+      </version>
+      <version name="1.0.1" author="Stephen Boyes" time="2024-08-22T11:41:08Z">
+        <changelog><![CDATA[- CPU boost
+- now one of the best non oversampling hard clippers available]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a18cf880423e12e175f086e3327cbfa332d8d42e/Distortion/Hard%20AntiDerivative%20AntiAliasing%20Clipper.jsfx</source>
+      </version>
+      <version name="1.0.2" author="Stephen Boyes" time="2025-03-26T19:18:53Z">
+        <changelog><![CDATA[- Improve GUI scaling]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/942aaff88161aff2802bac91e03ffa6e0adfacbe/Distortion/Hard%20AntiDerivative%20AntiAliasing%20Clipper.jsfx</source>
+      </version>
+      <version name="1.0.3" author="Stephen Boyes" time="2025-04-09T20:21:42Z">
+        <changelog><![CDATA[- Improve headroom calculation]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/224f5cb37245ba29e517e0fc95f7dd8b2586eb77/Distortion/Hard%20AntiDerivative%20AntiAliasing%20Clipper.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Octave Fuzz.jsfx" type="effect" desc="Octave Fuzz">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Octave Fuzz\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Full Wave rectifier type effect can make some signals appear octave higher, but using distortion. Best used on monophonic sounds, or power chords! High frequency transients should pass through almmost untouched, so you can mangle a vocal, into a chipmunk/gnome/elf and still hear the esses!\par}
+}
+]]></description>
+      </metadata>
+      <version name="0.5.0beta" author="Stephen Boyes" time="2024-07-13T20:06:39Z">
+        <changelog><![CDATA[- beta v0.5.0beta]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/ba149702de898318fb6c2346bfb93206e6791d6b/Distortion/Octave%20Fuzz.jsfx</source>
+      </version>
+      <version name="1.0.0" author="Stephen Boyes" time="2024-08-15T17:45:16Z">
+        <changelog><![CDATA[- v1.0.0]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/07b1201aa5ce6ce44ad0c379ffb5232082636eef/Distortion/Octave%20Fuzz.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Retro Distortion.jsfx" type="effect" desc="Retro Distortion">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Retro Distortion\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Versatile saturation/distortion effect. Three stages of non-linear distortion one - tanh soft clipper two - a blend of 2nd harmonic and a distortion that works at all signal levels! three - tanh soft clipper Controls - . Headroom Less headroom = more distortion from clippers and optional 2nd harmonic. . Distortion More 2nd harmonic and/or dynamic variable distortion. . Dynamic Mix Blends in the dynamic variable distortion. . out gain Output level\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.2.1" author="Stephen Boyes" time="2024-01-19T11:56:01Z">
+        <changelog><![CDATA[- first github release]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/8dba2e418041f9f69d2b734d3708d9331adaf2d0/Distortion/Retro%20Distortion.jsfx</source>
+      </version>
+      <version name="1.2.2" author="Stephen Boyes" time="2024-01-20T22:40:37Z">
+        <changelog><![CDATA[- first github release
+- add about info]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/af4d769d8d7c8e33d9fa1f95dda19c8c36fb2e91/Distortion/Retro%20Distortion.jsfx</source>
+      </version>
+      <version name="2.0.0" author="Stephen Boyes" time="2024-05-02T19:03:12Z">
+        <changelog><![CDATA[- first github release
+- add about info
+- add GUI]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/0998efebef606e273b273bf557289293be99fba1/Distortion/Retro%20Distortion.jsfx</source>
+        <source file="Retro_Distortion/DistortionBackground.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/0998efebef606e273b273bf557289293be99fba1/Distortion/Retro_Distortion/DistortionBackground.png</source>
+        <source file="Retro_Distortion/RetroDistortionKnob 90x90.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/0998efebef606e273b273bf557289293be99fba1/Distortion/Retro_Distortion/RetroDistortionKnob%2090x90.png</source>
+        <source file="Retro_Distortion/RetroDistortionText.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/0998efebef606e273b273bf557289293be99fba1/Distortion/Retro_Distortion/RetroDistortionText.png</source>
+      </version>
+      <version name="2.1.0" author="Stephen Boyes" time="2024-07-14T11:56:27Z">
+        <changelog><![CDATA[- Avoid LF roll off at high samplerates]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/1587e471f65e052766a88afdfbf2514cc5406486/Distortion/Retro%20Distortion.jsfx</source>
+      </version>
+      <version name="2.1.1" author="Stephen Boyes" time="2024-08-22T10:15:37Z">
+        <changelog><![CDATA[- Avoid LF roll off at high samplerates]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/14940c65e90a4b8fd14b546c7aef55eb71290072/Distortion/Retro%20Distortion.jsfx</source>
+      </version>
+      <version name="2.1.2" author="Stephen Boyes" time="2024-08-22T10:29:25Z">
+        <changelog><![CDATA[- Download missing png files]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/e152bbf2ad63545458ecc6efcab25aea742f0cff/Distortion/Retro%20Distortion.jsfx</source>
+      </version>
+      <version name="2.1.3" author="Stephen Boyes" time="2024-08-22T10:40:09Z">
+        <changelog><![CDATA[- Please Download missing png files]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/8c266ced21b98b3e0a81115e0a0124f923b47ac7/Distortion/Retro%20Distortion.jsfx</source>
+      </version>
+      <version name="2.1.4" author="Stephen Boyes" time="2024-08-22T10:59:09Z">
+        <changelog><![CDATA[- Please Download missing png files]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/7193edd954f63670a161f74d466b5db1ac93b1a4/Distortion/Retro%20Distortion.jsfx</source>
+        <source file="Retro_Distortion/RetroDistortionText.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/7193edd954f63670a161f74d466b5db1ac93b1a4/Distortion/Retro_Distortion/RetroDistortionText.png</source>
+      </version>
+      <version name="2.1.5" author="Stephen Boyes" time="2024-08-22T11:03:24Z">
+        <changelog><![CDATA[- Please Download missing png files]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/84f90fdca25730760671eab449ed67b6ee18bcd0/Distortion/Retro%20Distortion.jsfx</source>
+        <source file="Retro_Distortion/RetroDistortionText.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/84f90fdca25730760671eab449ed67b6ee18bcd0/Distortion/Retro_Distortion/RetroDistortionText.png</source>
+      </version>
+      <version name="2.1.6" author="Stephen Boyes" time="2024-08-22T11:08:25Z">
+        <changelog><![CDATA[- CPU boost]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bd8aa11d0910dd4df089517f2a4dbcd9e01fad3a/Distortion/Retro%20Distortion.jsfx</source>
+        <source file="Retro_Distortion/RetroDistortionText.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bd8aa11d0910dd4df089517f2a4dbcd9e01fad3a/Distortion/Retro_Distortion/RetroDistortionText.png</source>
+      </version>
+      <version name="2.1.7" author="Stephen Boyes" time="2024-08-22T11:15:59Z">
+        <changelog><![CDATA[- GUI download missing png files]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/add7d8e3489ef23e544b261205672ad9a6eacb92/Distortion/Retro%20Distortion.jsfx</source>
+        <source file="Retro_Distortion/DistortionBackground.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/add7d8e3489ef23e544b261205672ad9a6eacb92/Distortion/Retro_Distortion/DistortionBackground.png</source>
+        <source file="Retro_Distortion/RetroDistortionKnob 90x90.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/add7d8e3489ef23e544b261205672ad9a6eacb92/Distortion/Retro_Distortion/RetroDistortionKnob%2090x90.png</source>
+        <source file="Retro_Distortion/RetroDistortionText.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/add7d8e3489ef23e544b261205672ad9a6eacb92/Distortion/Retro_Distortion/RetroDistortionText.png</source>
+      </version>
+    </reapack>
+    <reapack name="Retro Fuzz.jsfx" type="effect" desc="Retro Fuzz [V2]">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 Retro Fuzz\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 High gain distortion. easy to use.\par}
+}
+]]></description>
+      </metadata>
+      <version name="2.0.0pre1" author="Stephen Boyes" time="2024-01-14T18:13:57Z">
+        <changelog><![CDATA[- Total rewrite of all code for version 2
+- First github version]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/28d77b6de98dc8fe437ffbaf75ca9d4cb173106e/Distortion/Retro%20Fuzz.jsfx</source>
+      </version>
+      <version name="2.0.0pre2" author="Stephen Boyes" time="2024-01-14T22:40:35Z">
+        <changelog><![CDATA[- New diode clip improves CPU and reduces second derivitive discontinuity]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/9ad1483f866d8c651ecfe060bc1def5cd56fe76d/Distortion/Retro%20Fuzz.jsfx</source>
+      </version>
+      <version name="2.0.0" author="Stephen Boyes" time="2024-01-17T10:49:41Z">
+        <changelog><![CDATA[- Use exp() instead of $e^]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/dd57ec9d139ce81d702301fc25738b91308fb7e7/Distortion/Retro%20Fuzz.jsfx</source>
+      </version>
+      <version name="2.1.0" author="Stephen Boyes" time="2024-02-19T22:25:04Z">
+        <changelog><![CDATA[- GUI!!!]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a05b97f9169326465b7f48c85ef3e6bf5c1f5af5/Distortion/Retro%20Fuzz.jsfx</source>
+      </version>
+      <version name="2.1.1" author="Stephen Boyes" time="2024-02-25T19:43:04Z">
+        <changelog><![CDATA[- fix GUI]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/087779ac86c3c93a24d5ad21139fdd92daf9c8a0/Distortion/Retro%20Fuzz.jsfx</source>
+      </version>
+      <version name="2.1.2" author="Stephen Boyes" time="2024-06-08T17:16:07Z">
+        <changelog><![CDATA[- fix GUI]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/3261da1bc38c8779910fcc8aa0c57e96ee39e5f5/Distortion/Retro%20Fuzz.jsfx</source>
+      </version>
+      <version name="2.1.3" author="Stephen Boyes" time="2025-03-02T17:58:32Z">
+        <changelog><![CDATA[- fix GUI]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/6e177f0ebfa718152caefc16780176eaa1206a83/Distortion/Retro%20Fuzz.jsfx</source>
+        <source file="retro fuzz/fuzz.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/6e177f0ebfa718152caefc16780176eaa1206a83/Distortion/retro%20fuzz/fuzz.png</source>
+        <source file="retro fuzz/guitar_strat_fuzz.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/6e177f0ebfa718152caefc16780176eaa1206a83/Distortion/retro%20fuzz/guitar_strat_fuzz.png</source>
+        <source file="retro fuzz/guitar_strat_volume.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/6e177f0ebfa718152caefc16780176eaa1206a83/Distortion/retro%20fuzz/guitar_strat_volume.png</source>
+        <source file="retro fuzz/test.test">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/6e177f0ebfa718152caefc16780176eaa1206a83/Distortion/retro%20fuzz/test.test</source>
+      </version>
+    </reapack>
+    <reapack name="Retro Overdrive.jsfx" type="effect" desc="Retro Overdrive">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 my attempt at making a overdrive peddle driving a tube amp.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Add a speaker emulation for guitar tones or apply it to other sounds in your mix.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.2.0pre" time="2024-01-29T21:43:34Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/c074a1a2bffc40a953131b9626494bce952e5306/Distortion/Retro%20Overdrive.jsfx</source>
+      </version>
+      <version name="1.3.0" author="Stephen Boyes" time="2024-01-29T21:58:12Z">
+        <changelog><![CDATA[- v1.1 fix click from dc offset
+- v1.2 fix dc offset not always starting
+- v1.3.0 DC filter at 10Hz for all sample rates ]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/97bd899e8d7c114149d038e7b9b719b5e5d33a3d/Distortion/Retro%20Overdrive.jsfx</source>
+      </version>
+      <version name="1.3.1" author="Stephen Boyes" time="2024-01-29T22:03:42Z">
+        <changelog><![CDATA[- v1.1 fix click from dc offset
+- v1.2 fix dc offset not always starting
+- v1.3.0 DC filter at 10Hz for all sample rates
+- v1.3.1 Add about header]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bcc9dcea8d6d87ef2732029b86af440a1b54be94/Distortion/Retro%20Overdrive.jsfx</source>
+      </version>
+      <version name="2.0.0" author="Stephen Boyes" time="2024-04-30T20:20:58Z">
+        <changelog><![CDATA[- v1.1 fix click from dc offset
+- v1.2 fix dc offset not always starting
+- v1.3.0 DC filter at 10Hz for all sample rates
+- v1.3.1 Add about header
+- v1.3.2 non release GUI
+- v2.0.0 new GUI]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/e610ba2f064d4657b4096cc9b0039a6b8595835a/Distortion/Retro%20Overdrive.jsfx</source>
+      </version>
+      <version name="2.0.1" author="Stephen Boyes" time="2024-05-02T18:53:47Z">
+        <changelog><![CDATA[- v1.1 fix click from dc offset
+- v1.2 fix dc offset not always starting
+- v1.3.0 DC filter at 10Hz for all sample rates
+- v1.3.1 Add about header
+- v1.3.2 non release GUI
+- v2.0.0 new GUI
+- v2.0.1 Fixed slider bug]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/ed833c7fe3ddea3965cb9395460a23899e5b3f8e/Distortion/Retro%20Overdrive.jsfx</source>
+      </version>
+      <version name="2.0.3" author="Stephen Boyes" time="2025-04-04T09:59:28Z">
+        <changelog><![CDATA[- v1.1 fix click from dc offset
+- v1.2 fix dc offset not always starting
+- v1.3.0 DC filter at 10Hz for all sample rates
+- v1.3.1 Add about header
+- v1.3.2 non release GUI
+- v2.0.0 new GUI
+- v2.0.1 Fixed slider bug
+- v2.0.3 Atempt fix for png files not found]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/e5a5b62612f6a77a358fe9b605920760398d2adc/Distortion/Retro%20Overdrive.jsfx</source>
+        <source file="Retro_Overdrivre/RetroOverdrive background.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/e5a5b62612f6a77a358fe9b605920760398d2adc/Distortion/Retro_Overdrivre/RetroOverdrive%20background.png</source>
+        <source file="Retro_Overdrivre/RetroOverdrive knob 90x90.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/e5a5b62612f6a77a358fe9b605920760398d2adc/Distortion/Retro_Overdrivre/RetroOverdrive%20knob%2090x90.png</source>
+        <source file="Retro_Overdrivre/RetroOverdrive text.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/e5a5b62612f6a77a358fe9b605920760398d2adc/Distortion/Retro_Overdrivre/RetroOverdrive%20text.png</source>
+      </version>
+      <version name="2.0.5" author="Stephen Boyes" time="2025-04-04T10:36:16Z">
+        <changelog><![CDATA[- v1.1 fix click from dc offset
+- v1.2 fix dc offset not always starting
+- v1.3.0 DC filter at 10Hz for all sample rates
+- v1.3.1 Add about header
+- v1.3.2 non release GUI
+- v2.0.0 new GUI
+- v2.0.1 Fixed slider bug
+- v2.0.5 Atempt fix for png files not found]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2f3eab035fa654e6527b2fc8a97b1543be6da522/Distortion/Retro%20Overdrive.jsfx</source>
+        <source file="Retro_Overdrivre/RetroOverdrive background.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2f3eab035fa654e6527b2fc8a97b1543be6da522/Distortion/Retro_Overdrivre/RetroOverdrive%20background.png</source>
+        <source file="Retro_Overdrivre/RetroOverdrive text.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2f3eab035fa654e6527b2fc8a97b1543be6da522/Distortion/Retro_Overdrivre/RetroOverdrive%20text.png</source>
+        <source file="Retro_Overdrivre/RetroOverdrive knob 90x90.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2f3eab035fa654e6527b2fc8a97b1543be6da522/Distortion/Retro_Overdrivre/RetroOverdrive%20knob%2090x90.png</source>
+      </version>
+      <version name="2.0.6" author="Stephen Boyes" time="2025-04-04T10:59:46Z">
+        <changelog><![CDATA[- v1.1 fix click from dc offset
+- v1.2 fix dc offset not always starting
+- v1.3.0 DC filter at 10Hz for all sample rates
+- v1.3.1 Add about header
+- v1.3.2 non release GUI
+- v2.0.0 new GUI
+- v2.0.1 Fixed slider bug
+- v2.0.6 fix for png files not found typo]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/08d044dc1720ed5762c02eab4092449766a8abfd/Distortion/Retro%20Overdrive.jsfx</source>
+        <source file="Retro_Overdrive/RetroOverdrive background.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/08d044dc1720ed5762c02eab4092449766a8abfd/Distortion/Retro_Overdrive/RetroOverdrive%20background.png</source>
+        <source file="Retro_Overdrive/RetroOverdrive text.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/08d044dc1720ed5762c02eab4092449766a8abfd/Distortion/Retro_Overdrive/RetroOverdrive%20text.png</source>
+        <source file="Retro_Overdrive/RetroOverdrive knob 90x90.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/08d044dc1720ed5762c02eab4092449766a8abfd/Distortion/Retro_Overdrive/RetroOverdrive%20knob%2090x90.png</source>
+      </version>
+    </reapack>
+  </category>
+  <category name="Dynamics">
+    <reapack name="Blue Vocal Compressor.jsfx" type="effect" desc="Blue Vocal Compressor (beta)">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Blue Vocal Compressor (beta)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Smooth clean Opto compressor/limiter with ratio, attack, release controls and featuring colourfull output stage Controls... input gain : input gainstaging less ess : feed high frquency transients to the detector to prevent ess sounds getting louder Compression Drive : Increases compression, output compensated Output Drive : Push the output stage harder for more dirt and colour Compress - Limit : Compress = feedback 2:1 Limit = Feedforward inf:1 Attack time : Aprox time for full gain reduction Release Time : Aprox time for gain reduction to return to 0dB after level drops exact release time is dependant on amount of gain reduction and length of time in compression\par}
+}
+]]></description>
+      </metadata>
+      <version name="0.1.0beta" author="Stephen Boyes" time="2024-08-26T19:50:05Z">
+        <changelog><![CDATA[- new code based on limit smash
+- new output stage]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/c048b1d17223d9ccbc84b7bb5590cfa79192603c/Dynamics/Blue%20Vocal%20Compressor.jsfx</source>
+      </version>
+      <version name="0.2.0beta" author="Stephen Boyes" time="2024-08-27T20:58:44Z">
+        <changelog><![CDATA[- new code based on limit smash
+- new output stage
+- GUI scaling
+- Adjust Release behaviour]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/47ed4fb5e0452c5bb2c1fe7184fb08de87808325/Dynamics/Blue%20Vocal%20Compressor.jsfx</source>
+      </version>
+      <version name="0.2.1beta" author="Stephen Boyes" time="2024-08-28T20:33:31Z">
+        <changelog><![CDATA[- new code based on limit smash
+- new output stage
+- GUI scaling
+- Adjust Release behaviour
+- GUI elements now downloaded
+- GUI controls not operating yet]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/b1407b502f2fe6f04e3f77970529a278a37b8903/Dynamics/Blue%20Vocal%20Compressor.jsfx</source>
+        <source file="Blue_Vocal_Compressor/ChiControl.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/b1407b502f2fe6f04e3f77970529a278a37b8903/Dynamics/Blue_Vocal_Compressor/ChiControl.png</source>
+        <source file="Blue_Vocal_Compressor/GUI_version_1.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/b1407b502f2fe6f04e3f77970529a278a37b8903/Dynamics/Blue_Vocal_Compressor/GUI_version_1.jsfx-inc</source>
+        <source file="Blue_Vocal_Compressor/Vintage_PPM_meter.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/b1407b502f2fe6f04e3f77970529a278a37b8903/Dynamics/Blue_Vocal_Compressor/Vintage_PPM_meter.png</source>
+        <source file="Blue_Vocal_Compressor/st-oversampler.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/b1407b502f2fe6f04e3f77970529a278a37b8903/Dynamics/Blue_Vocal_Compressor/st-oversampler.jsfx-inc</source>
+        <source file="Blue_Vocal_Compressor/test.txt">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/b1407b502f2fe6f04e3f77970529a278a37b8903/Dynamics/Blue_Vocal_Compressor/test.txt</source>
+      </version>
+      <version name="0.4.0beta" author="Stephen Boyes" time="2024-08-30T11:35:53Z">
+        <changelog><![CDATA[- GUI updates
+- output stage update]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/9d09d833074cbfcac0c8a55091332246bb9fae02/Dynamics/Blue%20Vocal%20Compressor.jsfx</source>
+        <source file="Blue_Vocal_Compressor/ChiControl.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/9d09d833074cbfcac0c8a55091332246bb9fae02/Dynamics/Blue_Vocal_Compressor/ChiControl.png</source>
+        <source file="Blue_Vocal_Compressor/GUI_version_1.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/9d09d833074cbfcac0c8a55091332246bb9fae02/Dynamics/Blue_Vocal_Compressor/GUI_version_1.jsfx-inc</source>
+        <source file="Blue_Vocal_Compressor/Vintage_PPM_meter.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/9d09d833074cbfcac0c8a55091332246bb9fae02/Dynamics/Blue_Vocal_Compressor/Vintage_PPM_meter.png</source>
+        <source file="Blue_Vocal_Compressor/st-oversampler.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/9d09d833074cbfcac0c8a55091332246bb9fae02/Dynamics/Blue_Vocal_Compressor/st-oversampler.jsfx-inc</source>
+      </version>
+      <version name="0.5.0beta" author="Stephen Boyes" time="2024-08-30T15:21:49Z">
+        <changelog><![CDATA[- GUI bug fix
+- output stage update]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a00c1ed95cf12198d2cf1125da113acedc658fc9/Dynamics/Blue%20Vocal%20Compressor.jsfx</source>
+        <source file="Blue_Vocal_Compressor/ChiControl.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a00c1ed95cf12198d2cf1125da113acedc658fc9/Dynamics/Blue_Vocal_Compressor/ChiControl.png</source>
+        <source file="Blue_Vocal_Compressor/GUI_version_1.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a00c1ed95cf12198d2cf1125da113acedc658fc9/Dynamics/Blue_Vocal_Compressor/GUI_version_1.jsfx-inc</source>
+        <source file="Blue_Vocal_Compressor/Vintage_PPM_meter.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a00c1ed95cf12198d2cf1125da113acedc658fc9/Dynamics/Blue_Vocal_Compressor/Vintage_PPM_meter.png</source>
+        <source file="Blue_Vocal_Compressor/st-oversampler.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a00c1ed95cf12198d2cf1125da113acedc658fc9/Dynamics/Blue_Vocal_Compressor/st-oversampler.jsfx-inc</source>
+      </version>
+      <version name="0.5.1beta" author="Stephen Boyes" time="2024-11-12T11:45:00Z">
+        <changelog><![CDATA[- tidy code]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/02c9b4505127119c21c8cf3cf76a0e618041412d/Dynamics/Blue%20Vocal%20Compressor.jsfx</source>
+        <source file="Blue_Vocal_Compressor/ChiControl.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/02c9b4505127119c21c8cf3cf76a0e618041412d/Dynamics/Blue_Vocal_Compressor/ChiControl.png</source>
+        <source file="Blue_Vocal_Compressor/GUI_version_1.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/02c9b4505127119c21c8cf3cf76a0e618041412d/Dynamics/Blue_Vocal_Compressor/GUI_version_1.jsfx-inc</source>
+        <source file="Blue_Vocal_Compressor/Vintage_PPM_meter.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/02c9b4505127119c21c8cf3cf76a0e618041412d/Dynamics/Blue_Vocal_Compressor/Vintage_PPM_meter.png</source>
+        <source file="Blue_Vocal_Compressor/st-oversampler.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/02c9b4505127119c21c8cf3cf76a0e618041412d/Dynamics/Blue_Vocal_Compressor/st-oversampler.jsfx-inc</source>
+      </version>
+    </reapack>
+    <reapack name="HQ Track Compressor.jsfx" type="effect" desc="HQ Track Compressor (beta)">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 HQ Track Compressor\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 A normal compressor! featuring a subtle input stage and compression that behaves well even with fast attack and no oversampling. Featuring Anti-Derivative Anti-Aliaising sidechain elements, this is well suited to to the rectifing and hard knee compression components.\par}
+}
+]]></description>
+      </metadata>
+      <version name="0.1.0beta" author="Stephen Boyes" time="2024-04-29T20:35:28Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/073fb691480976882c6f25c9772eb068ad14e898/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+      </version>
+      <version name="0.1.4beta" author="Stephen Boyes" time="2024-05-29T11:51:38Z">
+        <changelog><![CDATA[- changes to divide by zero fallback]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/80ee7628e3d3cf58383726add7f9d5ee08f622aa/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+      </version>
+      <version name="0.2.0beta" author="Stephen Boyes" time="2024-05-30T12:06:21Z">
+        <changelog><![CDATA[- changes to divide by zero fallback
+- Input saturation control]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2e1993360cea266385e7d59c36fcbc61ebb1bf55/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+      </version>
+      <version name="0.2.1beta" author="Stephen Boyes" time="2024-06-02T21:42:12Z">
+        <changelog><![CDATA[- changes to divide by zero fallback
+- Input saturation control]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/dccc926d11c95a342bcff6f6bd52f09dc4e7eb0a/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+      </version>
+      <version name="0.2.2beta" author="Stephen Boyes" time="2024-06-07T16:36:58Z">
+        <changelog><![CDATA[- more powerfull saturation control
+- Randomize stuff]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/be5cfe916b5aadd4165eb34dcab7fa6c7970b600/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+      </version>
+      <version name="0.2.3beta" author="Stephen Boyes" time="2024-07-05T15:02:51Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2f3a76b64adc82a91a966e6c2729e90b7f228f64/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+      </version>
+      <version name="0.2.4beta" author="Stephen Boyes" time="2024-07-05T16:02:23Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/e9455f4396733a1a1c851822de2356f3ed326ef3/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+      </version>
+      <version name="0.2.5beta" author="Stephen Boyes" time="2024-07-05T16:45:20Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/1f722f7e436a8065aed8a3872f78c28353a86721/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+      </version>
+      <version name="0.2.6beta" author="Stephen Boyes" time="2024-07-05T16:58:11Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/b2593b12041dc9b3874e3b70778df36532fceb45/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+      </version>
+      <version name="0.2.8beta" author="Stephen Boyes" time="2024-07-06T18:12:17Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/c9e29f711a450d7cb5dae9df048b89696875a380/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+      </version>
+      <version name="0.3.0beta" author="Stephen Boyes" time="2024-07-09T11:41:27Z">
+        <changelog><![CDATA[- beta GUI]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/560697bfa7ba67b89c8d78dbadcedbe954595373/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+      </version>
+      <version name="0.3.1beta" author="Stephen Boyes" time="2024-07-09T12:01:23Z">
+        <changelog><![CDATA[- beta GUI]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/ca1df7c34467d75b2be1b2cf02c570b07786fdca/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+      </version>
+      <version name="0.3.2beta" author="Stephen Boyes" time="2024-07-10T13:20:15Z">
+        <changelog><![CDATA[- beta GUI]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/d4c0d8c83d77b46982347725e8d19088ad10a681/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+      </version>
+      <version name="0.3.3beta" author="Stephen Boyes" time="2024-07-11T10:50:56Z">
+        <changelog><![CDATA[- beta GUI]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a6fab5739809b4a20aa5debd445e7315837ac367/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+        <source file="HQ_Track_Compressor/HQcomp_back.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a6fab5739809b4a20aa5debd445e7315837ac367/Dynamics/HQ_Track_Compressor/HQcomp_back.png</source>
+        <source file="HQ_Track_Compressor/Simple_blue.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a6fab5739809b4a20aa5debd445e7315837ac367/Dynamics/HQ_Track_Compressor/Simple_blue.png</source>
+        <source file="HQ_Track_Compressor/Simple_red.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a6fab5739809b4a20aa5debd445e7315837ac367/Dynamics/HQ_Track_Compressor/Simple_red.png</source>
+        <source file="HQ_Track_Compressor/Simple_silver.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a6fab5739809b4a20aa5debd445e7315837ac367/Dynamics/HQ_Track_Compressor/Simple_silver.png</source>
+        <source file="HQ_Track_Compressor/Vintage_PPM_meter.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a6fab5739809b4a20aa5debd445e7315837ac367/Dynamics/HQ_Track_Compressor/Vintage_PPM_meter.png</source>
+      </version>
+      <version name="0.3.6beta" author="Stephen Boyes" time="2024-07-13T12:34:14Z">
+        <changelog><![CDATA[- beta GUI
+- input sat changes]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/667c2f8cc9a2e8afec25204d10934516fa299831/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+        <source file="HQ_Track_Compressor/HQcomp_back.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/667c2f8cc9a2e8afec25204d10934516fa299831/Dynamics/HQ_Track_Compressor/HQcomp_back.png</source>
+        <source file="HQ_Track_Compressor/Simple_blue.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/667c2f8cc9a2e8afec25204d10934516fa299831/Dynamics/HQ_Track_Compressor/Simple_blue.png</source>
+        <source file="HQ_Track_Compressor/Simple_red.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/667c2f8cc9a2e8afec25204d10934516fa299831/Dynamics/HQ_Track_Compressor/Simple_red.png</source>
+        <source file="HQ_Track_Compressor/Simple_silver.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/667c2f8cc9a2e8afec25204d10934516fa299831/Dynamics/HQ_Track_Compressor/Simple_silver.png</source>
+        <source file="HQ_Track_Compressor/Vintage_PPM_meter.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/667c2f8cc9a2e8afec25204d10934516fa299831/Dynamics/HQ_Track_Compressor/Vintage_PPM_meter.png</source>
+      </version>
+      <version name="0.3.7beta" author="Stephen Boyes" time="2024-07-14T12:27:06Z">
+        <changelog><![CDATA[- beta GUI
+- GUI resize]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/23823b22e51afc3708b552d784203398561ff371/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+        <source file="HQ_Track_Compressor/HQcomp_back.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/23823b22e51afc3708b552d784203398561ff371/Dynamics/HQ_Track_Compressor/HQcomp_back.png</source>
+        <source file="HQ_Track_Compressor/Simple_blue.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/23823b22e51afc3708b552d784203398561ff371/Dynamics/HQ_Track_Compressor/Simple_blue.png</source>
+        <source file="HQ_Track_Compressor/Simple_red.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/23823b22e51afc3708b552d784203398561ff371/Dynamics/HQ_Track_Compressor/Simple_red.png</source>
+        <source file="HQ_Track_Compressor/Simple_silver.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/23823b22e51afc3708b552d784203398561ff371/Dynamics/HQ_Track_Compressor/Simple_silver.png</source>
+        <source file="HQ_Track_Compressor/Vintage_PPM_meter.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/23823b22e51afc3708b552d784203398561ff371/Dynamics/HQ_Track_Compressor/Vintage_PPM_meter.png</source>
+      </version>
+      <version name="0.3.9beta" author="Stephen Boyes" time="2024-07-29T18:23:10Z">
+        <changelog><![CDATA[- beta GUI
+- GUI resize]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2ba8af53bb894436d94413e5fd4b35800928cc01/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+        <source file="HQ_Track_Compressor/HQcomp_back.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2ba8af53bb894436d94413e5fd4b35800928cc01/Dynamics/HQ_Track_Compressor/HQcomp_back.png</source>
+        <source file="HQ_Track_Compressor/Simple_blue.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2ba8af53bb894436d94413e5fd4b35800928cc01/Dynamics/HQ_Track_Compressor/Simple_blue.png</source>
+        <source file="HQ_Track_Compressor/Simple_red.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2ba8af53bb894436d94413e5fd4b35800928cc01/Dynamics/HQ_Track_Compressor/Simple_red.png</source>
+        <source file="HQ_Track_Compressor/Simple_silver.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2ba8af53bb894436d94413e5fd4b35800928cc01/Dynamics/HQ_Track_Compressor/Simple_silver.png</source>
+        <source file="HQ_Track_Compressor/Vintage_PPM_meter.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2ba8af53bb894436d94413e5fd4b35800928cc01/Dynamics/HQ_Track_Compressor/Vintage_PPM_meter.png</source>
+      </version>
+      <version name="0.4.0beta" author="Stephen Boyes" time="2024-07-30T16:32:56Z">
+        <changelog><![CDATA[- Fix bug in fallback]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/1af74f2e3e5a45cbd2b1192e9672fc3913b099e4/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+        <source file="HQ_Track_Compressor/HQcomp_back.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/1af74f2e3e5a45cbd2b1192e9672fc3913b099e4/Dynamics/HQ_Track_Compressor/HQcomp_back.png</source>
+        <source file="HQ_Track_Compressor/Simple_blue.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/1af74f2e3e5a45cbd2b1192e9672fc3913b099e4/Dynamics/HQ_Track_Compressor/Simple_blue.png</source>
+        <source file="HQ_Track_Compressor/Simple_red.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/1af74f2e3e5a45cbd2b1192e9672fc3913b099e4/Dynamics/HQ_Track_Compressor/Simple_red.png</source>
+        <source file="HQ_Track_Compressor/Simple_silver.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/1af74f2e3e5a45cbd2b1192e9672fc3913b099e4/Dynamics/HQ_Track_Compressor/Simple_silver.png</source>
+        <source file="HQ_Track_Compressor/Vintage_PPM_meter.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/1af74f2e3e5a45cbd2b1192e9672fc3913b099e4/Dynamics/HQ_Track_Compressor/Vintage_PPM_meter.png</source>
+      </version>
+      <version name="0.4.2beta" author="Stephen Boyes" time="2024-07-31T11:15:41Z">
+        <changelog><![CDATA[- experimental bug fix]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bdf5e21196834f9ec4ea8a3155d390c1802b83ee/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+        <source file="HQ_Track_Compressor/HQcomp_back.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bdf5e21196834f9ec4ea8a3155d390c1802b83ee/Dynamics/HQ_Track_Compressor/HQcomp_back.png</source>
+        <source file="HQ_Track_Compressor/Simple_blue.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bdf5e21196834f9ec4ea8a3155d390c1802b83ee/Dynamics/HQ_Track_Compressor/Simple_blue.png</source>
+        <source file="HQ_Track_Compressor/Simple_red.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bdf5e21196834f9ec4ea8a3155d390c1802b83ee/Dynamics/HQ_Track_Compressor/Simple_red.png</source>
+        <source file="HQ_Track_Compressor/Simple_silver.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bdf5e21196834f9ec4ea8a3155d390c1802b83ee/Dynamics/HQ_Track_Compressor/Simple_silver.png</source>
+        <source file="HQ_Track_Compressor/Vintage_PPM_meter.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/bdf5e21196834f9ec4ea8a3155d390c1802b83ee/Dynamics/HQ_Track_Compressor/Vintage_PPM_meter.png</source>
+      </version>
+      <version name="0.5.0beta" author="Stephen Boyes" time="2024-07-31T15:37:02Z">
+        <changelog><![CDATA[- GUI bug fix]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2719496887f47ba35f9511098318eb3139517cc9/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+        <source file="HQ_Track_Compressor/HQcomp_back.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2719496887f47ba35f9511098318eb3139517cc9/Dynamics/HQ_Track_Compressor/HQcomp_back.png</source>
+        <source file="HQ_Track_Compressor/Simple_blue.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2719496887f47ba35f9511098318eb3139517cc9/Dynamics/HQ_Track_Compressor/Simple_blue.png</source>
+        <source file="HQ_Track_Compressor/Simple_red.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2719496887f47ba35f9511098318eb3139517cc9/Dynamics/HQ_Track_Compressor/Simple_red.png</source>
+        <source file="HQ_Track_Compressor/Simple_silver.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2719496887f47ba35f9511098318eb3139517cc9/Dynamics/HQ_Track_Compressor/Simple_silver.png</source>
+        <source file="HQ_Track_Compressor/Vintage_PPM_meter.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2719496887f47ba35f9511098318eb3139517cc9/Dynamics/HQ_Track_Compressor/Vintage_PPM_meter.png</source>
+      </version>
+      <version name="0.5.1beta" author="Stephen Boyes" time="2024-08-01T11:19:52Z">
+        <changelog><![CDATA[- log scaling sliders]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/5a532f37985192eaa5eaa34708798cd8f068d153/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+        <source file="HQ_Track_Compressor/HQcomp_back.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/5a532f37985192eaa5eaa34708798cd8f068d153/Dynamics/HQ_Track_Compressor/HQcomp_back.png</source>
+        <source file="HQ_Track_Compressor/Simple_blue.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/5a532f37985192eaa5eaa34708798cd8f068d153/Dynamics/HQ_Track_Compressor/Simple_blue.png</source>
+        <source file="HQ_Track_Compressor/Simple_red.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/5a532f37985192eaa5eaa34708798cd8f068d153/Dynamics/HQ_Track_Compressor/Simple_red.png</source>
+        <source file="HQ_Track_Compressor/Simple_silver.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/5a532f37985192eaa5eaa34708798cd8f068d153/Dynamics/HQ_Track_Compressor/Simple_silver.png</source>
+        <source file="HQ_Track_Compressor/Vintage_PPM_meter.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/5a532f37985192eaa5eaa34708798cd8f068d153/Dynamics/HQ_Track_Compressor/Vintage_PPM_meter.png</source>
+      </version>
+      <version name="0.5.2beta" author="Stephen Boyes" time="2024-08-01T11:48:54Z">
+        <changelog><![CDATA[- log scaling sliders]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/03de19adce7472209a3a3a2374af8bd6b7fa0e56/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+        <source file="HQ_Track_Compressor/HQcomp_back.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/03de19adce7472209a3a3a2374af8bd6b7fa0e56/Dynamics/HQ_Track_Compressor/HQcomp_back.png</source>
+        <source file="HQ_Track_Compressor/Simple_blue.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/03de19adce7472209a3a3a2374af8bd6b7fa0e56/Dynamics/HQ_Track_Compressor/Simple_blue.png</source>
+        <source file="HQ_Track_Compressor/Simple_red.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/03de19adce7472209a3a3a2374af8bd6b7fa0e56/Dynamics/HQ_Track_Compressor/Simple_red.png</source>
+        <source file="HQ_Track_Compressor/Simple_silver.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/03de19adce7472209a3a3a2374af8bd6b7fa0e56/Dynamics/HQ_Track_Compressor/Simple_silver.png</source>
+        <source file="HQ_Track_Compressor/Vintage_PPM_meter.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/03de19adce7472209a3a3a2374af8bd6b7fa0e56/Dynamics/HQ_Track_Compressor/Vintage_PPM_meter.png</source>
+      </version>
+      <version name="0.5.5beta" author="Stephen Boyes" time="2024-08-02T19:58:44Z">
+        <changelog><![CDATA[- log scaling sliders
+- GUI markings]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a1ab851f7f99d5709dd905105d418c149c3c6558/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+        <source file="HQ_Track_Compressor/HQcomp_back.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a1ab851f7f99d5709dd905105d418c149c3c6558/Dynamics/HQ_Track_Compressor/HQcomp_back.png</source>
+        <source file="HQ_Track_Compressor/HQcomp_text.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a1ab851f7f99d5709dd905105d418c149c3c6558/Dynamics/HQ_Track_Compressor/HQcomp_text.png</source>
+        <source file="HQ_Track_Compressor/Simple_blue.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a1ab851f7f99d5709dd905105d418c149c3c6558/Dynamics/HQ_Track_Compressor/Simple_blue.png</source>
+        <source file="HQ_Track_Compressor/Simple_red.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a1ab851f7f99d5709dd905105d418c149c3c6558/Dynamics/HQ_Track_Compressor/Simple_red.png</source>
+        <source file="HQ_Track_Compressor/Simple_silver.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a1ab851f7f99d5709dd905105d418c149c3c6558/Dynamics/HQ_Track_Compressor/Simple_silver.png</source>
+        <source file="HQ_Track_Compressor/Vintage_PPM_meter.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a1ab851f7f99d5709dd905105d418c149c3c6558/Dynamics/HQ_Track_Compressor/Vintage_PPM_meter.png</source>
+      </version>
+      <version name="0.5.6beta" author="Stephen Boyes" time="2024-08-21T21:13:42Z">
+        <changelog><![CDATA[- log scaling sliders
+- GUI markings
+- CPU boost]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2f83438e907ee931cba5399aabbe72bb554ed969/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+        <source file="HQ_Track_Compressor/HQcomp_back.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2f83438e907ee931cba5399aabbe72bb554ed969/Dynamics/HQ_Track_Compressor/HQcomp_back.png</source>
+        <source file="HQ_Track_Compressor/HQcomp_text.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2f83438e907ee931cba5399aabbe72bb554ed969/Dynamics/HQ_Track_Compressor/HQcomp_text.png</source>
+        <source file="HQ_Track_Compressor/Simple_blue.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2f83438e907ee931cba5399aabbe72bb554ed969/Dynamics/HQ_Track_Compressor/Simple_blue.png</source>
+        <source file="HQ_Track_Compressor/Simple_red.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2f83438e907ee931cba5399aabbe72bb554ed969/Dynamics/HQ_Track_Compressor/Simple_red.png</source>
+        <source file="HQ_Track_Compressor/Simple_silver.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2f83438e907ee931cba5399aabbe72bb554ed969/Dynamics/HQ_Track_Compressor/Simple_silver.png</source>
+        <source file="HQ_Track_Compressor/Vintage_PPM_meter.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2f83438e907ee931cba5399aabbe72bb554ed969/Dynamics/HQ_Track_Compressor/Vintage_PPM_meter.png</source>
+      </version>
+      <version name="0.5.7beta" author="Stephen Boyes" time="2024-11-12T11:51:17Z">
+        <changelog><![CDATA[- reformat header]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/055ac900920c7c7dd7a86289f977f61587fb48bc/Dynamics/HQ%20Track%20Compressor.jsfx</source>
+        <source file="HQ_Track_Compressor/HQcomp_back.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/055ac900920c7c7dd7a86289f977f61587fb48bc/Dynamics/HQ_Track_Compressor/HQcomp_back.png</source>
+        <source file="HQ_Track_Compressor/HQcomp_text.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/055ac900920c7c7dd7a86289f977f61587fb48bc/Dynamics/HQ_Track_Compressor/HQcomp_text.png</source>
+        <source file="HQ_Track_Compressor/Simple_blue.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/055ac900920c7c7dd7a86289f977f61587fb48bc/Dynamics/HQ_Track_Compressor/Simple_blue.png</source>
+        <source file="HQ_Track_Compressor/Simple_red.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/055ac900920c7c7dd7a86289f977f61587fb48bc/Dynamics/HQ_Track_Compressor/Simple_red.png</source>
+        <source file="HQ_Track_Compressor/Simple_silver.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/055ac900920c7c7dd7a86289f977f61587fb48bc/Dynamics/HQ_Track_Compressor/Simple_silver.png</source>
+        <source file="HQ_Track_Compressor/Vintage_PPM_meter.png">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/055ac900920c7c7dd7a86289f977f61587fb48bc/Dynamics/HQ_Track_Compressor/Vintage_PPM_meter.png</source>
+      </version>
+    </reapack>
+    <reapack name="Limit Smash.jsfx" type="effect" desc="Limit smash [v3]">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Limit Smash\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Analogue style limiter with feedforward and feedback detectors Controls... Drive Amount : Increases compression Output Gain : Control the overall level Analogue - Digital : Analogue=feedback Digital=feedforward Release Time : Time for gain reduction to return to 0dB after level drops\par}
+}
+]]></description>
+      </metadata>
+      <version name="3.1.1" author="Stephen Boyes" time="2024-01-18T11:40:28Z">
+        <changelog><![CDATA[- Fix coeficient calculations
+- First github version]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/9607780d21f8cd6a68c4efa9031714a8762e80f9/Dynamics/Limit%20Smash.jsfx</source>
+      </version>
+      <version name="3.1.2" author="Stephen Boyes" time="2024-01-18T12:16:33Z">
+        <changelog><![CDATA[- Fix coeficient calculations
+- First github version]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/024480dd5718223239bc649802b2020ee8389fe7/Dynamics/Limit%20Smash.jsfx</source>
+      </version>
+      <version name="3.2.0" author="Stephen Boyes" time="2024-01-18T13:24:06Z">
+        <changelog><![CDATA[- Slight soft knee]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/c2f9d6b8538c303ad0156b27d0db9ed81f00e94c/Dynamics/Limit%20Smash.jsfx</source>
+      </version>
+      <version name="3.3.0" author="Stephen Boyes" time="2024-01-21T21:45:10Z">
+        <changelog><![CDATA[- Adjust RMS for feedback
+- Clean redundant code]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/19935263c68f0ff7742dd591c6c91c1c659b0637/Dynamics/Limit%20Smash.jsfx</source>
+      </version>
+      <version name="3.3.1" author="Stephen Boyes" time="2024-02-09T18:02:07Z">
+        <changelog><![CDATA[- GR meter adjust]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/720e7c46d454f69d0bdf1bc1b2dfa9ea516c0557/Dynamics/Limit%20Smash.jsfx</source>
+      </version>
+      <version name="3.3.3" author="Stephen Boyes" time="2024-08-21T21:18:37Z">
+        <changelog><![CDATA[- CPU boost]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/6e2c14106f1c48cc595f53630d10a7fd2ecabbda/Dynamics/Limit%20Smash.jsfx</source>
+      </version>
+      <version name="3.3.4" author="Stephen Boyes" time="2024-08-22T12:11:32Z">
+        <changelog><![CDATA[- CPU boost]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2df7953c080b27036bcea542d20cd9ef3b771995/Dynamics/Limit%20Smash.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Live Limit.jsfx" type="effect" desc="Live Limit">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Live Limit\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Zero latency brickwall limiter\par}
+}
+]]></description>
+      </metadata>
+      <version name="2.0.1" author="Stephen Boyes" time="2024-01-08T21:10:47Z">
+        <changelog><![CDATA[- Tidy code
+- First github version]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/fb911217425a07743be316f9d8297847d7c37d38/Dynamics/Live%20Limit.jsfx</source>
+      </version>
+      <version name="2.0.2" author="Stephen Boyes" time="2024-02-09T18:03:42Z">
+        <changelog><![CDATA[- GR meter update]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/cfe70c4a8b701f63a75813193194bd6c491e8697/Dynamics/Live%20Limit.jsfx</source>
+      </version>
+      <version name="3.0.0" author="Stephen Boyes" time="2024-04-26T22:37:03Z">
+        <changelog><![CDATA[- Adaptive peak hold
+- Release now acting in dB domain]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/6ce77a7df2d51558524c5e81940b5df106d6e179/Dynamics/Live%20Limit.jsfx</source>
+      </version>
+      <version name="3.0.1" author="Stephen Boyes" time="2024-05-11T16:37:25Z">
+        <changelog><![CDATA[- Adaptive peak hold
+- Release now acting in dB domain]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/0543cfc16ddc4b18663008146101f99460f68cca/Dynamics/Live%20Limit.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Retro Limiter.jsfx" type="effect" desc="Retro Limiter">
+      <version name="1.2.2" author="Stephen Boyes" time="2024-01-17T21:26:40Z">
+        <changelog><![CDATA[- Make final limit soft knee
+- Github Release]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/122087701e46dfe97815dabb2bcba32c9afd4026/Dynamics/Retro%20Limiter.jsfx</source>
+      </version>
+      <version name="1.2.3" author="Stephen Boyes" time="2024-01-18T14:45:22Z">
+        <changelog><![CDATA[- Make final limit soft knee
+- Github Release]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/6d72ea483b95b7ba37afe146997f28ed76824278/Dynamics/Retro%20Limiter.jsfx</source>
+      </version>
+      <version name="1.2.4" author="Stephen Boyes" time="2024-02-09T18:04:31Z">
+        <changelog><![CDATA[- GR meter update]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/01cb18c80b84b0726c57fa6232ce1aacb9a89134/Dynamics/Retro%20Limiter.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Retro Punch Comp.jsfx" type="effect" desc="Retro Punch Comp">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Retro Punch Comp\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Soft Knee RMS type compressor. Comntrols...\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Comp Drive: Input gain to drive the compressor\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Speed: Controls both attack and release speed\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Intensity: This is almost a ratio control with invert setting for special effect\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Dry/Wet: Mix some uncompressed signal in for parellel compression\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Out gain: Controls output level, followed by soft clipper,then out drive\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Out Drive: Extra boost after clipper, using third harmonic waveshaper\sa180\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" time="2024-01-10T17:57:40Z">
+        <changelog><![CDATA[- First github version]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/955333d56375a92eb74015e4e8fc026d7213dc41/Dynamics/Retro%20Punch%20Comp.jsfx</source>
+      </version>
+      <version name="1.0.1" time="2024-01-10T18:06:23Z">
+        <changelog><![CDATA[- Rewrite about section]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/b5b257e933c2da6793a76050b81cf9bd7be5c236/Dynamics/Retro%20Punch%20Comp.jsfx</source>
+      </version>
+      <version name="1.0.2" time="2024-01-10T18:19:20Z">
+        <changelog><![CDATA[- Rewrite about section]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/1fb24a847dd701cef227252c85a7830d0613d942/Dynamics/Retro%20Punch%20Comp.jsfx</source>
+      </version>
+      <version name="1.0.3" time="2024-01-10T18:26:07Z">
+        <changelog><![CDATA[- Rewrite about section]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/679841867f716a2c9b62144778fa3a63802c90b2/Dynamics/Retro%20Punch%20Comp.jsfx</source>
+      </version>
+      <version name="1.0.4" author="Stephen Boyes" time="2024-01-30T10:56:48Z">
+        <changelog><![CDATA[- Rewrite about section]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/0972dc7b466f2baf74b490ddb1a40820410091bd/Dynamics/Retro%20Punch%20Comp.jsfx</source>
+      </version>
+      <version name="1.0.5" author="Stephen Boyes" time="2024-02-09T18:05:20Z">
+        <changelog><![CDATA[- GR meter update]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/7e71e16c396b5897b8def9c18b89a5d347d061ee/Dynamics/Retro%20Punch%20Comp.jsfx</source>
+      </version>
+      <version name="1.0.6" author="Stephen Boyes" time="2024-07-14T15:18:31Z">
+        <changelog><![CDATA[- update invert behavior]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/7aa7c58eafc8efa662c8384684ec94dff32209c4/Dynamics/Retro%20Punch%20Comp.jsfx</source>
+      </version>
+      <version name="1.0.7" author="Stephen Boyes" time="2024-08-21T21:29:02Z">
+        <changelog><![CDATA[- CPU boost]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/52445f0e494c6201998c45868564dc1bba14c8ec/Dynamics/Retro%20Punch%20Comp.jsfx</source>
+      </version>
+      <version name="1.0.8" author="Stephen Boyes" time="2024-08-22T10:07:14Z">
+        <changelog><![CDATA[- CPU boost]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/eb14f9b34131c899ae4856726fdbf1f2553a099a/Dynamics/Retro%20Punch%20Comp.jsfx</source>
+      </version>
+    </reapack>
+  </category>
+  <category name="EQ">
+    <reapack name="Dirt EQ.jsfx" type="effect" desc="Dirt EQ">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Dirt EQ\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Is it a EQ? Is it distortion? NO! It's Dirt EQ! To use as EQ keep drive controls near or left of center. more EQ = more harmonics. To use as distortion, boost drive gain + IC1 + IC2 drive, try the filters first.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 SVF filter code from Andy Simper of cytomics\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" time="2024-01-10T19:54:12Z">
+        <changelog><![CDATA[- First github version]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/3af0d529ad5d7e89820bed152afc6d04fef44fa0/EQ/Dirt%20EQ.jsfx</source>
+      </version>
+      <version name="1.0.1" author="Stephen Boyes" time="2024-01-30T10:57:19Z">
+        <changelog><![CDATA[- First github version]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/3e6724b4504eec741d2d7bf5388015279dcc2698/EQ/Dirt%20EQ.jsfx</source>
+      </version>
+      <version name="1.0.2" author="Stephen Boyes" time="2024-08-21T21:32:42Z">
+        <changelog><![CDATA[- CPU boost]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/128e83cf0184f33db3dfed5f103af63b5fc47c01/EQ/Dirt%20EQ.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Highpass Lowpass 12dB.jsfx" type="effect" desc="Highpass Lowpass 12dB">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 Highpass Lowpass 12dB\par}
+}
+]]></description>
+      </metadata>
+      <version name="0.8.0" author="Stephen Boyes" time="2024-02-02T12:03:25Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2b1d89e387a46cc405108b05cc71ffd712eb5f76/EQ/Highpass%20Lowpass%2012dB.jsfx</source>
+      </version>
+      <version name="1.0.0" author="Stephen Boyes" time="2025-04-04T10:10:33Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/7d4e20fe1eb0a4859466ceeb476db139618fec7b/EQ/Highpass%20Lowpass%2012dB.jsfx</source>
+      </version>
+      <version name="1.0.1" author="Stephen Boyes" time="2025-04-10T20:59:49Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/0e78aaec49ea52dae65cfde40d85cac50597f234/EQ/Highpass%20Lowpass%2012dB.jsfx</source>
+      </version>
+      <version name="1.0.2" author="Stephen Boyes" time="2025-04-14T11:12:30Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/ee7946f976097ef4804fd9e939d835e287e1adfe/EQ/Highpass%20Lowpass%2012dB.jsfx</source>
+      </version>
+      <version name="1.0.3" author="Stephen Boyes" time="2025-04-14T13:20:57Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/de18c4816a47018e33188f129a9fcc637e8b215c/EQ/Highpass%20Lowpass%2012dB.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Retro Mod A Exciter.jsfx" type="effect" desc="Retro Mod A Exciter">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 Retro Mod A Exciter\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Based loosely on a not so secret modification to noise reduction units to add more high end air to recordings Controls... High mix : adds compressed high end Very high mix : adds compressed very high end\par}
+}
+]]></description>
+      </metadata>
+      <version name="0.1.0beta" author="Stephen Boyes" time="2024-09-06T18:23:13Z">
+        <changelog><![CDATA[- beta]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/b07d96ee5538eb6ea55272629cc4a12616cb482a/EQ/Retro%20Mod%20A%20Exciter.jsfx</source>
+      </version>
+      <version name="1.0.0" author="Stephen Boyes" time="2025-04-04T10:09:46Z">
+        <changelog><![CDATA[- end of beta]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/30c3e12497aa3eb9669324847dbe4af2d570650f/EQ/Retro%20Mod%20A%20Exciter.jsfx</source>
+      </version>
+      <version name="1.0.1" author="Stephen Boyes" time="2025-04-14T11:18:49Z">
+        <changelog><![CDATA[- end of beta]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/17f4190e97f8ebe5d53d45e261ce565f2d773230/EQ/Retro%20Mod%20A%20Exciter.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Retro-Q V3.jsfx" type="effect" desc="Retro-Q V3">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Retro-Q\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Fixed frequency parellel EQ with vibe. Tip, try boosting or cutting all bands the same amount first! more EQ = more harmonics.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 SVF filter code from Andy Simper of cytomics\par}
+}
+]]></description>
+      </metadata>
+      <version name="3.0.0" time="2024-01-10T22:00:17Z">
+        <changelog><![CDATA[- First github version]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/97d4f24f648972a3af38d108f5bc4550756439b1/EQ/Retro-Q%20V3.jsfx</source>
+      </version>
+      <version name="3.0.1" author="Stephen Boyes" time="2024-01-30T10:57:34Z">
+        <changelog><![CDATA[- First github version]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/fac6669c7a6aa717318e002c3e051540f85cb049/EQ/Retro-Q%20V3.jsfx</source>
+      </version>
+      <version name="3.0.2" author="Stephen Boyes" time="2024-06-08T17:05:45Z">
+        <changelog><![CDATA[- No meter]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/9e1102c07a24b421b9ed2a1e0f1f50fb99461445/EQ/Retro-Q%20V3.jsfx</source>
+      </version>
+      <version name="3.0.3" author="Stephen Boyes" time="2024-08-21T21:38:54Z">
+        <changelog><![CDATA[- cpu boost]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/dc68a929cd93510e01f520aace9bdf62f00e68fa/EQ/Retro-Q%20V3.jsfx</source>
+      </version>
+      <version name="3.0.4" author="Stephen Boyes" time="2024-08-22T09:58:51Z">
+        <changelog><![CDATA[- cpu boost]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/388c2f4d9db45282b35f481fa3c2aa4dd548c206/EQ/Retro-Q%20V3.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Retro-Q V4.jsfx" type="effect" desc="Retro-Q V4">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Retro-Q\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Fixed frequency parellel tone shaping EQ with vibe. Five band boost, with harmonics and dynamic shaping Highpass, with more harmonics more EQ = more harmonics.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 SVF filter code from Andy Simper of cytomics uses Sault oversampler libary\par}
+}
+]]></description>
+      </metadata>
+      <version name="4.0.0" author="Stephen Boyes" time="2024-08-15T17:41:55Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/195d61cf4fad6c0b9415a7ea8344a5577d7f55f6/EQ/Retro-Q%20V4.jsfx</source>
+        <source file="Retro-Q_V4/sb-st-oversampler.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/195d61cf4fad6c0b9415a7ea8344a5577d7f55f6/EQ/Retro-Q_V4/sb-st-oversampler.jsfx-inc</source>
+      </version>
+      <version name="4.0.1" author="Stephen Boyes" time="2024-08-21T13:09:09Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/0f2ae122c350b85814dd14b15011c06208b89e58/EQ/Retro-Q%20V4.jsfx</source>
+        <source file="Retro-Q_V4/sb-st-oversampler.jsfx-inc">https://github.com/Steviekeys/StevieKeys_JSFX2/raw/0f2ae122c350b85814dd14b15011c06208b89e58/EQ/Retro-Q_V4/sb-st-oversampler.jsfx-inc</source>
+      </version>
+    </reapack>
+  </category>
+  <category name="Other">
+    <reapack name="Pong Game.jsfx" type="effect" desc="Pong Game">
+      <version name="0.8.0beta" author="Stephen Boyes" time="2024-04-23T13:18:18Z">
+        <changelog><![CDATA[- version 0.8.0]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/93c01b781dabe492b0f4997c9f4364869b37996f/Other/Pong%20Game.jsfx</source>
+      </version>
+      <version name="0.8.1beta" author="Stephen Boyes" time="2024-04-24T09:40:43Z">
+        <changelog><![CDATA[- version 0.8.0]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/de4b9e0bba1ec5b4bf366efee43e30bb9827554f/Other/Pong%20Game.jsfx</source>
+      </version>
+      <version name="0.8.5beta" author="Stephen Boyes" time="2024-04-24T12:24:05Z">
+        <changelog><![CDATA[- version 0.8.5]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/242c671f9ba2124ccecb37bd466e68e9bc03e4af/Other/Pong%20Game.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Transient Softener 2.jsfx" type="effect" desc="Transient Softener 2">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 based very loosely on airwindows slew. distorts or compresses bright spikey transients making a softer sound.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 use reapers delta mode to hear what parts of the sound are being shaved off.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 drive... . Boosts input, and cuts output, to increase the effect.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Ratio... . Selects the transfer curve used (soft knee) 2:1 4:1 8:1 20:1\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Control speed (us)... . Controls the envelope of the effect, shorter settings produce more distortion/aliasing.\par}
+}
+]]></description>
+      </metadata>
+      <version name="2.0.0" author="Stephen Boyes" time="2024-11-12T11:21:13Z">
+        <changelog><![CDATA[- Github release]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/b5c2710cef361abfc3e9c6a9223b5dbdcf3adcf3/Other/Transient%20Softener%202.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Transient Softener.jsfx" type="effect" desc="Transient Softener">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 distorts bright spikey transients making a softer sound.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 use reapers delta mode to hear what parts of the sound are being shaved off.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 modes... .Classic tanh slew soft clipper, same as v1 .Smooth-Clip sharper slew clipper, just rounding peaks .Invisible more warmth/dullness with less audible distortion\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Range .Original .Wide (slew clipper operates inside a compander)\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.6.1" time="2024-01-20T22:15:24Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/e65249027afe5be386b49379b7a4cd13a277e0fe/Other/Transient%20Softener.jsfx</source>
+      </version>
+      <version name="1.6.2" time="2024-01-20T22:50:37Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2a4d4fa7508e8e1f6bcba753ec08369d01fc18e5/Other/Transient%20Softener.jsfx</source>
+      </version>
+      <version name="1.6.3" author="Stephen Boyes" time="2024-01-30T10:58:22Z">
+        <changelog><![CDATA[- Reduce CPU use
+- Github release]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/ce685c9e4b948ead2da4034f37d6c624c695ef41/Other/Transient%20Softener.jsfx</source>
+      </version>
+    </reapack>
+  </category>
+  <category name="Reverb">
+    <reapack name="Simple Small Room.jsfx" type="effect" desc="Simple Small Room">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 Reverb testing\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 small/medium room inspired by the Geraint Luff artical, Let,s Write a Reverb\par}
+}
+]]></description>
+      </metadata>
+      <version name="0.3" author="Stephen Boyes" time="2025-02-19T12:25:30Z">
+        <changelog><![CDATA[- 0.3 new release]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/96d18be2fb62fa9c7307c508aa1ace03d2de7721/Reverb/Simple%20Small%20Room.jsfx</source>
+      </version>
+    </reapack>
+  </category>
+  <category name="Saturation">
+    <reapack name="J Clip.jsfx" type="effect" desc="J Clip">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 J Clip\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 soft knee clipper, featuring warmth control, which pushes the waveform down/up, softening the exit from clipping\par}
+}
+]]></description>
+      </metadata>
+      <version name="0.2" author="Stephen Boyes" time="2024-11-20T19:17:02Z">
+        <changelog><![CDATA[- version 0.2]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2f57d08b1b573d2d93a55883b40500fc595e0e7c/Saturation/J%20Clip.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Odd n Even saturation.jsfx" type="effect" desc="Odd n Even Saturation">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Odd n Even saturation\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Two stage polynomial waveshping saturation, feturing {\i odd and even harmonics}. Can be used to add vibe or as a maximiser.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.3.0" author="Stephen Boyes" time="2024-01-08T16:36:01Z">
+        <changelog><![CDATA[- Remove static DC from waveshaper
+- First github version]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/b06747e49f344feddf3e0fffbf44541abeadcf2b/Saturation/Odd%20n%20Even%20saturation.jsfx</source>
+      </version>
+      <version name="1.4.0" author="Stephen Boyes" time="2024-01-18T11:11:45Z">
+        <changelog><![CDATA[- New optional DC filter (signals over 0dB may occur)]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a2b79f72d1ee55ef490b8f29fac910ea9233561a/Saturation/Odd%20n%20Even%20saturation.jsfx</source>
+      </version>
+      <version name="1.4.1" author="Stephen Boyes" time="2024-08-21T20:59:04Z">
+        <changelog><![CDATA[- CPU boost]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/1f2fa96c466c1ca199b7f5f0549098438c33ef6f/Saturation/Odd%20n%20Even%20saturation.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Odd saturation.jsfx" type="effect" desc="Odd Saturation">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Odd saturation\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Two waveshping saturation styles using sin() functions, feturing {\i odd harmonics}. *Wavy Top, no discontinueties but may fold the wavefom over a bit at some settings. *Flat Top, waveform flatens off at 0dB. Can be used to add vibe or as a maximiser.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.2.0" author="Stephen Boyes" time="2024-01-08T18:06:30Z">
+        <changelog><![CDATA[- Optimise code using sin rather than cos
+- Add Flat Top option
+- First github version]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/26d40c412dbf6ff36a4af3d2af6c10cab459def2/Saturation/Odd%20saturation.jsfx</source>
+      </version>
+      <version name="1.3.0" author="Stephen Boyes" time="2024-05-02T20:48:58Z">
+        <changelog><![CDATA[- Multichannel support]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a2fc180ebbbe6091d204a26b108404f0a607db9a/Saturation/Odd%20saturation.jsfx</source>
+      </version>
+      <version name="1.3.1" author="Stephen Boyes" time="2024-05-02T20:55:46Z">
+        <changelog><![CDATA[- Multichannel support]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/06c0f0dff65f84ddf28c4cce752894e6eb889181/Saturation/Odd%20saturation.jsfx</source>
+      </version>
+      <version name="1.3.2" author="Stephen Boyes" time="2024-08-21T21:06:05Z">
+        <changelog><![CDATA[- Correct gain formula]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/e66e1f912955aef186129b9ee2490135979ce252/Saturation/Odd%20saturation.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Smooth Clipper.jsfx" type="effect" desc="Smooth Clipper">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Smooth Clipper\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Waveshaper that gets much more distorted near -1dB, but never reaches a perfectly flat top. Hard clipper at the output to prevent levels over 0dB. Can be used to add vibe or as a maximiser.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.2.0" author="Stephen Boyes" time="2024-01-08T18:18:46Z">
+        <changelog><![CDATA[- Remove discontinuity
+- First github version]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/f13cde44d1f5103569aeb2636b4def5009d276fe/Saturation/Smooth%20Clipper.jsfx</source>
+      </version>
+      <version name="1.2.1" author="Stephen Boyes" time="2024-04-30T18:27:02Z">
+        <changelog><![CDATA[- clean code]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/7c9da868113f17fc27654c9676c0900e3ffbe066/Saturation/Smooth%20Clipper.jsfx</source>
+      </version>
+    </reapack>
+  </category>
+  <category name="Stereo Enhancers">
+    <reapack name="Haas Delay and Filtering.jsfx" type="effect" desc="Haas Delay and filtering">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Hass Delay and Flitering\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Delay and high/low pass filters on one channel Be sure to check the result in mono ;-)\par}
+}
+]]></description>
+      </metadata>
+      <version name="3.0.0pre" author="Stephen Boyes" time="2024-01-29T19:52:08Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/88b88309cb73634102ba59bfee992bdffc007df2/Stereo%20Enhancers/Haas%20Delay%20and%20Filtering.jsfx</source>
+      </version>
+      <version name="3.0.0" author="Stephen Boyes" time="2024-01-30T12:22:44Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/c3915bfbe185057b2f8f3331dc07e46ff61790b8/Stereo%20Enhancers/Haas%20Delay%20and%20Filtering.jsfx</source>
+      </version>
+      <version name="3.0.1" author="Stephen Boyes" time="2024-01-30T12:43:53Z">
+        <changelog><![CDATA[- v3.0.0pre changes to filter code and sliders since v2
+- v3.0.0   change defualt values
+- v3.0.1   change desc tag
+- v3.0.1   add changelog to reapack header]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/5f7f8b51246f88d201e2316c5bf2d45d4266429c/Stereo%20Enhancers/Haas%20Delay%20and%20Filtering.jsfx</source>
+      </version>
+      <version name="3.0.2" author="Stephen Boyes" time="2024-11-12T20:53:58Z">
+        <changelog><![CDATA[- v3.0.0pre changes to filter code and sliders since v2
+- v3.0.0   change defualt values
+- v3.0.1   change desc tag
+- v3.0.1   add changelog to reapack header
+- v3.0.2   clean filter code]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/cf37b50d0613a0d34cbcf189e4eb6fb19471b284/Stereo%20Enhancers/Haas%20Delay%20and%20Filtering.jsfx</source>
+      </version>
+      <version name="3.1.0" author="Stephen Boyes" time="2024-11-12T20:58:33Z">
+        <changelog><![CDATA[- v3.0.0pre changes to filter code and sliders since v2
+- v3.0.0   change defualt values
+- v3.0.1   change desc tag
+- v3.0.1   add changelog to reapack header
+- v3.0.2   clean filter code
+- v3.1.0   use correct formula for wet gain]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/4be047465c93a065ed22b725975f5cc55aa17070/Stereo%20Enhancers/Haas%20Delay%20and%20Filtering.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Wide Crosstalk.jsfx" type="effect" desc="Wide Crosstalk">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 Wide Crosstalk\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Adds a difused copy of input with polarity on one channel reversed and both channels swapped uses widens mono/mid content moves some hard panned content to the opposite side (like HAAS effect but with less comb filtering when monoed)\par}
+}
+]]></description>
+      </metadata>
+      <version name="0.9" author="Stephen Boyes" time="2025-02-01T20:02:17Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/3fd708bc387ec60e64618c4f8f96789369523fe5/Stereo%20Enhancers/Wide%20Crosstalk.jsfx</source>
+      </version>
+      <version name="1.0" author="Stephen Boyes" time="2025-02-01T21:01:23Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/ab49e382b75f7d7916408d2d735554a615eb5281/Stereo%20Enhancers/Wide%20Crosstalk.jsfx</source>
+      </version>
+      <version name="1.1" author="Stephen Boyes" time="2025-02-01T21:30:17Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/216008f527b9f9c7c77cd541961931dee181036a/Stereo%20Enhancers/Wide%20Crosstalk.jsfx</source>
+      </version>
+      <version name="1.2" author="Stephen Boyes" time="2025-04-15T12:07:40Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/3122cf58556b0c40ac761a2f3ef477accfeae696/Stereo%20Enhancers/Wide%20Crosstalk.jsfx</source>
+      </version>
+    </reapack>
+  </category>
+  <category name="utility">
+    <reapack name="Auto DeEsser.jsfx" type="effect" desc="Auto DeEsser (beta)">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Auto DeEsser (beta)\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Split the vocal signal into vowels and consonants\par}
+}
+]]></description>
+      </metadata>
+      <version name="0.2.0beta" author="Stephen Boyes" time="2024-01-30T14:48:39Z">
+        <changelog><![CDATA[- beta v0.2.0]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/6bd6185338920c37fd88df1d0d0ee1b834f2b500/utility/Auto%20DeEsser.jsfx</source>
+      </version>
+      <version name="0.3.0beta" author="Stephen Boyes" time="2024-02-14T13:37:44Z">
+        <changelog><![CDATA[- beta v0.3.0]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/4fd63cc7c5320ca8184a4cc1110f475ecb004181/utility/Auto%20DeEsser.jsfx</source>
+      </version>
+      <version name="0.4.0beta" author="Stephen Boyes" time="2024-02-14T14:11:37Z">
+        <changelog><![CDATA[- beta v0.4.0]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/2dd0e91f739485b6396f60de3f3f22a217508b0f/utility/Auto%20DeEsser.jsfx</source>
+      </version>
+      <version name="0.4.5beta" author="Stephen Boyes" time="2024-02-15T12:32:13Z">
+        <changelog><![CDATA[- beta v0.4.5]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/a60d79fea4cd5fbc11b39f67a6d9e30ed8796d4d/utility/Auto%20DeEsser.jsfx</source>
+      </version>
+      <version name="0.4.6beta" author="Stephen Boyes" time="2024-08-21T20:38:00Z">
+        <changelog><![CDATA[- beta v0.4.6 CPU boost]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/0b08b0db6e8098fbf2f26aad50b2b0641f8ee03e/utility/Auto%20DeEsser.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Dual 360 Pan.jsfx" type="effect" desc="Dual 360 Pan">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 pan sounds beyond the speakers!\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 +-90 is hard left or right. Warning! Sounds panned to +-180 will dissapear in mono!\par}
+}
+]]></description>
+      </metadata>
+      <version name="0.8.0" author="Stephen Boyes" time="2024-02-01T14:44:52Z">
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/305947d2d19417ccd2f8546b82f42584a63d2dcc/utility/Dual%20360%20Pan.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Maximum Resolution Dither.jsfx" type="effect" desc="Maximum Resolution Dither">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Maximum Resolution Dither\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Strange noise shaped Dither. Dithers to a very high bit depth first, then reduces bit depth one bit at a time. If least significant bit is 0, truncate bit depth. If least significant bit is 1, probability of adding 1 bit onto next significant bit is 0.618 or 1 -0.618 depending on the signal polarity.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="Stephen Boyes" time="2024-01-10T19:38:28Z">
+        <changelog><![CDATA[- First github version]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/46b345e4148ad0827b371cf6fbc3dbdceb6725ed/utility/Maximum%20Resolution%20Dither.jsfx</source>
+      </version>
+      <version name="1.0.1" author="Stephen Boyes" time="2024-11-12T13:12:09Z">
+        <changelog><![CDATA[- Clamp output to 0dB max]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/e01cba979b3bf5100e583a260c32da4ca3d0ed15/utility/Maximum%20Resolution%20Dither.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Perfect Mono.jsfx" type="effect" desc="Perfect Mono">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \b \fs36 Perfect Mono\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Will mono the output, without loss of level of hard panned sounds. See, Dan Worrel, the problem with LCR mixing, YouTube video.\par}
+}
+]]></description>
+      </metadata>
+      <version name="1.0.0" author="StevieKeys" time="2024-01-08T22:17:33Z">
+        <changelog><![CDATA[- version 1
+- First github version]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/8a37641ed9bb68dc2303875bc789086104d7c50f/utility/Perfect%20Mono.jsfx</source>
+      </version>
+      <version name="1.0.1" author="Stephen Boyes" time="2024-01-30T10:56:09Z">
+        <changelog><![CDATA[- version 1
+- First github version]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/0ed85dee5fafa8884a1e7ac621945c05921cfb1d/utility/Perfect%20Mono.jsfx</source>
+      </version>
+      <version name="1.0.2" author="Stephen Boyes" time="2024-02-03T21:00:48Z">
+        <changelog><![CDATA[- version 1
+- First github version]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/b8e125fc8c2a81f9a5298cc5d5655e677a89a9f1/utility/Perfect%20Mono.jsfx</source>
+      </version>
+    </reapack>
+    <reapack name="Trapezoid PDF Dither.jsfx" type="effect" desc="Trapezoid PDF Dither">
+      <metadata>
+        <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 Normal TPDF noise is just a random value between minus half a bit and half a bit added to a second value of the same amplitude.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 It is possible to store one value and use it twice with the second version inverted, shifting the noise to higher frequencies. This plugin uses the value three times, why do that? It is not the optimal amount of noise? Well adding a third copy with normal polarity still reduces the noise for low and mid frequencies and causes a dip in high mids, with an increase above this, resulting in subjectively less high frequency hiss. Shaped Triangular PDF (sometimes called highpass TPDF) and Flat TPDF is included as well for comparison\par}
+}
+]]></description>
+      </metadata>
+      <version name="0.9" author="Stephen Boyes" time="2025-04-03T10:34:04Z">
+        <changelog><![CDATA[- Beta]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/1e942906e2dcaa5ccec6718c7ba76b0395355c3d/utility/Trapezoid%20PDF%20Dither.jsfx</source>
+      </version>
+      <version name="1.0" author="Stephen Boyes" time="2025-04-07T15:12:00Z">
+        <changelog><![CDATA[- fix positive clip value to represent actual maximum fixed point value (half_total_bits-1)]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/fdffb646284a5b5c789b1d6f0a4d5a66503419c8/utility/Trapezoid%20PDF%20Dither.jsfx</source>
+      </version>
+      <version name="1.1" author="Stephen Boyes" time="2025-04-15T11:47:47Z">
+        <changelog><![CDATA[- optimize CPU for TPDF flat]]></changelog>
+        <source>https://github.com/Steviekeys/StevieKeys_JSFX2/raw/4e2ab2d7a8195b8236a78eb37e4d726244083f59/utility/Trapezoid%20PDF%20Dither.jsfx</source>
+      </version>
+    </reapack>
+  </category>
+  <metadata>
+    <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
+{\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
+\widowctrl\hyphauto
+
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel0 \b \fs36 StevieKeys JSFX\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 A collection of JSFX by StevieKeys aka Stevie Boyes\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Wide Crosstalk\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Retro-Q V4\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab HQ Track Compressor (beta)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Simple Small Room\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Blue Vocal Compressor (beta)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Perfect Mono\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab J Clip\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Retro Punch Comp\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Trapezoid PDF Dither\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Dirt EQ\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Retro-Q V3\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Retro Fuzz\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Hard AntiDerivative AntiAliasing Clipper\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Retro Limiter\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Limit Smash\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Retro Distortion\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Transient Softener\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Transient Softener 2\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Bass X\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Echo Live In Stereo\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Wow Tape Delay\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Big Bad Delay\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Haas Delay and Filtering (v3pre)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Retro Overdrive\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Dual 360 Pan\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Auto DeEsser (beta)\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Smooth Clipper\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Pong Game\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Retro Mod A Exciter\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Octave Fuzz\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Live Limit\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Maximum Resolution Dither\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Odd saturation\par}
+{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab Odd n Even saturation\sa180\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 https://github.com/Steviekeys/StevieKeys_JSFX2/raw/master/index.xml\par}
+}
+]]></description>
+  </metadata>
+</index>

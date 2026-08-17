@@ -1,0 +1,24 @@
+---------------------------------------------------
+  Track Inspector - Installation instructions
+---------------------------------------------------
+  
+* Requirements
+    • SWS/S&M extension: https://www.sws-extension.org
+    • js_ReaScriptAPI: https://forum.cockos.com/showthread.php?t=212174
+
+* Running and setting up a Toolbar icon
+  
+  Search for HeDa Track Inspector 2 in the actions list to find the action 
+  to run the script.
+
+  There is an included toolbar icon “Data/toolbar_icons/HeDa_TI.png” that 
+  you can use to setup a toolbar button in REAPER for the script. 
+
+
+* Links:
+
+  • HeDaScripts: https://reaper.hector-corcin.com
+  • Donate: https://reaper.hector-corcin.com/vip/donations
+  • Download HeDaScripts Manager: https://reaper.hector-corcin.com/app/hedascripts-manager
+  • HeDaScripts Manager forum thread: https://forum.cockos.com/showthread.php?t=179003
+  • Track Inspector forum thread: https://forum.cockos.com/showthread.php?t=174202    

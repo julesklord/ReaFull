@@ -1,0 +1,14 @@
+//Preset for MPL`s ImportSessionData v1
+
+comchunk=1
+fxchain=0
+markers_flags=7
+master_stuff=6
+name=default_mod
+offset=0
+offset_flags=6
+tr_filter=
+trenv=0
+tritems=0
+trparams=0
+trsend=0

@@ -1,0 +1,49 @@
+action_names={
+"goto", -- dejar en ingles
+"gotonote",  -- dejar en ingles
+"Mover Marker",
+"Eliminar Marcador",
+"Borrar markers",
+"refresh", -- dejar en ingles
+"try again",  -- dejar en ingles
+"Cambiar Selección de Pista",
+"Cambiar Selección de pista",
+"Pegar Pistas",
+"Ajustar Selección de Pista (via Surface)",
+"Ajustar Selección de Pista (via Surface)",
+"Cambiar Media Selección de Item",
+"Añadir Pista",
+"Insertar Nueva Pista de Instrumento Virtual",
+"Eliminar Selección de Pista", 
+"Importar Pistas",
+"Duplicar Pistas",
+"Eliminar Pistas",
+"Eliminar Selección de Pista",
+"Seleccionar Pista debajo del Ratón",
+"Add HeDaMixer Aux Tracks", -- dejar en ingles
+"Cambiar Lista de Pistas MIDI a Selección",
+"Cambiar Items MIDI Activos",
+"TT: Insert track template", -- dejar ingles
+}
+
+action_update_names={
+"Eliminar Icono de Pista",
+"Cargar Icono de Pista",
+"Cambiar Nombre de Pista",
+"Color de Pista",
+"Track(s) coloured", -- dejar en ingles? 
+"Congelar Pistas",
+"Descongelar Pistas",
+"Editar Marcador",
+"Eliminar Todas las Pistas Solos",
+}
+
+
+langstr = {
+    ["Archive"] = "Archivar",
+    ["Unarchive"] = "Desarchivar",
+    ["[close]"] = "[cerrar]",
+    ["Show archived tracks"] = "Muestra Pistas Archivadas",
+    ["Archive selected track(s)"] = "Archivar Pista(s) Seleccionada(s)",
+    ["Unarchive selected track(s)"] = "Desarchivar Pista(s) Seleccionada(s)",
+}
