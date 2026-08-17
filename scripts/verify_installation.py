@@ -102,8 +102,11 @@ def check_reafull(target_dir=None, quiet=False):
                         if "{{REAPER_CONFIG_DIR}}" in content:
                             raw_placeholders += 1
                         for line in content.splitlines():
-                            if re.search(r"^[a-zA-Z]:[\\/]", line.strip()) and not ("http://" in line or "https://" in line):
-                                ini_path_errors += 1
+                            line_s = line.strip()
+                            # Match Windows absolute paths (e.g. C:\... or C:/Program Files/...)
+                            if re.search(r"^[a-zA-Z]:\\[^ \r\n]+", line_s) or re.search(r"^[a-zA-Z]:/(?:Users|Program|Windows|Desktop|Documents|Downloads|Temp|Common Files|REAPER|Cab Impulses|TEST)[^ \r\n]*", line_s, re.IGNORECASE):
+                                if not ("http://" in line_s or "https://" in line_s):
+                                    ini_path_errors += 1
                 except Exception:
                     pass
 
