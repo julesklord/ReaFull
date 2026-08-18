@@ -15,13 +15,15 @@ C_BLUE='\033[94m'
 C_CYAN='\033[96m'
 
 echo -e "${C_BOLD}${C_CYAN}"
-echo "  ____            _____       _ _ "
-echo " |  _ \\ ___  __ _|  ___|   _ | | |"
-echo " | |_) / _ \\/ _\` | |_ | | | || | |"
-echo " |  _ <  __/ (_| |  _|| |_| || | |"
-echo " |_| \\_\\___|\\__,_|_|   \\__,_||_|_|"
+echo "       █ │ █                                                           "
+echo "     █ █ │ █ █       ██████╗ ███████╗ █████╗ ███████╗██╗   ██╗██╗     ██╗"
+echo "   █ █ █ █ █ █ █     ██╔══██╗██╔════╝██╔══██╗██╔════╝██║   ██║██║     ██║"
+echo " █ █ █ █ █ █ █ █ █   ██████╔╝█████╗  ███████║█████╗  ██║   ██║██║     ██║"
+echo "   █ █ █ █ █ █ █     ██╔══██╗██╔══╝  ██╔══██║██╔══╝  ██║   ██║██║     ██║"
+echo "     █ █ │ █ █       ██║  ██║███████╗██║  ██║██║     ╚██████╔╝███████╗███████╗"
+echo "       █ │ █         ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝      ╚═════╝ ╚══════╝╚══════╝"
 echo -e "${C_RESET}"
-echo -e "${C_BOLD}ReaFull Uninstallation & Restoration Tool${C_RESET}\n"
+echo -e "${C_BOLD}ReaFull Uninstallation & Backup Restoration Utility${C_RESET}\n"
 
 # 1. Resolve Target REAPER Directory
 NATIVE_DIR="$HOME/.config/REAPER"

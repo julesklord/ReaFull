@@ -1,6 +1,12 @@
-# ReaFull
+<p align="center">
+  <img src="docs/logo_mark.png" alt="ReaFull Logomark" width="160" height="160" />
+</p>
 
-> **A modular, production-grade workstation suite for Cockos REAPER on Linux.**
+<h1 align="center">ReaFull</h1>
+
+<p align="center">
+  <strong>A modular, production-grade workstation suite for Cockos REAPER on Linux.</strong>
+</p>
 
 ReaFull transforms Cockos REAPER on Linux into a studio-ready workstation for production, mixing, and mastering. It integrates analog-modeled JSFX consoles, surgical digital DSP, 200+ track templates, genres-based project templates, studio typography, and non-destructive Linux audio engine optimizations.
 
