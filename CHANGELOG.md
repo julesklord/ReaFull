@@ -8,6 +8,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 ## [2026.2.0] - 2026-08-18
 
 ### Added
+- **StripTease Modular Channel Strip Engine**:
+  - Embedded MCP channel strip suite with physical knobs, switches, and real-time Gain Reduction needle VU meters.
+  - Background system script `StripTease System.lua` for Direct Link parameter binding, palette syncing, and preset management.
+  - 12 pre-configured SSL, UAD, Vertigo, and mastering `.RfxChain` files.
+  - Registered upstream repository in `reapack.ini` for continuous updates.
+- **In-DAW Auto-Update Engine (`ReaFull_Updater.lua` & `__startup.lua`)**:
+  - Background non-blocking 24h release check via GitHub API.
+  - One-click safe update and backup application from within REAPER.
+- **Automated Native Extension Retrieval & Zero-Friction Python**:
+  - Auto-retrieval of SWS Extension and ReaPack Linux x86_64 binaries directly to `UserPlugins/`.
+  - Auto-configuration of `libpython3` in `reaper.ini` for seamless ReaScript Python integration.
+  - Multi-distribution package detection helper in `install.sh`.
 - **Core Suite Profile (`--preset core`)**:
   - Standalone core studio profile under 700MB (~668MB), optimizing initial download and deployment.
   - Interactive selector menu command `k` / `core` for instant selection.
