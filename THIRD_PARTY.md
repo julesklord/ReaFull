@@ -86,6 +86,26 @@ The foundational DSP code powering the majority of the analog-modeled processing
 
 *License*: MIT / Public Domain.
 
+#### StevieKeys
+- Synthesizer modulation, keyboard channel strips, and MIDI utilities.
+
+*License*: GPL-3.0 / MIT.
+
+#### Scott Stillwell (sstillwell)
+- Analog dynamic processors and tone shapers (*1175, Bad Connection, CMX, Dyno, Event Horizon, Fairly Child, Huge Booty, Major Tom*).
+
+*License*: Cockos JSFX Open License / GPL-2.0.
+
+#### Liteon & Michael Loser (LOSER)
+- Mathematical DSP processors: *NP1136, Butterworth filters, Stereo Enhancers, 3-Band EQ/Comp, DVC, Master Limiter, Saturation, Zero Crossing*.
+
+*License*: Public Domain / MIT.
+
+#### Cockos Incorporated & Community DSP (IXix, remaincalm_org, Teej, Till, Mawi)
+- Core JSFX modules: Floatydelay, MIDI routing matrix, parabolic shapers, and audio analysis meters.
+
+*License*: Cockos JSFX License / BSD / MIT.
+
 ---
 
 ### 2.3 ReaScripts & Extensions
@@ -110,6 +130,11 @@ The foundational DSP code powering the majority of the analog-modeled processing
 
 *License*: MIT License.
 
+#### Goran Kovac (Sexan)
+- **Pie3000 & ReaSpaghetti**: Radial action menus, modular node routing, and contextual FX management.
+
+*License*: MIT / GPL-3.0.
+
 #### Michael Pilyavskiy (MPL)
 - Track alignment scripts, take volume envelopes, FX chain controllers, and interactive routing matrices.
 
@@ -124,6 +149,16 @@ The foundational DSP code powering the majority of the analog-modeled processing
 - High-performance MIDI editing actions, articulation switching, CC interpolation, and humanization tools.
 
 *License*: MIT / GPL-3.0.
+
+#### Archie & kawa
+- Advanced track automation curves, envelope managers, and MIDI utility actions.
+
+*License*: GPL-3.0 / MIT.
+
+#### Community ReaTeam Contributors
+- Contributions by *ACendan, Arthur McArthur, BirdBird, EUGENE27771, Lemerchand, me2beats, MonkeyBars, Neutronic, Odedd, Olshalom, Souk21, Stevie, Suzuki, Yannick*.
+
+*License*: MIT / GPL-3.0 / Freeware.
 
 #### SWS Extension Team
 - SWS / S&M Extension binary (`reaper_sws-x86_64.so`), cycle action engine, and auto-coloring system.
@@ -150,9 +185,13 @@ The foundational DSP code powering the majority of the analog-modeled processing
    - License: Apache License, Version 2.0 (`assets/Licences/Roboto Font LICENSE.txt`)
 4. **Open Sans**
    - Designer: Steve Matteson
-   - License: Apache License, Version 2.0 (`assets/Licences/OFL_Open Sans.txt`)
-5. **Alarm Clock / Frozen Crystal**
-   - Used for 7-segment digital displays and VU meters in theme docks.
+   - License: Apache License, Version 2.0 / SIL Open Font License 1.1 (`assets/Licences/OFL_Open Sans.txt`)
+5. **Frozen Crystal**
+   - Designer: Ray Larabie (Typodermic Fonts)
+   - License: Freeware Desktop Font License
+6. **Alarm Clock**
+   - Designer: David J. Patterson
+   - License: 100% Free Font License
 
 ---
 

@@ -13,11 +13,19 @@ C_GREEN='\033[92m'
 C_YELLOW='\033[93m'
 C_CYAN='\033[96m'
 
-VERSION="2026.1.0"
+VERSION="2026.2.0"
 ASSETS_RELEASE_URL="https://github.com/julesklord/ReaFull/releases/download/v${VERSION}/reafull-assets-v${VERSION}.tar.gz"
 
-# Reconnect stdin to TTY if executing via curl pipe
-if [ ! -t 0 ] && [ -e /dev/tty ]; then
+# Reconnect stdin to TTY only if executing via curl pipe in interactive mode
+IS_QUIET=0
+for arg in "$@"; do
+    if [ "$arg" = "--quiet" ] || [ "$arg" = "-q" ]; then
+        IS_QUIET=1
+        break
+    fi
+done
+
+if [ "$IS_QUIET" -eq 0 ] && [ ! -t 0 ] && [ -r /dev/tty ] && [ -w /dev/tty ]; then
     exec < /dev/tty
 fi
 

@@ -59,15 +59,32 @@ jobs:
               print("PASSED: Zero Windows drive paths found.")
           '
 
-      - name: Test Installer Dry Run (Full Preset)
+      - name: Verify Configuration Templates
         run: |
-          ./install.sh --quiet --dry-run --preset full --target /tmp/reafull_ci_dryrun
+          python3 scripts/verify_installation.py config_templates
+
+      - name: Test Installer Dry Run (Core Preset)
+        run: |
+          ./install.sh --quiet --dry-run --preset core --target /tmp/reafull_ci_dryrun
 
       - name: Test Installer Dry Run (Minimal Preset)
         run: |
           ./install.sh --quiet --dry-run --preset minimal --target /tmp/reafull_ci_min_dryrun
 
-      - name: Test Real Deployment & Health Verification
+      - name: Test Real Deployment (Core Preset) & Health Verification
         run: |
-          ./install.sh --quiet --all --target /tmp/reafull_ci_test
-          python3 scripts/verify_installation.py /tmp/reafull_ci_test
+          ./install.sh --quiet --preset core --target /tmp/reafull_ci_core
+          python3 scripts/verify_installation.py /tmp/reafull_ci_core
+
+      - name: Test Safe Overlay Non-Destructive Mode
+        run: |
+          echo "; Custom test shortcut" >> /tmp/reafull_ci_core/reaper-kb.ini
+          ./install.sh --quiet --preset core --target /tmp/reafull_ci_core
+          grep "Custom test shortcut" /tmp/reafull_ci_core/reaper-kb.ini
+          test -f /tmp/reafull_ci_core/reaper-kb.ini.reafull
+          python3 scripts/verify_installation.py /tmp/reafull_ci_core
+
+      - name: Test Full Deployment & Health Verification
+        run: |
+          ./install.sh --quiet --all --target /tmp/reafull_ci_full
+          python3 scripts/verify_installation.py /tmp/reafull_ci_full

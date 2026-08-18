@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
 ReaFull: Verification & Health Check Utility.
-Performs comprehensive health checks on the REAPER configuration:
+Performs comprehensive health checks on the REAPER configuration and template assets:
 - Audits reaper.ini and INI files for broken paths / Windows drive letters
-- Verifies placeholder expansion (no raw {{...}} remaining)
+- Verifies placeholder expansion (no raw {{...}} remaining in target installations)
+- Validates template directory integrity and placeholder syntax in config_templates
 - Verifies ReaFull themes, JSFX suites, TrackTemplates, and fonts
 - Checks SWS / ReaPack integration
 """
@@ -13,6 +14,109 @@ import sys
 import re
 import argparse
 import subprocess
+
+def check_templates(templates_dir, quiet=False):
+    """
+    Validates template files in config_templates:
+    - Zero Windows drive paths
+    - Only valid placeholders (e.g. {{REAPER_CONFIG_DIR}}) in *.template.ini
+    - Zero placeholders in static *.ini files
+    """
+    if not quiet:
+        print(f"=== ReaFull Template Verification for: {templates_dir} ===\n")
+
+    if not os.path.exists(templates_dir):
+        if not quiet:
+            print(f"[FAIL] Templates directory '{templates_dir}' does not exist!")
+        return False
+
+    issues = []
+    checks_passed = 0
+
+    # 1. Check required templates exist
+    required_templates = [
+        "reaper.template.ini",
+        "S&M.template.ini",
+        "reaper-extstate.template.ini",
+        "sws-autocoloricon.ini",
+        "reapack.ini",
+        "reaper-kb.ini",
+        "reaper-menu.ini",
+        "reaper-mouse.ini",
+        "reaper-screensets.ini",
+    ]
+    missing = [t for t in required_templates if not os.path.exists(os.path.join(templates_dir, t))]
+    if not missing:
+        if not quiet:
+            print(f"[OK] All {len(required_templates)} core configuration templates found.")
+        checks_passed += 1
+    else:
+        issues.append(f"Missing templates: {', '.join(missing)}")
+        if not quiet:
+            print(f"[WARN] Missing templates in {templates_dir}: {', '.join(missing)}")
+
+    # 2. Audit Windows paths & placeholders
+    win_paths = 0
+    invalid_placeholders = 0
+    valid_placeholder_pattern = re.compile(r"\{\{REAPER_CONFIG_DIR\}\}")
+
+    for root, _, files in os.walk(templates_dir):
+        for f in files:
+            if f.endswith((".ini", ".template.ini")):
+                fp = os.path.join(root, f)
+                try:
+                    with open(fp, "r", encoding="utf-8", errors="ignore") as inif:
+                        content = inif.read()
+                        
+                        # In static .ini (not .template.ini), placeholders are forbidden
+                        if not f.endswith(".template.ini") and "{{" in content:
+                            invalid_placeholders += 1
+                            issues.append(f"Unexpected placeholder in static file: {f}")
+                        
+                        # In .template.ini, check for invalid/unsupported placeholders
+                        for match in re.finditer(r"\{\{([^}]+)\}\}", content):
+                            ph = match.group(0)
+                            if not valid_placeholder_pattern.fullmatch(ph):
+                                invalid_placeholders += 1
+                                issues.append(f"Unsupported placeholder '{ph}' in {f}")
+
+                        for line in content.splitlines():
+                            line_s = line.strip()
+                            if re.search(r"^[a-zA-Z]:\\[^ \r\n]+", line_s) or re.search(r"^[a-zA-Z]:/(?:Users|Program|Windows|Desktop|Documents|Downloads|Temp|Common Files|REAPER|Cab Impulses|TEST)[^ \r\n]*", line_s, re.IGNORECASE):
+                                if not ("http://" in line_s or "https://" in line_s):
+                                    win_paths += 1
+                except Exception as e:
+                    issues.append(f"Error reading {fp}: {e}")
+
+    if invalid_placeholders == 0:
+        if not quiet:
+            print("[OK] Template placeholders verified: all dynamic variables are valid.")
+        checks_passed += 1
+    else:
+        if not quiet:
+            print(f"[WARN] {invalid_placeholders} invalid or unhandled placeholder(s) detected.")
+
+    if win_paths == 0:
+        if not quiet:
+            print("[OK] Clean Linux configuration: zero Windows drive paths detected.")
+        checks_passed += 1
+    else:
+        issues.append(f"{win_paths} Windows drive paths found")
+        if not quiet:
+            print(f"[WARN] {win_paths} Windows drive paths detected in templates.")
+
+    all_ok = len(issues) == 0
+    if not quiet:
+        print("\n" + "=" * 54)
+        if all_ok:
+            print("  Status: CONFIG TEMPLATES CLEAN & VERIFIED!")
+        else:
+            print(f"  Status: Template verification completed with {len(issues)} issue(s).")
+            for iss in issues:
+                print(f"   - {iss}")
+        print("=" * 54)
+
+    return all_ok
 
 def check_reafull(target_dir=None, quiet=False):
     if not target_dir:
@@ -24,6 +128,11 @@ def check_reafull(target_dir=None, quiet=False):
             target_dir = flatpak_dir
         else:
             target_dir = native_dir
+
+    # Detect if user passed a templates directory
+    normalized_path = os.path.abspath(target_dir)
+    if os.path.basename(normalized_path) == "config_templates":
+        return check_templates(target_dir, quiet=quiet)
 
     if not quiet:
         print(f"=== ReaFull Health Check for: {target_dir} ===\n")
@@ -82,7 +191,8 @@ def check_reafull(target_dir=None, quiet=False):
 
     # 6. Check SWS AutoColor
     sws_autocolor = os.path.join(target_dir, "sws-autocoloricon.ini")
-    if os.path.exists(sws_autocolor):
+    sws_autocolor_reafull = os.path.join(target_dir, "sws-autocoloricon.ini.reafull")
+    if os.path.exists(sws_autocolor) or os.path.exists(sws_autocolor_reafull):
         if not quiet: print("[OK] SWS AutoColor & Icons configuration installed.")
         checks_passed += 1
     else:
@@ -99,7 +209,7 @@ def check_reafull(target_dir=None, quiet=False):
                 try:
                     with open(fp, "r", encoding="utf-8", errors="ignore") as inif:
                         content = inif.read()
-                        if "{{REAPER_CONFIG_DIR}}" in content:
+                        if "{{" in content and "}}" in content:
                             raw_placeholders += 1
                         for line in content.splitlines():
                             line_s = line.strip()
@@ -139,13 +249,19 @@ def check_reafull(target_dir=None, quiet=False):
 
 def main():
     parser = argparse.ArgumentParser(description="ReaFull Health Check & Verification Utility")
-    parser.add_argument("target_dir", nargs="?", default=None, help="Directorio de configuración de REAPER a verificar")
+    parser.add_argument("target_dir", nargs="?", default=None, help="Directorio de configuración de REAPER a verificar o directorio de plantillas")
     parser.add_argument("--target", "-t", default=None, help="Directorio objetivo de configuración")
+    parser.add_argument("--templates", action="store_true", help="Modo de validación de plantillas (config_templates)")
     parser.add_argument("--quiet", "-q", action="store_true", help="Modo silencioso (solo exit code)")
     args = parser.parse_args()
 
     target = args.target or args.target_dir
-    success = check_reafull(target_dir=target, quiet=args.quiet)
+    if args.templates:
+        tpl_dir = target or os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "config_templates")
+        success = check_templates(templates_dir=tpl_dir, quiet=args.quiet)
+    else:
+        success = check_reafull(target_dir=target, quiet=args.quiet)
+    
     sys.exit(0 if success else 1)
 
 if __name__ == "__main__":

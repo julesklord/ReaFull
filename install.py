@@ -22,7 +22,7 @@ import re
 import time
 from datetime import datetime
 
-VERSION = "2026.1.0"
+VERSION = "2026.2.0"
 ASSETS_RELEASE_URL = f"https://github.com/julesklord/ReaFull/releases/download/v{VERSION}/reafull-assets-v{VERSION}.tar.gz"
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -344,7 +344,8 @@ def interactive_menu():
         print("-" * 70)
         print(f"  {Colors.BOLD}Commands:{Colors.ENDC}")
         print("  - Type a component number to toggle it on/off (e.g. '1', '2 5 8')")
-        print("  - 'a' / 'all'   : Select all")
+        print("  - 'a' / 'all'   : Select all (Full Studio)")
+        print("  - 'k' / 'core'  : Core Suite (<700MB: ReaFull Themes, Analog/Digital FX, Templates, SWS, Fonts)")
         print("  - 'm' / 'min'   : Minimal profile (Themes, Audio Tuning, Fonts)")
         print("  - 'f' / 'fx'    : FX and Plugins only")
         print("  - 'c' / 'enter' : CONTINUE with installation")
@@ -364,6 +365,10 @@ def interactive_menu():
         elif choice in ['a', 'all']:
             for k in keys:
                 selected[k] = True
+        elif choice in ['k', 'core']:
+            core_set = {"themes", "analog_fx", "digital_fx", "templates", "sws_autocolor", "menus_toolbars", "fonts", "audio_tuning", "docs"}
+            for k in keys:
+                selected[k] = k in core_set
         elif choice in ['m', 'min']:
             for k in keys:
                 selected[k] = k in ["themes", "fonts", "audio_tuning"]
@@ -544,16 +549,30 @@ def deploy_components(selected_keys, target_dir, logger, profile="overlay", forc
     logger.action("CONFIG", "Applying sanitized configurations and templates...")
     for ini in active_inis:
         src = os.path.join(CONFIG_TEMPLATES_DIR, ini)
+        if not os.path.exists(src):
+            continue
+
         if ini.endswith(".template.ini"):
             dst_name = ini.replace(".template.ini", ".ini")
             dst = os.path.join(target_dir, dst_name)
-            if os.path.exists(src) and not dry_run:
-                with open(src, "r", encoding="utf-8") as f:
-                    content = f.read()
-                content = content.replace("{{REAPER_CONFIG_DIR}}", target_dir)
-                with open(dst, "w", encoding="utf-8") as f:
-                    f.write(content)
+            with open(src, "r", encoding="utf-8") as f:
+                content = f.read()
+            content = content.replace("{{REAPER_CONFIG_DIR}}", target_dir)
+
+            if os.path.exists(dst) and profile != "fresh" and not force:
+                reafull_backup_name = f"{dst_name}.reafull"
+                reafull_backup_dst = os.path.join(target_dir, reafull_backup_name)
+                if not dry_run:
+                    with open(reafull_backup_dst, "w", encoding="utf-8") as f:
+                        f.write(content)
+                logger.warn(f"  [PRESERVED] Existing user {dst_name} kept intact.")
+                logger.info(f"               (ReaFull copy saved at {reafull_backup_name}; use --force to overwrite)")
+            else:
+                if not dry_run:
+                    with open(dst, "w", encoding="utf-8") as f:
+                        f.write(content)
                 logger.info(f"  -> Dynamic template processed: {dst_name}")
+
         elif ini == "reapack.ini":
             dst = os.path.join(target_dir, ini)
             if os.path.exists(dst):
@@ -564,7 +583,8 @@ def deploy_components(selected_keys, target_dir, logger, profile="overlay", forc
                 if not dry_run:
                     shutil.copy2(src, dst)
                 logger.info(f"  -> Initial configuration copied: {ini}")
-        elif ini in ["reaper-kb.ini", "reaper-mouse.ini", "reaper-menu.ini", "reaper-screensets.ini"]:
+
+        else:
             dst = os.path.join(target_dir, ini)
             if os.path.exists(dst) and profile != "fresh" and not force:
                 reafull_backup_name = f"{ini}.reafull"
@@ -572,16 +592,11 @@ def deploy_components(selected_keys, target_dir, logger, profile="overlay", forc
                 if not dry_run:
                     shutil.copy2(src, reafull_backup_dst)
                 logger.warn(f"  [PRESERVED] Existing user {ini} kept intact.")
-                logger.info(f"               (ReaFull copy available at {reafull_backup_name}; use --force to overwrite)")
+                logger.info(f"               (ReaFull copy saved at {reafull_backup_name}; use --force to overwrite)")
             else:
                 if not dry_run:
                     shutil.copy2(src, dst)
                 logger.info(f"  -> Configuration applied: {ini}")
-        else:
-            dst = os.path.join(target_dir, ini)
-            if os.path.exists(src) and not dry_run:
-                shutil.copy2(src, dst)
-                logger.info(f"  -> Configuration copied: {ini}")
 
     # 3. Native Extension Symlinks
     userplugins_dst = os.path.join(target_dir, "UserPlugins")
@@ -809,12 +824,12 @@ def merge_reaper_ini(selected_keys, target_dir, logger, dry_run=False):
 
 def main():
     parser = argparse.ArgumentParser(description="ReaFull: Modular Installer for REAPER on Linux")
-    parser.add_argument("--target", type=str, default=None, help="REAPER configuration target directory")
-    parser.add_argument("--profile", choices=["overlay", "fresh"], default=None, help="Installation profile: 'overlay' (non-destructive, preserves shortcuts/mouse/reapack) or 'fresh' (clean studio)")
-    parser.add_argument("--force", "-f", action="store_true", help="Overwrite keyboard shortcuts and menus even if they already exist")
+    parser.add_argument("--target", type=str, default=None, help="REAPER configuration target directory ('native', 'flatpak', or absolute path)")
+    parser.add_argument("--profile", choices=["overlay", "fresh"], default=None, help="Installation profile: 'overlay' (non-destructive, preserves user INIs and settings) or 'fresh' (clean studio setup)")
+    parser.add_argument("--force", "-f", action="store_true", help="Overwrite keyboard shortcuts, menus, and custom INIs even if they already exist")
     parser.add_argument("--all", "-a", action="store_true", help="Install all components (Full Mode)")
     parser.add_argument("--components", "-c", type=str, default=None, help="Comma-separated list of components (e.g. themes,analog_fx,audio_tuning)")
-    parser.add_argument("--preset", "-p", choices=["full", "minimal", "fx-only", "themes-only"], help="Quick selection preset")
+    parser.add_argument("--preset", "-p", choices=["full", "core", "minimal", "fx-only", "themes-only", "community", "extras"], help="Quick selection preset ('core' < 700MB)")
     parser.add_argument("--no-backup", action="store_true", help="Skip pre-install backup creation")
     parser.add_argument("--assets-dir", type=str, default=None, help="Custom path to ReaFull assets directory")
     parser.add_argument("--dry-run", action="store_true", help="Simulate without modifying files")
@@ -828,7 +843,17 @@ def main():
     ensure_assets_available(custom_assets_dir=args.assets_dir, quiet=args.quiet)
 
     is_interactive = not args.quiet and not args.all and not args.preset and not args.components
-    target_dir = args.target or detect_reaper_dir(interactive=is_interactive)
+    
+    # Resolve target directory (including native / flatpak aliases)
+    if args.target == "native":
+        target_dir = os.path.expanduser("~/.config/REAPER")
+    elif args.target == "flatpak":
+        target_dir = os.path.expanduser("~/.var/app/fm.reaper.Reaper/config/REAPER")
+    elif args.target:
+        target_dir = os.path.abspath(os.path.expanduser(args.target))
+    else:
+        target_dir = detect_reaper_dir(interactive=is_interactive)
+
     log_path = args.log_file or os.path.join(target_dir, f"reafull_install_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
     logger = Logger(log_path, quiet=args.quiet)
 
@@ -841,12 +866,16 @@ def main():
     # Component Selection Resolution
     if args.all or args.preset == "full":
         selected_keys = list(COMPONENTS.keys())
+    elif args.preset == "core":
+        selected_keys = ["themes", "analog_fx", "digital_fx", "templates", "sws_autocolor", "menus_toolbars", "fonts", "audio_tuning", "docs"]
     elif args.preset == "minimal":
         selected_keys = ["themes", "fonts", "audio_tuning"]
     elif args.preset == "fx-only":
         selected_keys = ["analog_fx", "digital_fx", "community_fx", "presets", "audio_tuning"]
     elif args.preset == "themes-only":
         selected_keys = ["themes", "fonts", "sws_autocolor"]
+    elif args.preset in ["community", "extras"]:
+        selected_keys = ["community_fx", "scripts", "presets"]
     elif args.components:
         selected_keys = [k.strip() for k in args.components.split(",") if k.strip() in COMPONENTS]
     elif args.quiet:
@@ -863,7 +892,7 @@ def main():
         print(f"{Colors.BOLD}{Colors.CYAN}             ReaFull Installation Summary              {Colors.ENDC}")
         print(f"{Colors.BOLD}{Colors.CYAN}======================================================{Colors.ENDC}")
         print(f"  Target Directory     : {Colors.BOLD}{target_dir}{Colors.ENDC}")
-        print(f"  Installation Profile : {Colors.BOLD}{profile.upper()}{Colors.ENDC} {'(Shortcuts and menus preserved)' if profile == 'overlay' and not args.force else '(Full overwrite enabled)'}")
+        print(f"  Installation Profile : {Colors.BOLD}{profile.upper()}{Colors.ENDC} {'(Shortcuts and custom INIs preserved)' if profile == 'overlay' and not args.force else '(Full overwrite enabled)'}")
         print(f"  Log File             : {Colors.DIM}{log_path}{Colors.ENDC}")
         print(f"  Operation Mode       : {'SIMULATION (DRY RUN)' if args.dry_run else 'REAL INSTALLATION'}")
         print(f"  Space Required       : {Colors.BOLD}{Colors.GREEN}{format_size(total_bytes)}{Colors.ENDC} ({total_files} files)")
@@ -896,7 +925,11 @@ def main():
         print("\n" + "-" * 54)
         logger.action("VERIFY", "Running installation health check...")
         try:
-            subprocess.run([sys.executable, verify_script, target_dir], check=False)
+            res = subprocess.run([sys.executable, verify_script, target_dir])
+            if res.returncode != 0:
+                logger.warn("Health check finished with warnings or issues. Review messages above.")
+            else:
+                logger.success("Post-installation health check passed with zero issues.")
         except Exception as e:
             logger.warn(f"Could not run verifier: {e}")
 

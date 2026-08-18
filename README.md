@@ -118,26 +118,30 @@ cd ReaFull
 ## 5. CLI Reference & Profiles
 
 ```bash
-# Overlay Profile (Default if REAPER is already configured: preserves your shortcuts and menus)
+# Overlay Profile (Default: non-destructive, preserves user shortcuts, menus, and custom INIs)
 ./install.sh --profile overlay
 
 # Fresh Studio Profile (Clean studio configuration: deploys all defaults)
 ./install.sh --profile fresh
 
 # Preset Selections
-./install.sh --preset full         # Full installation (~858 MB)
+./install.sh --preset core         # Core Studio Suite (<700 MB: Themes, Analog & Digital FX, Templates, SWS, Fonts)
+./install.sh --preset full         # Complete installation including all community suites (~858 MB)
 ./install.sh --preset minimal      # Essential UI, fonts, and audio tuning (~20 MB)
 ./install.sh --preset fx-only      # JSFX plugin suites and presets (~640 MB)
-./install.sh --preset themes-only  # Themes and icons only (~20 MB)
+./install.sh --preset themes-only  # Themes, icons, and SWS rules (~20 MB)
+./install.sh --preset extras       # Community plugins and extra scripts (~180 MB)
+
+# Target Resolution (Native, Flatpak, or Custom path)
+./install.sh --target native       # Installs to ~/.config/REAPER
+./install.sh --target flatpak      # Installs to ~/.var/app/fm.reaper.Reaper/config/REAPER
+./install.sh --target /custom/dir  # Custom target directory
 
 # Force overwrite of keyboard shortcuts and custom menus
 ./install.sh --force
 
-# Specify custom target (e.g. Flatpak)
-./install.sh --target ~/.var/app/fm.reaper.Reaper/config/REAPER
-
 # Simulation / Dry Run without modifying files
-./install.sh --dry-run --preset full
+./install.sh --dry-run --preset core
 
 # Silent non-interactive installation
 ./install.sh --quiet

@@ -5,6 +5,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ---
 
+## [2026.2.0] - 2026-08-18
+
+### Added
+- **Core Suite Profile (`--preset core`)**:
+  - Standalone core studio profile under 700MB (~668MB), optimizing initial download and deployment.
+  - Interactive selector menu command `k` / `core` for instant selection.
+- **Enhanced Safe Overlay Protection**:
+  - Non-destructive protection extended across all user `.ini` configurations (`sws-autocoloricon.ini`, `S&M.ini`, `reaper-extstate.ini`, `reaper-fxfolders.ini`, `reaper-defpresets.ini`, etc.).
+  - Preserves user custom settings and creates `.reafull` reference copies.
+- **Target Aliases & Resolution**:
+  - Added support for `--target native` and `--target flatpak`.
+- **Config Templates Validation Mode**:
+  - Added template directory sanity gate to `scripts/verify_installation.py` (`--templates`).
+- **Comprehensive Legal Disclosures**:
+  - Exhaustive updates to `NOTICE.md` and `THIRD_PARTY.md` covering all community DSP suites, ReaTeam scripts, and font licenses.
+
+### Changed
+- **CI Test Pipeline**:
+  - Added automated steps for templates verification, dry-run simulation, real core deployment, and overlay non-destructive testing.
+- **Installer Wrapper (`install.sh`)**:
+  - Fixed TTY reconnection in non-interactive / CI / piped environments.
+
+---
+
 ## [2026.1.0] - 2026-08-17
 
 ### Added

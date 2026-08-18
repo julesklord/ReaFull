@@ -15,35 +15,48 @@ ReaFull is a curated Linux-native production suite distribution for **Cockos REA
 ---
 
 ## 🎛️ JSFX Audio DSP & Plugin Algorithms
-The ReaFull Analog & Digital FX suites utilize open-source DSP cores and algorithms created by brilliant developers in the audio community:
+The ReaFull Analog & Digital FX suites and community processing modules utilize open-source DSP cores and algorithms created by brilliant developers in the audio community:
 - **Tukan Studios (John Matthews)**: Analog-modeled compressors, EQs, tape, preamps, and console JSFX.
 - **Sonic Anomaly (Stige T)**: SLAX, SEGX2, QuadraCom, TriLeveler, Bass Professor, and Leet Delay algorithms.
-- **Justin Johnson**: ReEQ / D-ReEQ parametric equalizer engine (GPL).
-- **Joep Vanlier (Saike)**: Saike Tools, pitch, distortion, and creative DSP processors.
-- **Tiago LR (tilr)**: tilr JSFX collection and modulation processors.
-- **Michael Pilyavskiy (MPL)**: DSP analysis and dynamic processing utilities.
-- **Cockos Incorporated**: Core JSFX library effects and algorithms.
+- **Justin Johnson (JustinRX)**: ReEQ / D-ReEQ parametric equalizer engine (GPL).
+- **Joep Vanlier (Saike)**: Saike Tools, pitch, distortion, diffusion, and creative DSP processors.
+- **Tiago LR (tilr)**: tilr JSFX collection, sub-bass synthesizers, and modulation processors.
+- **StevieKeys**: StevieKeys JSFX suite and metering utilities.
+- **Scott Stillwell (sstillwell)**: Bad Connection, CMX, Dyno, Event Horizon, Fairly Child, Major Tom, Huge Booty, and console dynamics.
+- **Liteon**: NP1136 peak limiter, Butterworth filters, and spatial processors.
+- **Michael Loser (LOSER)**: 3-Band EQ/Comp, DVC, Master Limiter, Saturation, and Zero Crossing utilities.
+- **Cockos Incorporated (Justin Frankel, Schwa)**: Native JSFX DSP library, Soft Clipper, MIDI tools, and core algorithms.
+- **IXix (IX)**: MIDI routers, patch bays, and channel utilities.
+- **remaincalm_org**: Floatydelay and parabolic shaper.
+- **Teej, Till, Mawi**: Tube amplifiers, brickwall limiters, and specialized stereo processors.
 
 ---
 
 ## 📜 ReaScripts & Extensions
-- **SWS / S&M Extension**: Cockos REAPER extension created by the SWS Team (Jeffos, Breeder, Fingers, Xenakios, Tim Green, SWS Contributors).
+- **SWS / S&M Extension**: Cockos REAPER extension created by the SWS Team (Tim Giles, Jeffos, Breeder, Fingers, Xenakios, Tim Green, SWS Contributors).
 - **ReaPack Package Manager**: Created by **Christian Fillion (cfillion)**.
-- **ReaTeam Repository Contributors**: Community scripts and extensions.
-- **FTC (Ilias Poulakis)**: Adaptive Grid, Lil ChordBox, GridBox, and workflow tools.
-- **Michael Pilyavskiy (MPL)**: Comprehensive ReaScript suite.
-- **Raymond Radet (X-Raym)**: Workflow enhancement ReaScripts.
-- **Hector Corcin (HeDa)**: Track Inspector and script utilities.
-- **Goran Kovac (Sexan)**: Pie3000, ReaSpaghetti, and UI scripts.
-- **Suzuki**: Scripting utilities.
-- **Lokasenna**: Lokasenna GUI v2 framework for ReaScript.
+- **ReaTeam Repository Contributors**: Global community scripts and extensions repository.
+- **FTC (Ilias-Timon Poulakis / FeedTheCat)**: MIDI Editor Magic, Folder Magic, Smart Freeze, Adaptive Grid, and Lil ChordBox.
+- **Michael Pilyavskiy (MPL)**: Comprehensive ReaScript suite (Various_functions, Align, Routing, Mapping).
+- **Raymond Radet (X-Raym)**: Workflow enhancement ReaScripts, EDL/marker exporters, and Web Remote interface (`reaper_www_root`).
+- **Hector Corcin (HeDa)**: Track Inspector 2, HeDaScripts Manager, and monitoring utilities.
+- **Goran Kovac (Sexan)**: Pie3000, ReaSpaghetti, FX search, and UI scripts.
+- **Zaibuyidao**: High-performance MIDI editing, articulation, and humanization tools.
+- **Archie**: Advanced arrangement and automation scripting suite.
+- **kawa**: kawa MIDI and track management ReaScripts.
+- **Suzuki**: Suzuki scripts and scripting utilities.
+- **Lokasenna (Michael Schwerdtfeger)**: Lokasenna GUI v2 framework for ReaScript development.
+- **Arthur McArthur**: McSequencer and custom MIDI routing tools.
+- **ACendan, BirdBird, EUGENE27771, Lemerchand, me2beats, MonkeyBars, Neutronic, Odedd, Olshalom, Souk21, Stevie, Yannick**: Community script contributions.
 
 ---
 
 ## 🔤 Typography & Fonts
-- **Open Sans**: Steve Matteson (SIL Open Font License v1.1).
-- **Roboto**: Christian Robertson, Google (Apache License 2.0).
-- **Orbitron**: Matt McInerney (SIL Open Font License v1.1).
 - **Electrolize**: Gaslight, Valery Zaveryaev (SIL Open Font License v1.1).
+- **Orbitron**: Matt McInerney (SIL Open Font License v1.1).
+- **Roboto**: Christian Robertson, Google (Apache License 2.0).
+- **Open Sans**: Steve Matteson, Google (Apache License 2.0 / OFL 1.1).
+- **Frozen Crystal**: Ray Larabie, Typodermic Fonts (Freeware Desktop Font License).
+- **Alarm Clock**: David J. Patterson (Freeware Font License).
 
 For complete details on third-party licenses, see [THIRD_PARTY.md](THIRD_PARTY.md).
