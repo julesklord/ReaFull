@@ -5,6 +5,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ---
 
+## [2026.3.0] - 2026-08-18
+
+### Security
+- Pinned the published asset SHA-256 and made every remote download fail closed when no checksum is configured.
+- Added CI gates for release integrity and removed unsafe `curl | bash` guidance from the in-DAW updater.
+
+### Fixed
+- Closed the deep production audit with strict post-install verification, explicit extension selection, and REAPER-process protection.
+- Added automated license and attribution inventory checks to CI.
+
+---
+
 ## [2026.2.0] - 2026-08-18
 
 ### Added

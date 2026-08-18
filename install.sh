@@ -13,7 +13,7 @@ C_GREEN='\033[92m'
 C_YELLOW='\033[93m'
 C_CYAN='\033[96m'
 
-VERSION="2026.2.0"
+VERSION="2026.3.0"
 ASSETS_RELEASE_URL="https://github.com/julesklord/ReaFull/releases/download/v${VERSION}/reafull-assets-v${VERSION}.tar.gz"
 
 # Reconnect stdin to TTY only if executing via curl pipe in interactive mode
@@ -86,30 +86,15 @@ else
     INSTALL_SRC="$TEMP_DIR"
 fi
 
-# 4. Check & Download Assets from GitHub Releases if not present locally
+# 4. Check Cached Assets
 CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/reafull"
 
 if [ ! -d "$INSTALL_SRC/assets" ]; then
     if [ -d "$CACHE_DIR/assets" ] && [ -d "$CACHE_DIR/assets/Effects" ]; then
-        echo -e "${C_GREEN}[*] Utilizando assets de ReaFull en caché (~/.cache/reafull/assets)${C_RESET}"
-        ln -s "$CACHE_DIR/assets" "$INSTALL_SRC/assets" 2>/dev/null || cp -rs "$CACHE_DIR/assets" "$INSTALL_SRC/assets"
-    else
-        echo -e "${C_BOLD}${C_CYAN}[*] Descargando componentes de estudio de ReaFull (GitHub Releases CDN)...${C_RESET}"
-        mkdir -p "$CACHE_DIR"
-        
-        if command -v curl >/dev/null 2>&1; then
-            curl -# -L -o "$CACHE_DIR/assets.tar.gz" "$ASSETS_RELEASE_URL"
-        elif command -v wget >/dev/null 2>&1; then
-            wget --show-progress -q -O "$CACHE_DIR/assets.tar.gz" "$ASSETS_RELEASE_URL"
-        else
-            echo -e "${C_RED}[ERROR] Se requiere 'curl' o 'wget' para descargar los assets.${C_RESET}"
-            exit 1
+        if [ "$IS_QUIET" -eq 0 ]; then
+            echo -e "${C_GREEN}[*] Utilizando assets de ReaFull en caché (~/.cache/reafull/assets)${C_RESET}"
         fi
-
-        echo -e "  -> Descomprimiendo suites JSFX, temas, plantillas y fuentes..."
-        tar -xzf "$CACHE_DIR/assets.tar.gz" -C "$CACHE_DIR"
-        ln -s "$CACHE_DIR/assets" "$INSTALL_SRC/assets" 2>/dev/null || cp -rs "$CACHE_DIR/assets" "$INSTALL_SRC/assets"
-        echo -e "${C_GREEN}[OK] Componentes de audio listos.${C_RESET}\n"
+        ln -s "$CACHE_DIR/assets" "$INSTALL_SRC/assets" 2>/dev/null || cp -rs "$CACHE_DIR/assets" "$INSTALL_SRC/assets" 2>/dev/null || true
     fi
 fi
 

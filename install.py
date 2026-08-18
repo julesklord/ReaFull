@@ -20,14 +20,112 @@ import argparse
 import subprocess
 import re
 import time
+import hashlib
+import platform
+import tempfile
+import urllib.request
+import tarfile
 from datetime import datetime
 
-VERSION = "2026.2.0"
+VERSION = "2026.3.0"
 ASSETS_RELEASE_URL = f"https://github.com/julesklord/ReaFull/releases/download/v{VERSION}/reafull-assets-v{VERSION}.tar.gz"
+
+KNOWN_HASHES = {
+    "reafull-assets-v2026.3.0.tar.gz": "17019271a743534111384cc0c0dfd835ed61d5dec57e408e650fc7232f2d12c3",
+    "sws_x86_64": "4cf0629aeeff346c1ed9a355ce826febfacf9775bd6f49f09b1b4f9f053b8644",
+    "sws_aarch64": "615b66ae9e38e01aabb2e5e2a21fb0ffe3c1bab9587c1a2620f62c6e80e9a409",
+    "reapack_x86_64": "35d80f63d8174c964af589c7d87c4728aa18f06899dce873e33f8d552d1bc7e0",
+    "reapack_aarch64": "fa833c2e3367760c4103457ae2dd10bbd84543e80f6750bd695dd4f2e60fa2a3",
+}
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSETS_DIR = os.path.join(ROOT_DIR, "assets")
 CONFIG_TEMPLATES_DIR = os.path.join(ROOT_DIR, "config_templates")
+
+def safe_extract_tar(tar_path, dest_dir):
+    """
+    Safely extracts a tar file, preventing path traversal attacks,
+    absolute path escapes, and links escaping the destination directory.
+    """
+    dest_dir = os.path.abspath(dest_dir)
+    os.makedirs(dest_dir, exist_ok=True)
+    with tarfile.open(tar_path, "r:*") as tar:
+        for member in tar.getmembers():
+            target_path = os.path.abspath(os.path.join(dest_dir, member.name))
+            if os.path.commonpath([dest_dir, target_path]) != dest_dir:
+                raise ValueError(f"Security error: Tar member escapes destination: {member.name}")
+            if member.islnk() or member.issym():
+                link_target = os.path.abspath(os.path.join(os.path.dirname(target_path), member.linkname))
+                if os.path.commonpath([dest_dir, link_target]) != dest_dir:
+                    raise ValueError(f"Security error: Tar link target escapes destination: {member.name} -> {member.linkname}")
+        tar.extractall(path=dest_dir)
+
+def download_and_verify(url, target_path, expected_sha256=None, logger=None, quiet=False):
+    """
+    Downloads a file to a temporary file, computes SHA-256 integrity hash,
+    validates against expected_sha256 if provided, and atomically moves to target_path.
+    """
+    if not expected_sha256:
+        err_msg = f"No checksum configured for {os.path.basename(target_path)}; refusing unverified download."
+        if logger:
+            logger.error(err_msg)
+        elif not quiet:
+            print(f"\033[91m[ERROR] {err_msg}\033[0m")
+        return False
+
+    target_dir = os.path.dirname(os.path.abspath(target_path))
+    os.makedirs(target_dir, exist_ok=True)
+
+    tmp_fd, tmp_file = tempfile.mkstemp(dir=target_dir, prefix=".reafull_dl_")
+    os.close(tmp_fd)
+
+    sha256_hash = hashlib.sha256()
+    req = urllib.request.Request(url, headers={"User-Agent": f"ReaFull-Installer/{VERSION}"})
+
+    try:
+        with urllib.request.urlopen(req, timeout=30) as response, open(tmp_file, "wb") as out_f:
+            total_size = int(response.headers.get("Content-Length", 0))
+            downloaded = 0
+            block_size = 65536
+            while True:
+                chunk = response.read(block_size)
+                if not chunk:
+                    break
+                out_f.write(chunk)
+                sha256_hash.update(chunk)
+                downloaded += len(chunk)
+                if not quiet and sys.stdout.isatty() and total_size > 0:
+                    pct = int(downloaded * 100 / total_size)
+                    mb = downloaded / (1024 * 1024)
+                    tot_mb = total_size / (1024 * 1024)
+                    sys.stdout.write(f"\r  -> Downloading {os.path.basename(target_path)}: {pct}% [{mb:.1f} MB / {tot_mb:.1f} MB] ")
+                    sys.stdout.flush()
+        if not quiet and sys.stdout.isatty():
+            sys.stdout.write("\n")
+            sys.stdout.flush()
+
+        calculated_hash = sha256_hash.hexdigest()
+        if expected_sha256 and calculated_hash.lower() != expected_sha256.lower():
+            if os.path.exists(tmp_file):
+                os.remove(tmp_file)
+            err_msg = f"Checksum mismatch for {os.path.basename(target_path)}! Expected {expected_sha256}, got {calculated_hash}"
+            if logger:
+                logger.error(err_msg)
+            elif not quiet:
+                print(f"\033[91m[ERROR] {err_msg}\033[0m")
+            return False
+
+        os.replace(tmp_file, target_path)
+        return True
+    except Exception as e:
+        if os.path.exists(tmp_file):
+            os.remove(tmp_file)
+        err_msg = f"Download failed for {url}: {e}"
+        if logger:
+            logger.error(err_msg)
+        elif not quiet:
+            print(f"\033[91m[ERROR] {err_msg}\033[0m")
+        return False
 
 def ensure_assets_available(custom_assets_dir=None, quiet=False):
     global ASSETS_DIR
@@ -50,30 +148,20 @@ def ensure_assets_available(custom_assets_dir=None, quiet=False):
     os.makedirs(cache_dir, exist_ok=True)
     tar_path = os.path.join(cache_dir, f"reafull-assets-v{VERSION}.tar.gz")
 
-    import urllib.request
-    def reporthook(count, block_size, total_size):
-        if quiet or not sys.stdout.isatty():
-            return
-        downloaded_mb = (count * block_size) / (1024 * 1024)
-        total_mb = total_size / (1024 * 1024) if total_size > 0 else 0
-        pct = int(count * block_size * 100 / total_size) if total_size > 0 else 0
-        sys.stdout.write(f"\r  -> Descargando assets: {pct}% [{downloaded_mb:.1f} MB / {total_mb:.1f} MB] ")
-        sys.stdout.flush()
+    if not download_and_verify(ASSETS_RELEASE_URL, tar_path, expected_sha256=KNOWN_HASHES.get(f"reafull-assets-v{VERSION}.tar.gz"), quiet=quiet):
+        return False
 
     try:
-        urllib.request.urlretrieve(ASSETS_RELEASE_URL, tar_path, reporthook)
         if not quiet:
-            print(f"\n  -> Descomprimiendo suites JSFX, temas y plantillas...")
-        import tarfile
-        with tarfile.open(tar_path, "r:gz") as tar:
-            tar.extractall(path=cache_dir)
+            print(f"  -> Descomprimiendo suites JSFX, temas y plantillas con validación de rutas...")
+        safe_extract_tar(tar_path, cache_dir)
         ASSETS_DIR = cache_assets
         if not quiet:
             print(f"\033[92m[OK] Componentes de audio listos.\033[0m\n")
         return True
     except Exception as e:
         if not quiet:
-            print(f"\n\033[91m[ERROR] No se pudieron descargar los assets: {e}\033[0m")
+            print(f"\n\033[91m[ERROR] No se pudieron extraer los assets: {e}\033[0m")
         return False
 
 # Color formatting helpers for terminal output
@@ -191,6 +279,13 @@ COMPONENTS = {
         "name": "Documentation & Resources",
         "desc": "Quick reference guides and documentation links",
         "folders": [("Docs", "Docs")],
+        "inis": [],
+        "default": True
+    },
+    "extensions": {
+        "name": "Native Extensions (SWS & ReaPack)",
+        "desc": "Verified Linux native binaries (SWS 2.14.0.7 & ReaPack 1.2.6) for UserPlugins/",
+        "folders": [],
         "inis": [],
         "default": True
     },
@@ -610,7 +705,8 @@ def deploy_components(selected_keys, target_dir, logger, profile="overlay", forc
                 logger.info(f"  -> Configuration applied: {ini}")
 
     # 3. Native Extension Setup (SWS & ReaPack)
-    ensure_native_extensions(target_dir, logger, dry_run=dry_run)
+    if "extensions" in selected_keys:
+        ensure_native_extensions(target_dir, logger, dry_run=dry_run)
 
     # 4. Merge reaper.ini
     merge_reaper_ini(selected_keys, target_dir, logger, dry_run=dry_run)
@@ -620,21 +716,41 @@ def ensure_native_extensions(target_dir, logger, dry_run=False):
     Ensures SWS Extension and ReaPack binaries are installed in target_dir/UserPlugins.
     1. Checks if already present in target_dir/UserPlugins.
     2. Searches system library locations (/usr/lib, /usr/lib64, etc.) and symlinks.
-    3. If still missing, downloads official x86_64 binary releases directly into UserPlugins.
+    3. If still missing, downloads official cryptographically verified binary releases.
     """
+    arch = platform.machine().lower()
+    if arch in ["x86_64", "amd64"]:
+        sws_bin = "reaper_sws-x86_64.so"
+        reapack_bin = "reaper_reapack-x86_64.so"
+        sws_hash = KNOWN_HASHES.get("sws_x86_64")
+        reapack_hash = KNOWN_HASHES.get("reapack_x86_64")
+        sws_url = f"https://github.com/reaper-oss/sws/releases/download/v2.14.0.7/{sws_bin}"
+        reapack_url = f"https://github.com/cfillion/reapack/releases/download/v1.2.6/{reapack_bin}"
+    elif arch in ["aarch64", "arm64"]:
+        sws_bin = "reaper_sws-aarch64.so"
+        reapack_bin = "reaper_reapack-aarch64.so"
+        sws_hash = KNOWN_HASHES.get("sws_aarch64")
+        reapack_hash = KNOWN_HASHES.get("reapack_aarch64")
+        sws_url = f"https://github.com/reaper-oss/sws/releases/download/v2.14.0.7/{sws_bin}"
+        reapack_url = f"https://github.com/cfillion/reapack/releases/download/v1.2.6/{reapack_bin}"
+    else:
+        logger.warn(f"Architecture '{arch}' not supported for automatic binary extension downloads.")
+        return
+
     userplugins_dst = os.path.join(target_dir, "UserPlugins")
     if not dry_run:
         os.makedirs(userplugins_dst, exist_ok=True)
 
-    # 1. SWS Extension (reaper_sws-x86_64.so)
-    sws_dst = os.path.join(userplugins_dst, "reaper_sws-x86_64.so")
+    # 1. SWS Extension
+    sws_dst = os.path.join(userplugins_dst, sws_bin)
     if not os.path.exists(sws_dst):
         found_sws = False
         for sys_path in [
-            "/usr/lib/sws/reaper_sws-x86_64.so",
-            "/usr/lib/REAPER/Plugins/reaper_sws-x86_64.so",
-            "/usr/lib64/reaper_sws-x86_64.so",
-            "/usr/lib/x86_64-linux-gnu/reaper_sws-x86_64.so"
+            f"/usr/lib/sws/{sws_bin}",
+            f"/usr/lib/REAPER/Plugins/{sws_bin}",
+            f"/usr/lib64/{sws_bin}",
+            f"/usr/lib/x86_64-linux-gnu/{sws_bin}",
+            f"/usr/lib/aarch64-linux-gnu/{sws_bin}",
         ]:
             if os.path.exists(sys_path):
                 if not dry_run:
@@ -646,36 +762,22 @@ def ensure_native_extensions(target_dir, logger, dry_run=False):
                     except Exception:
                         pass
         if not found_sws and not dry_run:
-            logger.action("EXTENSION", "SWS not found in system. Downloading official SWS extension for Linux...")
-            sws_url = "https://github.com/reaper-oss/sws/releases/download/v2.14.0.3/sws-2.14.0.3-Linux-x86_64.tar.xz"
-            cache_dir = os.path.expanduser("~/.cache/reafull")
-            os.makedirs(cache_dir, exist_ok=True)
-            sws_tar = os.path.join(cache_dir, "sws_linux.tar.xz")
-            try:
-                import urllib.request, tarfile
-                urllib.request.urlretrieve(sws_url, sws_tar)
-                with tarfile.open(sws_tar, "r:xz") as tar:
-                    for member in tar.getmembers():
-                        if member.name.endswith("reaper_sws-x86_64.so") or os.path.basename(member.name) == "reaper_sws-x86_64.so":
-                            f = tar.extractfile(member)
-                            if f:
-                                with open(sws_dst, "wb") as out_f:
-                                    out_f.write(f.read())
-                                logger.success("SWS Extension (Linux x86_64) installed to UserPlugins/")
-                                found_sws = True
-                                break
-            except Exception as e:
-                logger.warn(f"Could not automatically download SWS extension: {e}")
+            logger.action("EXTENSION", f"Downloading official SWS extension ({arch}) with integrity check...")
+            if download_and_verify(sws_url, sws_dst, expected_sha256=sws_hash, logger=logger, quiet=logger.quiet):
+                logger.success(f"SWS Extension ({arch}) installed and verified at UserPlugins/{sws_bin}")
+            else:
+                logger.warn("Could not download/verify SWS extension.")
 
-    # 2. ReaPack (reaper_reapack-x86_64.so)
-    reapack_dst = os.path.join(userplugins_dst, "reaper_reapack-x86_64.so")
+    # 2. ReaPack
+    reapack_dst = os.path.join(userplugins_dst, reapack_bin)
     if not os.path.exists(reapack_dst):
         found_reapack = False
         for sys_path in [
-            "/usr/lib/REAPER/Plugins/reaper_reapack-x86_64.so",
-            "/usr/lib/reapack/reaper_reapack-x86_64.so",
-            "/usr/lib64/reaper_reapack-x86_64.so",
-            "/usr/lib/x86_64-linux-gnu/reaper_reapack-x86_64.so"
+            f"/usr/lib/REAPER/Plugins/{reapack_bin}",
+            f"/usr/lib/reapack/{reapack_bin}",
+            f"/usr/lib64/{reapack_bin}",
+            f"/usr/lib/x86_64-linux-gnu/{reapack_bin}",
+            f"/usr/lib/aarch64-linux-gnu/{reapack_bin}",
         ]:
             if os.path.exists(sys_path):
                 if not dry_run:
@@ -687,14 +789,11 @@ def ensure_native_extensions(target_dir, logger, dry_run=False):
                     except Exception:
                         pass
         if not found_reapack and not dry_run:
-            logger.action("EXTENSION", "ReaPack not found in system. Downloading official ReaPack for Linux...")
-            reapack_url = "https://github.com/cfillion/reapack/releases/download/v1.2.4.5/reaper_reapack-x86_64.so"
-            try:
-                import urllib.request
-                urllib.request.urlretrieve(reapack_url, reapack_dst)
-                logger.success("ReaPack (Linux x86_64) installed to UserPlugins/")
-            except Exception as e:
-                logger.warn(f"Could not automatically download ReaPack: {e}")
+            logger.action("EXTENSION", f"Downloading official ReaPack ({arch}) with integrity check...")
+            if download_and_verify(reapack_url, reapack_dst, expected_sha256=reapack_hash, logger=logger, quiet=logger.quiet):
+                logger.success(f"ReaPack ({arch}) installed and verified at UserPlugins/{reapack_bin}")
+            else:
+                logger.warn("Could not download/verify ReaPack.")
 
 def detect_best_audio_settings(logger):
     cpu_cores = os.cpu_count() or 4
@@ -916,6 +1015,7 @@ def main():
     parser.add_argument("--components", "-c", type=str, default=None, help="Comma-separated list of components (e.g. themes,analog_fx,audio_tuning)")
     parser.add_argument("--preset", "-p", choices=["full", "core", "minimal", "fx-only", "themes-only", "community", "extras"], help="Quick selection preset ('core' < 700MB)")
     parser.add_argument("--no-backup", action="store_true", help="Skip pre-install backup creation")
+    parser.add_argument("--allow-running-reaper", action="store_true", help="Allow installation even if REAPER is currently running (not recommended)")
     parser.add_argument("--assets-dir", type=str, default=None, help="Custom path to ReaFull assets directory")
     parser.add_argument("--dry-run", action="store_true", help="Simulate without modifying files")
     parser.add_argument("--log-file", type=str, default=None, help="Custom log file path")
@@ -952,7 +1052,7 @@ def main():
     if args.all or args.preset == "full":
         selected_keys = list(COMPONENTS.keys())
     elif args.preset == "core":
-        selected_keys = ["themes", "analog_fx", "digital_fx", "templates", "sws_autocolor", "menus_toolbars", "fonts", "audio_tuning", "docs"]
+        selected_keys = ["themes", "analog_fx", "digital_fx", "templates", "sws_autocolor", "menus_toolbars", "fonts", "audio_tuning", "extensions", "docs"]
     elif args.preset == "minimal":
         selected_keys = ["themes", "fonts", "audio_tuning"]
     elif args.preset == "fx-only":
@@ -995,28 +1095,40 @@ def main():
                 logger.info("Installation aborted by user to close REAPER.")
                 logger.close()
                 sys.exit(0)
+        elif not args.allow_running_reaper and not args.force:
+            logger.error("REAPER is currently running. Please close REAPER before installing, or pass --allow-running-reaper.")
+            logger.close()
+            sys.exit(1)
 
     if not args.no_backup:
         create_backup(target_dir, logger, dry_run=args.dry_run)
 
     deploy_components(selected_keys, target_dir, logger, profile=profile, force=args.force, dry_run=args.dry_run)
 
-    logger.success("ReaFull installation completed successfully.")
+    logger.success("ReaFull files deployed successfully.")
     logger.info(f"Installation log saved to: {log_path}")
 
-    # Run verification health check
+    # Run verification health check gate
     verify_script = os.path.join(ROOT_DIR, "scripts", "verify_installation.py")
     if os.path.exists(verify_script) and not args.dry_run:
-        print("\n" + "-" * 54)
-        logger.action("VERIFY", "Running installation health check...")
+        if not args.quiet:
+            print("\n" + "-" * 54)
+        logger.action("VERIFY", "Running installation health check gate...")
         try:
-            res = subprocess.run([sys.executable, verify_script, target_dir])
+            cmd = [sys.executable, verify_script, target_dir, "--components", ",".join(selected_keys)]
+            if args.quiet:
+                cmd.append("--quiet")
+            res = subprocess.run(cmd)
             if res.returncode != 0:
-                logger.warn("Health check finished with warnings or issues. Review messages above.")
+                logger.error("Post-installation health check failed! Issues detected in installed configuration.")
+                logger.close()
+                sys.exit(1)
             else:
                 logger.success("Post-installation health check passed with zero issues.")
         except Exception as e:
-            logger.warn(f"Could not run verifier: {e}")
+            logger.error(f"Could not run verifier: {e}")
+            logger.close()
+            sys.exit(1)
 
     logger.close()
 

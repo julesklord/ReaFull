@@ -118,7 +118,7 @@ def check_templates(templates_dir, quiet=False):
 
     return all_ok
 
-def check_reafull(target_dir=None, quiet=False):
+def check_reafull(target_dir=None, components=None, quiet=False):
     if not target_dir:
         native_dir = os.path.expanduser("~/.config/REAPER")
         flatpak_dir = os.path.expanduser("~/.var/app/fm.reaper.Reaper/config/REAPER")
@@ -149,57 +149,78 @@ def check_reafull(target_dir=None, quiet=False):
     if not quiet: print("[OK] REAPER config directory exists.")
     checks_passed += 1
 
-    # 2. Check Themes
-    theme_pro = os.path.join(target_dir, "ColorThemes", "ReaFull Pro.ReaperThemeZip")
-    if os.path.exists(theme_pro):
-        if not quiet: print("[OK] ReaFull Pro theme installed.")
-        checks_passed += 1
-    else:
-        issues.append("ReaFull Pro theme not found in ColorThemes/")
-        if not quiet: print("[WARN] ReaFull Pro theme not found in ColorThemes.")
+    check_all = components is None or len(components) == 0
 
-    # 3. Check JSFX Suites
-    analog_fx = os.path.join(target_dir, "Effects", "ReaFull Analog FX")
-    digital_fx = os.path.join(target_dir, "Effects", "ReaFull Digital FX")
-    
-    if os.path.exists(analog_fx) and os.path.exists(digital_fx):
-        if not quiet: print("[OK] ReaFull Analog FX & Digital FX JSFX suites verified.")
-        checks_passed += 1
-    else:
-        issues.append("ReaFull JSFX suites missing in Effects/")
-        if not quiet: print("[WARN] ReaFull JSFX suites missing in Effects/.")
-
-    # 4. Check Fonts
-    try:
-        res = subprocess.run(["fc-list"], capture_output=True, text=True)
-        if "Electrolize" in res.stdout or "Roboto" in res.stdout or "Open Sans" in res.stdout:
-            if not quiet: print("[OK] ReaFull typography available in fontconfig.")
+    # 2. Check Themes (if themes selected or full check)
+    if check_all or "themes" in components:
+        theme_pro = os.path.join(target_dir, "ColorThemes", "ReaFull Pro.ReaperThemeZip")
+        if os.path.exists(theme_pro):
+            if not quiet: print("[OK] ReaFull Pro theme installed.")
             checks_passed += 1
         else:
-            if not quiet: print("[INFO] Fonts might need terminal session restart or are loading locally.")
-    except Exception as e:
-        if not quiet: print(f"[INFO] fontconfig check skipped ({e}).")
+            issues.append("ReaFull Pro theme not found in ColorThemes/")
+            if not quiet: print("[WARN] ReaFull Pro theme not found in ColorThemes.")
 
-    # 5. Check TrackTemplates
-    templates_dir = os.path.join(target_dir, "TrackTemplates")
-    if os.path.exists(templates_dir) and len(os.listdir(templates_dir)) >= 10:
-        if not quiet: print(f"[OK] TrackTemplates installed ({len(os.listdir(templates_dir))} categories).")
-        checks_passed += 1
-    else:
-        issues.append("TrackTemplates missing or incomplete")
-        if not quiet: print("[WARN] TrackTemplates missing or incomplete.")
+    # 3. Check JSFX Suites (if analog_fx or digital_fx selected or full check)
+    if check_all or "analog_fx" in components or "digital_fx" in components:
+        analog_fx = os.path.join(target_dir, "Effects", "ReaFull Analog FX")
+        digital_fx = os.path.join(target_dir, "Effects", "ReaFull Digital FX")
 
-    # 6. Check SWS AutoColor
-    sws_autocolor = os.path.join(target_dir, "sws-autocoloricon.ini")
-    sws_autocolor_reafull = os.path.join(target_dir, "sws-autocoloricon.ini.reafull")
-    if os.path.exists(sws_autocolor) or os.path.exists(sws_autocolor_reafull):
-        if not quiet: print("[OK] SWS AutoColor & Icons configuration installed.")
-        checks_passed += 1
-    else:
-        issues.append("sws-autocoloricon.ini missing")
-        if not quiet: print("[WARN] sws-autocoloricon.ini not found.")
+        if os.path.exists(analog_fx) and os.path.exists(digital_fx):
+            if not quiet: print("[OK] ReaFull Analog FX & Digital FX JSFX suites verified.")
+            checks_passed += 1
+        else:
+            issues.append("ReaFull JSFX suites missing in Effects/")
+            if not quiet: print("[WARN] ReaFull JSFX suites missing in Effects/.")
 
-    # 7. Audit INI files for broken Windows paths and raw placeholders
+    # 4. Check Fonts (if fonts selected or full check)
+    if check_all or "fonts" in components:
+        try:
+            res = subprocess.run(["fc-list"], capture_output=True, text=True)
+            if "Electrolize" in res.stdout or "Roboto" in res.stdout or "Open Sans" in res.stdout:
+                if not quiet: print("[OK] ReaFull typography available in fontconfig.")
+                checks_passed += 1
+            else:
+                if not quiet: print("[INFO] Fonts might need terminal session restart or are loading locally.")
+        except Exception as e:
+            if not quiet: print(f"[INFO] fontconfig check skipped ({e}).")
+
+    # 5. Check TrackTemplates (if templates selected or full check)
+    if check_all or "templates" in components:
+        templates_dir = os.path.join(target_dir, "TrackTemplates")
+        if os.path.exists(templates_dir) and len(os.listdir(templates_dir)) >= 10:
+            if not quiet: print(f"[OK] TrackTemplates installed ({len(os.listdir(templates_dir))} categories).")
+            checks_passed += 1
+        else:
+            issues.append("TrackTemplates missing or incomplete")
+            if not quiet: print("[WARN] TrackTemplates missing or incomplete.")
+
+    # 6. Check SWS AutoColor (if sws_autocolor selected or full check)
+    if check_all or "sws_autocolor" in components:
+        sws_autocolor = os.path.join(target_dir, "sws-autocoloricon.ini")
+        sws_autocolor_reafull = os.path.join(target_dir, "sws-autocoloricon.ini.reafull")
+        if os.path.exists(sws_autocolor) or os.path.exists(sws_autocolor_reafull):
+            if not quiet: print("[OK] SWS AutoColor & Icons configuration installed.")
+            checks_passed += 1
+        else:
+            issues.append("sws-autocoloricon.ini missing")
+            if not quiet: print("[WARN] sws-autocoloricon.ini not found.")
+
+    # 7. Check Native Extensions (if extensions selected)
+    if not check_all and "extensions" in components:
+        userplugins_dir = os.path.join(target_dir, "UserPlugins")
+        has_ext = os.path.exists(userplugins_dir) and any(
+            f.startswith("reaper_sws") or f.startswith("reaper_reapack")
+            for f in os.listdir(userplugins_dir)
+        )
+        if has_ext:
+            if not quiet: print("[OK] Native REAPER extensions (SWS/ReaPack) verified.")
+            checks_passed += 1
+        else:
+            issues.append("Native extensions (SWS/ReaPack) missing in UserPlugins/")
+            if not quiet: print("[WARN] Native extensions missing in UserPlugins/.")
+
+    # 8. Audit INI files for broken Windows paths and raw placeholders (ALWAYS check target INIs)
     ini_path_errors = 0
     raw_placeholders = 0
     for root, _, files in os.walk(target_dir):
@@ -240,7 +261,7 @@ def check_reafull(target_dir=None, quiet=False):
         if all_ok:
             print("  Status: REAFULL INSTALLATION HEALTHY & VERIFIED!")
         else:
-            print(f"  Status: Verification completed with {len(issues)} warning(s).")
+            print(f"  Status: Verification completed with {len(issues)} issue(s).")
             for iss in issues:
                 print(f"   - {iss}")
         print("=" * 54)
@@ -252,6 +273,7 @@ def main():
     parser.add_argument("target_dir", nargs="?", default=None, help="Directorio de configuración de REAPER a verificar o directorio de plantillas")
     parser.add_argument("--target", "-t", default=None, help="Directorio objetivo de configuración")
     parser.add_argument("--templates", action="store_true", help="Modo de validación de plantillas (config_templates)")
+    parser.add_argument("--components", "-c", default=None, help="Lista de componentes instalados separados por coma")
     parser.add_argument("--quiet", "-q", action="store_true", help="Modo silencioso (solo exit code)")
     args = parser.parse_args()
 
@@ -260,7 +282,8 @@ def main():
         tpl_dir = target or os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "config_templates")
         success = check_templates(templates_dir=tpl_dir, quiet=args.quiet)
     else:
-        success = check_reafull(target_dir=target, quiet=args.quiet)
+        components_list = [k.strip() for k in args.components.split(",")] if args.components else None
+        success = check_reafull(target_dir=target, components=components_list, quiet=args.quiet)
     
     sys.exit(0 if success else 1)
 

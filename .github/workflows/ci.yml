@@ -29,9 +29,27 @@ jobs:
         run: |
           python3 -m py_compile install.py
           python3 -m py_compile scripts/verify_installation.py
+          python3 -m py_compile scripts/audit_licenses.py
           python3 -m py_compile scripts/clean_fxfolders.py
           python3 -m py_compile scripts/apply_rebranding.py
           python3 -m py_compile scripts/clean_templates_final.py
+
+      - name: Audit License & Attribution Inventory
+        run: |
+          python3 scripts/audit_licenses.py
+
+      - name: Verify Release Integrity Policy
+        run: |
+          python3 - <<'PY'
+          import install
+          expected = "17019271a743534111384cc0c0dfd835ed61d5dec57e408e650fc7232f2d12c3"
+          key = f"reafull-assets-v{install.VERSION}.tar.gz"
+          assert install.KNOWN_HASHES.get(key) == expected, f"Missing or incorrect hash for {key}"
+          assert install.KNOWN_HASHES.get("sws_x86_64")
+          assert install.KNOWN_HASHES.get("reapack_x86_64")
+          print("PASSED: release asset and extension hashes are pinned.")
+          PY
+          ! grep -Fq 'curl -fsSL' assets/Scripts/ReaFull/ReaFull_Updater.lua
 
       - name: Audit for Windows Drive Paths (Linter Gate)
         run: |
@@ -70,6 +88,11 @@ jobs:
       - name: Test Installer Dry Run (Minimal Preset)
         run: |
           ./install.sh --quiet --dry-run --preset minimal --target /tmp/reafull_ci_min_dryrun
+
+      - name: Test Real Deployment (Minimal Preset) & Component-Aware Verification
+        run: |
+          ./install.sh --quiet --preset minimal --target /tmp/reafull_ci_minimal
+          python3 scripts/verify_installation.py /tmp/reafull_ci_minimal --components themes,fonts,audio_tuning
 
       - name: Test Real Deployment (Core Preset) & Health Verification
         run: |
