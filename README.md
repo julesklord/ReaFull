@@ -18,9 +18,17 @@ ReaFull transforms Cockos REAPER on Linux into a studio-ready workstation for pr
 
 ## 2. Studio Interface & Workflow Showcase
 
-[![ReaFull Studio Console Demo](https://raw.githubusercontent.com/julesklord/ReaFull/main/docs/demo_preview.gif)](https://github.com/julesklord/ReaFull/raw/main/docs/demo.mp4)
+### 2.1 ReaFull Production Suite Showcase (Latest v2026.2)
 
-> 🎬 **Full High-Definition Demo Video:** [View / Download `docs/demo.mp4`](https://github.com/julesklord/ReaFull/raw/main/docs/demo.mp4) · [WebM Version `docs/demo.webm`](https://github.com/julesklord/ReaFull/raw/main/docs/demo.webm)
+[![ReaFull Studio Console Demo v2](https://raw.githubusercontent.com/julesklord/ReaFull/main/docs/demo_preview.gif)](https://github.com/julesklord/ReaFull/raw/main/docs/demo.mp4)
+
+> 🎬 **High-Definition Video:** [View / Download MP4 (`docs/demo.mp4`)](https://github.com/julesklord/ReaFull/raw/main/docs/demo.mp4) · [WebM Version (`docs/demo.webm`)](https://github.com/julesklord/ReaFull/raw/main/docs/demo.webm) · [Poster Frame](https://raw.githubusercontent.com/julesklord/ReaFull/main/docs/demo_poster.png)
+
+### 2.2 Classic Analog Console Showcase (Archive v1)
+
+[![ReaFull Classic Studio Console Demo](https://raw.githubusercontent.com/julesklord/ReaFull/main/docs/demo_v1_preview.gif)](https://github.com/julesklord/ReaFull/raw/main/docs/demo_v1.mp4)
+
+> 🎬 **Archive Video:** [View / Download MP4 (`docs/demo_v1.mp4`)](https://github.com/julesklord/ReaFull/raw/main/docs/demo_v1.mp4) · [WebM Version (`docs/demo_v1.webm`)](https://github.com/julesklord/ReaFull/raw/main/docs/demo_v1.webm)
 
 ---
 
