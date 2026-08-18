@@ -1,1 +1,0 @@
-Put here your custom png images/icons.

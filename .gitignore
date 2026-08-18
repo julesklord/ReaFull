@@ -23,3 +23,7 @@ reaper-midihw-*.ini
 temp/
 wine_test/
 reartist_out/
+
+# ReaFull Release Assets & Local Drafts
+/assets/
+post.md

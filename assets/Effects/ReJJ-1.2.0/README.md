@@ -1,2 +1,0 @@
-# ReJJ
-Reaper JSFX Plugins

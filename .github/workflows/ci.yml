@@ -40,6 +40,8 @@ jobs:
           import os, re, sys
           errors = []
           for scan_dir in ["config_templates", "assets/Scripts/ReaFull"]:
+              if not os.path.exists(scan_dir):
+                  continue
               for root, _, files in os.walk(scan_dir):
                   for f in files:
                       if f.endswith((".ini", ".lua", ".py")):

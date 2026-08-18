@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
 #  ReaFull: The Ultimate REAPER Production Suite for Linux
-#  Interactive & Modular Installer Wrapper (Supports direct curl one-liner & local runs)
+#  Interactive & Modular Installer Wrapper (Lightweight Git + GitHub Releases Assets)
 # ==============================================================================
 
 set -euo pipefail
@@ -12,6 +12,9 @@ C_RED='\033[91m'
 C_GREEN='\033[92m'
 C_YELLOW='\033[93m'
 C_CYAN='\033[96m'
+
+VERSION="2026.1.0"
+ASSETS_RELEASE_URL="https://github.com/julesklord/ReaFull/releases/download/v${VERSION}/reafull-assets-v${VERSION}.tar.gz"
 
 # Reconnect stdin to TTY if executing via curl pipe
 if [ ! -t 0 ] && [ -e /dev/tty ]; then
@@ -40,24 +43,49 @@ fi
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd || echo "")"
 TEMP_DIR=""
 
-if [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/install.py" ] && [ -d "$SCRIPT_DIR/assets" ]; then
+if [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/install.py" ]; then
     INSTALL_SRC="$SCRIPT_DIR"
 else
-    echo -e "${C_BOLD}${C_CYAN}[*] Iniciando instalador de ReaFull desde la nube...${C_RESET}"
+    echo -e "${C_BOLD}${C_CYAN}[*] Obteniendo el instalador de ReaFull desde GitHub...${C_RESET}"
     TEMP_DIR="$(mktemp -d /tmp/reafull_setup_XXXXXX)"
     trap 'rm -rf "$TEMP_DIR"' EXIT INT TERM
 
     if command -v git >/dev/null 2>&1; then
-        echo -e "  -> Descargando última versión de ReaFull vía git..."
         git clone --depth 1 https://github.com/julesklord/ReaFull.git "$TEMP_DIR" >/dev/null 2>&1
     else
-        echo -e "  -> Descargando archivo de ReaFull..."
         curl -fsSL https://github.com/julesklord/ReaFull/archive/refs/heads/main.tar.gz | tar -xz -C "$TEMP_DIR" --strip-components=1
     fi
     INSTALL_SRC="$TEMP_DIR"
 fi
 
-# 4. Permissions & Launch Installer
+# 4. Check & Download Assets from GitHub Releases if not present locally
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/reafull"
+
+if [ ! -d "$INSTALL_SRC/assets" ]; then
+    if [ -d "$CACHE_DIR/assets" ] && [ -d "$CACHE_DIR/assets/Effects" ]; then
+        echo -e "${C_GREEN}[*] Utilizando assets de ReaFull en caché (~/.cache/reafull/assets)${C_RESET}"
+        ln -s "$CACHE_DIR/assets" "$INSTALL_SRC/assets" 2>/dev/null || cp -rs "$CACHE_DIR/assets" "$INSTALL_SRC/assets"
+    else
+        echo -e "${C_BOLD}${C_CYAN}[*] Descargando componentes de estudio de ReaFull (GitHub Releases CDN)...${C_RESET}"
+        mkdir -p "$CACHE_DIR"
+        
+        if command -v curl >/dev/null 2>&1; then
+            curl -# -L -o "$CACHE_DIR/assets.tar.gz" "$ASSETS_RELEASE_URL"
+        elif command -v wget >/dev/null 2>&1; then
+            wget --show-progress -q -O "$CACHE_DIR/assets.tar.gz" "$ASSETS_RELEASE_URL"
+        else
+            echo -e "${C_RED}[ERROR] Se requiere 'curl' o 'wget' para descargar los assets.${C_RESET}"
+            exit 1
+        fi
+
+        echo -e "  -> Descomprimiendo suites JSFX, temas, plantillas y fuentes..."
+        tar -xzf "$CACHE_DIR/assets.tar.gz" -C "$CACHE_DIR"
+        ln -s "$CACHE_DIR/assets" "$INSTALL_SRC/assets" 2>/dev/null || cp -rs "$CACHE_DIR/assets" "$INSTALL_SRC/assets"
+        echo -e "${C_GREEN}[OK] Componentes de audio listos.${C_RESET}\n"
+    fi
+fi
+
+# 5. Permissions & Launch Installer
 chmod +x "$INSTALL_SRC/install.py" "$INSTALL_SRC/uninstall.sh" "$INSTALL_SRC/scripts/verify_installation.py" 2>/dev/null || true
 
 python3 "$INSTALL_SRC/install.py" "$@"

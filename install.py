@@ -23,10 +23,58 @@ import time
 from datetime import datetime
 
 VERSION = "2026.1.0"
+ASSETS_RELEASE_URL = f"https://github.com/julesklord/ReaFull/releases/download/v{VERSION}/reafull-assets-v{VERSION}.tar.gz"
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSETS_DIR = os.path.join(ROOT_DIR, "assets")
 CONFIG_TEMPLATES_DIR = os.path.join(ROOT_DIR, "config_templates")
+
+def ensure_assets_available(custom_assets_dir=None, quiet=False):
+    global ASSETS_DIR
+    if custom_assets_dir and os.path.exists(custom_assets_dir):
+        ASSETS_DIR = custom_assets_dir
+        return True
+
+    if os.path.exists(ASSETS_DIR) and os.path.exists(os.path.join(ASSETS_DIR, "Effects")):
+        return True
+
+    cache_dir = os.path.expanduser("~/.cache/reafull")
+    cache_assets = os.path.join(cache_dir, "assets")
+    if os.path.exists(cache_assets) and os.path.exists(os.path.join(cache_assets, "Effects")):
+        ASSETS_DIR = cache_assets
+        return True
+
+    if not quiet:
+        print(f"\n\033[1m\033[96m[*] Descargando componentes de estudio ReaFull (GitHub CDN)...\033[0m")
+
+    os.makedirs(cache_dir, exist_ok=True)
+    tar_path = os.path.join(cache_dir, f"reafull-assets-v{VERSION}.tar.gz")
+
+    import urllib.request
+    def reporthook(count, block_size, total_size):
+        if quiet or not sys.stdout.isatty():
+            return
+        downloaded_mb = (count * block_size) / (1024 * 1024)
+        total_mb = total_size / (1024 * 1024) if total_size > 0 else 0
+        pct = int(count * block_size * 100 / total_size) if total_size > 0 else 0
+        sys.stdout.write(f"\r  -> Descargando assets: {pct}% [{downloaded_mb:.1f} MB / {total_mb:.1f} MB] ")
+        sys.stdout.flush()
+
+    try:
+        urllib.request.urlretrieve(ASSETS_RELEASE_URL, tar_path, reporthook)
+        if not quiet:
+            print(f"\n  -> Descomprimiendo suites JSFX, temas y plantillas...")
+        import tarfile
+        with tarfile.open(tar_path, "r:gz") as tar:
+            tar.extractall(path=cache_dir)
+        ASSETS_DIR = cache_assets
+        if not quiet:
+            print(f"\033[92m[OK] Componentes de audio listos.\033[0m\n")
+        return True
+    except Exception as e:
+        if not quiet:
+            print(f"\n\033[91m[ERROR] No se pudieron descargar los assets: {e}\033[0m")
+        return False
 
 # Color formatting helpers for terminal output
 class Colors:
@@ -768,12 +816,16 @@ def main():
     parser.add_argument("--components", "-c", type=str, default=None, help="Comma-separated list of components (e.g. themes,analog_fx,audio_tuning)")
     parser.add_argument("--preset", "-p", choices=["full", "minimal", "fx-only", "themes-only"], help="Quick selection preset")
     parser.add_argument("--no-backup", action="store_true", help="Skip pre-install backup creation")
+    parser.add_argument("--assets-dir", type=str, default=None, help="Custom path to ReaFull assets directory")
     parser.add_argument("--dry-run", action="store_true", help="Simulate without modifying files")
     parser.add_argument("--log-file", type=str, default=None, help="Custom log file path")
     parser.add_argument("--quiet", "-q", action="store_true", help="Silent non-interactive mode")
     parser.add_argument("--version", "-v", action="version", version=f"ReaFull Installer {VERSION}")
 
     args = parser.parse_args()
+
+    # Ensure assets are present or download from release CDN
+    ensure_assets_available(custom_assets_dir=args.assets_dir, quiet=args.quiet)
 
     is_interactive = not args.quiet and not args.all and not args.preset and not args.components
     target_dir = args.target or detect_reaper_dir(interactive=is_interactive)

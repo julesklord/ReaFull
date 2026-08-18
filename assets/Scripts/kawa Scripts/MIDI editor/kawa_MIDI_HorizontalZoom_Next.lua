@@ -1,8 +1,0 @@
---[[ 
-* ReaScript Name: kawa_MIDI_HorizontalZoom_Next. 
-* Version: 2017/01/21 
-* Author: kawa_ 
-* Author URI: http://forum.cockos.com/member.php?u=105939 
-* Repository URI: https://bitbucket.org/kawaCat/reascript-m2bpack/ 
---]] 
-local o={}table.insert(o,{0,48});table.insert(o,{0,40});table.insert(o,{0,31});local r="kawa_MidiClip"local l="lastsZoomOrderIdx"local c=1011 local a=1012 local t=40112 local n=40111 local e=40468 local e=40726 local e=40725 local e=40466 local function d(e,o)local n=n;for e=1,e do reaper.MIDIEditor_OnCommand(o,n);end end local function i(e,o)local n=t;for e=1,e do reaper.MIDIEditor_OnCommand(o,n);end end local function f(o,n)local e=a;for o=1,o do reaper.MIDIEditor_OnCommand(n,e);end end local function t(o,n)local e=c;for o=1,o do reaper.MIDIEditor_OnCommand(n,e);end end local function a(o,l,n)local e=100;if(o==true)then d(e,n);end if(l==true)then f(e,n);end end local function d(e,o,n)a((e~=0),(o~=0),n);if(e>0)then i(e,n);end if(o>0)then t(o,n);end end local function c(a,n,t,o)if(reaper.MIDIEditor_GetMode(a)==2)then return end;reaper.PreventUIRefresh(200);local e=reaper.GetExtState(r,l..o);if(e==""or tonumber(e)==nil)then e=1;else e=tonumber(e);end local e=e+t;if(e>#n)then e=1;end if(e<1)then e=#n;end d(n[e][1],n[e][2],a);if(type(n[e][3])=="function")then n[e][3]();end reaper.SetExtState(r,l..o,tostring(e),false);reaper.PreventUIRefresh(-1);end local e=reaper.MIDIEditor_GetActive();local n=targetTake_ or reaper.MIDIEditor_GetTake(e);if(n==nil)then return end local n=1;c(e,o,n,"HoriZoomType1");reaper.UpdateArrange();
