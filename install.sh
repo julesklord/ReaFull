@@ -29,22 +29,42 @@ if [ "$IS_QUIET" -eq 0 ] && [ ! -t 0 ] && [ -r /dev/tty ] && [ -w /dev/tty ]; th
     exec < /dev/tty
 fi
 
+# Helper: Detect Linux Package Manager
+get_install_cmd() {
+    local pkgs=("$@")
+    if command -v apt-get >/dev/null 2>&1; then
+        echo "sudo apt update && sudo apt install -y ${pkgs[*]}"
+    elif command -v pacman >/dev/null 2>&1; then
+        echo "sudo pacman -Sy --needed ${pkgs[*]}"
+    elif command -v dnf >/dev/null 2>&1; then
+        echo "sudo dnf install -y ${pkgs[*]}"
+    elif command -v zypper >/dev/null 2>&1; then
+        echo "sudo zypper install -y ${pkgs[*]}"
+    else
+        echo "Instala manualmente: ${pkgs[*]}"
+    fi
+}
+
 # 1. Check Python3 (Mandatory)
 if ! command -v python3 >/dev/null 2>&1; then
-    echo -e "${C_RED}[ERROR] Python 3 no está instalado.${C_RESET}"
-    echo "Instala Python 3 mediante el gestor de paquetes de tu distribución Linux (ej: sudo apt install python3 / sudo pacman -S python)."
+    echo -e "${C_RED}[ERROR] Python 3 no está instalado en este sistema.${C_RESET}"
+    echo -e "Ejecuta el siguiente comando para instalarlo:"
+    echo -e "  ${C_BOLD}$(get_install_cmd python3)${C_RESET}\n"
     exit 1
 fi
 
-# 2. Check Optional Tools
+# 2. Check Optional & Recommended Tools
 RECOMMENDED_MISSING=()
 if ! command -v fc-cache >/dev/null 2>&1; then
     RECOMMENDED_MISSING+=("fontconfig")
 fi
+if ! command -v curl >/dev/null 2>&1 && ! command -v wget >/dev/null 2>&1; then
+    RECOMMENDED_MISSING+=("curl")
+fi
 
-if [ ${#RECOMMENDED_MISSING[@]} -ne 0 ]; then
-    echo -e "${C_YELLOW}[!] Paquetes recomendados ausentes: ${RECOMMENDED_MISSING[*]}${C_RESET}"
-    echo -e "    (Recomendado para actualizar la caché de fuentes tipográficas automáticamente)\n"
+if [ ${#RECOMMENDED_MISSING[@]} -ne 0 ] && [ "$IS_QUIET" -eq 0 ]; then
+    echo -e "${C_YELLOW}[!] Paquetes recomendados no encontrados: ${RECOMMENDED_MISSING[*]}${C_RESET}"
+    echo -e "    Comando sugerido: ${C_BOLD}$(get_install_cmd "${RECOMMENDED_MISSING[@]}")${C_RESET}\n"
 fi
 
 # 3. Resolve Installation Source Directory (Local Repo vs Remote One-Liner)

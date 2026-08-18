@@ -598,32 +598,92 @@ def deploy_components(selected_keys, target_dir, logger, profile="overlay", forc
                     shutil.copy2(src, dst)
                 logger.info(f"  -> Configuration applied: {ini}")
 
-    # 3. Native Extension Symlinks
-    userplugins_dst = os.path.join(target_dir, "UserPlugins")
-    if not dry_run:
-        os.makedirs(userplugins_dst, exist_ok=True)
-        for sws_path in ["/usr/lib/sws/reaper_sws-x86_64.so", "/usr/lib/REAPER/Plugins/reaper_sws-x86_64.so", "/usr/lib64/reaper_sws-x86_64.so"]:
-            if os.path.exists(sws_path):
-                link_dst = os.path.join(userplugins_dst, "reaper_sws-x86_64.so")
-                if not os.path.exists(link_dst):
-                    try:
-                        os.symlink(sws_path, link_dst)
-                    except Exception:
-                        pass
-                break
-        
-        for reapack_path in ["/usr/lib/REAPER/Plugins/reaper_reapack-x86_64.so", "/usr/lib/reapack/reaper_reapack-x86_64.so", "/usr/lib64/reaper_reapack-x86_64.so"]:
-            if os.path.exists(reapack_path):
-                link_dst = os.path.join(userplugins_dst, "reaper_reapack-x86_64.so")
-                if not os.path.exists(link_dst):
-                    try:
-                        os.symlink(reapack_path, link_dst)
-                    except Exception:
-                        pass
-                break
+    # 3. Native Extension Setup (SWS & ReaPack)
+    ensure_native_extensions(target_dir, logger, dry_run=dry_run)
 
     # 4. Merge reaper.ini
     merge_reaper_ini(selected_keys, target_dir, logger, dry_run=dry_run)
+
+def ensure_native_extensions(target_dir, logger, dry_run=False):
+    """
+    Ensures SWS Extension and ReaPack binaries are installed in target_dir/UserPlugins.
+    1. Checks if already present in target_dir/UserPlugins.
+    2. Searches system library locations (/usr/lib, /usr/lib64, etc.) and symlinks.
+    3. If still missing, downloads official x86_64 binary releases directly into UserPlugins.
+    """
+    userplugins_dst = os.path.join(target_dir, "UserPlugins")
+    if not dry_run:
+        os.makedirs(userplugins_dst, exist_ok=True)
+
+    # 1. SWS Extension (reaper_sws-x86_64.so)
+    sws_dst = os.path.join(userplugins_dst, "reaper_sws-x86_64.so")
+    if not os.path.exists(sws_dst):
+        found_sws = False
+        for sys_path in [
+            "/usr/lib/sws/reaper_sws-x86_64.so",
+            "/usr/lib/REAPER/Plugins/reaper_sws-x86_64.so",
+            "/usr/lib64/reaper_sws-x86_64.so",
+            "/usr/lib/x86_64-linux-gnu/reaper_sws-x86_64.so"
+        ]:
+            if os.path.exists(sys_path):
+                if not dry_run:
+                    try:
+                        os.symlink(sys_path, sws_dst)
+                        logger.success(f"Linked system SWS extension: {sys_path} -> {sws_dst}")
+                        found_sws = True
+                        break
+                    except Exception:
+                        pass
+        if not found_sws and not dry_run:
+            logger.action("EXTENSION", "SWS not found in system. Downloading official SWS extension for Linux...")
+            sws_url = "https://github.com/reaper-oss/sws/releases/download/v2.14.0.3/sws-2.14.0.3-Linux-x86_64.tar.xz"
+            cache_dir = os.path.expanduser("~/.cache/reafull")
+            os.makedirs(cache_dir, exist_ok=True)
+            sws_tar = os.path.join(cache_dir, "sws_linux.tar.xz")
+            try:
+                import urllib.request, tarfile
+                urllib.request.urlretrieve(sws_url, sws_tar)
+                with tarfile.open(sws_tar, "r:xz") as tar:
+                    for member in tar.getmembers():
+                        if member.name.endswith("reaper_sws-x86_64.so") or os.path.basename(member.name) == "reaper_sws-x86_64.so":
+                            f = tar.extractfile(member)
+                            if f:
+                                with open(sws_dst, "wb") as out_f:
+                                    out_f.write(f.read())
+                                logger.success("SWS Extension (Linux x86_64) installed to UserPlugins/")
+                                found_sws = True
+                                break
+            except Exception as e:
+                logger.warn(f"Could not automatically download SWS extension: {e}")
+
+    # 2. ReaPack (reaper_reapack-x86_64.so)
+    reapack_dst = os.path.join(userplugins_dst, "reaper_reapack-x86_64.so")
+    if not os.path.exists(reapack_dst):
+        found_reapack = False
+        for sys_path in [
+            "/usr/lib/REAPER/Plugins/reaper_reapack-x86_64.so",
+            "/usr/lib/reapack/reaper_reapack-x86_64.so",
+            "/usr/lib64/reaper_reapack-x86_64.so",
+            "/usr/lib/x86_64-linux-gnu/reaper_reapack-x86_64.so"
+        ]:
+            if os.path.exists(sys_path):
+                if not dry_run:
+                    try:
+                        os.symlink(sys_path, reapack_dst)
+                        logger.success(f"Linked system ReaPack: {sys_path} -> {reapack_dst}")
+                        found_reapack = True
+                        break
+                    except Exception:
+                        pass
+        if not found_reapack and not dry_run:
+            logger.action("EXTENSION", "ReaPack not found in system. Downloading official ReaPack for Linux...")
+            reapack_url = "https://github.com/cfillion/reapack/releases/download/v1.2.4.5/reaper_reapack-x86_64.so"
+            try:
+                import urllib.request
+                urllib.request.urlretrieve(reapack_url, reapack_dst)
+                logger.success("ReaPack (Linux x86_64) installed to UserPlugins/")
+            except Exception as e:
+                logger.warn(f"Could not automatically download ReaPack: {e}")
 
 def detect_best_audio_settings(logger):
     cpu_cores = os.cpu_count() or 4
@@ -754,6 +814,20 @@ def merge_reaper_ini(selected_keys, target_dir, logger, dry_run=False):
             for opt_k in ["alsa_rtprio", "linux_mlockall", "linux_disable_pm", "linux_auto_pasuspend", "workthreads", "playresamplemode", "projrenderresample", "afx", "afxb", "afxrender"]:
                 if opt_k not in preserved_kvs or preserved_kvs[opt_k] in ["", "0", "-1", "50"]:
                     preserved_kvs[opt_k] = best_audio.get(opt_k, preserved_kvs.get(opt_k, "1"))
+
+    # Auto-configure Python ReaScript engine in REAPER if not explicitly set
+    if "python_lib" not in preserved_kvs:
+        for lib_dir in ["/usr/lib", "/usr/lib64", "/usr/lib/x86_64-linux-gnu"]:
+            if os.path.exists(lib_dir):
+                for fn in os.listdir(lib_dir):
+                    if re.match(r"^libpython3\.\d+\.so(\.1\.0)?$", fn) or fn == "libpython3.so":
+                        preserved_kvs["python_lib"] = fn
+                        preserved_kvs["python_lib_path"] = lib_dir
+                        preserved_kvs["python_enable"] = "1"
+                        logger.info(f"  [ReaScript Python] Auto-configured REAPER Python engine: {fn} ({lib_dir})")
+                        break
+            if "python_lib" in preserved_kvs:
+                break
 
     preserved_sections = {}
     for sec_name in [".swell", ".swell_recent_path", "Recent", "RecentFX", "recentmetropat", "reaper_video", "midihw"]:
