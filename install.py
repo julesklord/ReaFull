@@ -176,6 +176,17 @@ COMPONENTS = {
         "inis": [],
         "default": True
     },
+    "striptease": {
+        "name": "StripTease Modular Mixer Strip Suite",
+        "desc": "Modular MCP channel strip interface with knobs, switches, and real-time GR meters",
+        "folders": [
+            ("Effects/StripTease", "Effects/StripTease"),
+            ("Scripts/StripTease", "Scripts/StripTease"),
+            ("FXChains/StripTease", "FXChains/StripTease"),
+        ],
+        "inis": [],
+        "default": True
+    },
     "docs": {
         "name": "Documentation & Resources",
         "desc": "Quick reference guides and documentation links",

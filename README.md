@@ -99,6 +99,15 @@ Complete session routing, VCA groups, and master bus processing for:
 
 ---
 
+### 3.4 StripTease Modular Mixer Strip Engine
+- **Embedded MCP Strips**: Turns any REAPER track mixer into a modular console strip with live knobs, switches, and needle VU Gain Reduction meters directly inside the Mixer Control Panel (MCP).
+- **Direct Link**: Seamlessly connects modular panel controls to any plugin parameter in real-time.
+- **Auto GR Metering**: Automatically captures and renders gain reduction from compressors (SSL, VSC-2, DBX, 1176, LA-2A, ReaFull Analog FX).
+- **Modular Panel Heights**: 7 fixed pixel-height modules (`50px`, `100px`, `150px`, `200px`, `300px`, `400px`, `600px`) with synchronized preset banks and custom color palettes.
+- **Curated FX Chains**: Includes 12 ready-to-use SSL, UAD, Vertigo, and Mastering channel strips.
+
+---
+
 ## 4. Installation & Terminal Experience
 
 ### 4.1 Quick Start

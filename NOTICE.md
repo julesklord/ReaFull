@@ -35,6 +35,7 @@ The ReaFull Analog & Digital FX suites and community processing modules utilize 
 ## 📜 ReaScripts & Extensions
 - **SWS / S&M Extension**: Cockos REAPER extension created by the SWS Team (Tim Giles, Jeffos, Breeder, Fingers, Xenakios, Tim Green, SWS Contributors).
 - **ReaPack Package Manager**: Created by **Christian Fillion (cfillion)**.
+- **StripTease Modular Mixer Strip**: Created by **Eric (ericdevcire)** (fork maintained at `julesklord/StripTease`).
 - **ReaTeam Repository Contributors**: Global community scripts and extensions repository.
 - **FTC (Ilias-Timon Poulakis / FeedTheCat)**: MIDI Editor Magic, Folder Magic, Smart Freeze, Adaptive Grid, and Lil ChordBox.
 - **Michael Pilyavskiy (MPL)**: Comprehensive ReaScript suite (Various_functions, Align, Routing, Mapping).

@@ -26,6 +26,7 @@ ReaFull aggregates, integrates, and customizes works created by independent audi
 | **Archie ReaScripts** | Archie | GPL-3.0 | [Archie ReaScripts](https://github.com/Archie317/Archie_ReaScripts) |
 | **SWS / S&M Extension** | Tim Giles, Xenakios, Jeffos, Breeder, SWS Team | GPL-2.0+ | [SWS Extension](https://www.sws-extension.org) |
 | **ReaPack Package Manager** | Christian Fillion (cfillion) | LGPL-3.0+ | [ReaPack](https://reapack.com) |
+| **StripTease Modular Mixer Strip Suite** | Eric (ericdevcire) | Freeware / Open Architecture | [StripTease GitHub](https://github.com/julesklord/StripTease) |
 | **Electrolize Typography** | Valery Zaveryaev (Gaslight) | SIL Open Font License 1.1 | [Google Fonts Electrolize](https://fonts.google.com/specimen/Electrolize) |
 | **Orbitron Typography** | Matt McInerney | SIL Open Font License 1.1 | [The League of Moveable Type](https://www.theleagueofmoveabletype.com/orbitron) |
 | **Roboto Typography** | Christian Robertson (Google) | Apache License 2.0 | [Google Fonts Roboto](https://fonts.google.com/specimen/Roboto) |
