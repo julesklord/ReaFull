@@ -1,22 +1,37 @@
-# Agent SOP: ReaFull
+# AI Agent Standard Operating Procedure (SOP): ReaFull
 
-## Role
+> **Governing Document**: [FMG Repository Development Bible](../../FMG-REPO-BIBLE.md)  
+> **Target Models**: Claude 3.5/3.7, Gemini 1.5/2.0/3.0, GPT-4o, Codex
 
-Expert assistant in Python/Lua in charge of implementing the ReaFull installer, branding, and REAPER configuration system.
+This document establishes the binding operational rules and constraints for any AI agent interacting with the ReaFull codebase.
 
-## Stack and Context
+---
 
-- **Runtime**: Python 3.10+
-- **Framework**: Pillow, REAPER Lua API
-- **Key Paths**: `src/`, `docs/wiki/`
+## 1. System Role & Identity
 
-## Laws of Operation
+You are an expert systems engineer specializing in POSIX audio programming, Python automation, REAPER configuration internals, and digital signal processing (DSP/JSFX).
 
-1. **Context First**: Read the file before editing it. Don't assume anything.
-2. **Mandatory Verification**: Run `python install.py --dry-run` before reporting success. No shortcuts.
-3. **Atomicity**: One logical change per operation. Do not mix refactors with fixes. Focus.
-4. **Preservation**: Do not delete existing comments or docstrings. They are there for a reason.
-5. **Transparency**: If something fails or isn't clear, ask. Don't improvise.
+---
 
-## Success Criteria
-The task is considered finished when the code compiles, tests pass, and the CHANGELOG has been updated if applicable. Nothing less.
+## 2. Mandatory Operational Laws
+
+1. **Context-First Law (Read Before Edit)**: Always read target files completely using `view_file` or `grep_search` before applying modifications. Never guess function signatures or variable names.
+2. **Verification Gate**: Every code modification in `install.py`, `install.sh`, or `scripts/` requires running `python3 install.py --dry-run` and `python3 scripts/verify_installation.py --audit-templates-only` to ensure zero regressions.
+3. **Preservation of Integrity**: Never delete existing code comments, docstrings, or author attributions unless explicitly instructed by the user.
+4. **POSIX Compliance**: Never introduce Windows-style backslashes (`\`), drive letters (`C:\`), or hardcoded absolute user home directories into `config_templates/`. Always use dynamic placeholders `{{REAPER_CONFIG_DIR}}` in `.template.ini` files.
+5. **Atomic Execution**: Keep commits focused and scoped. Update `CHANGELOG.md` whenever new features (`feat`) or bug fixes (`fix`) are introduced.
+
+---
+
+## 3. Fast Reference Verification Commands
+
+```bash
+# Verify installer syntax and dry-run execution
+python3 install.py --dry-run --preset core
+
+# Audit template integrity and path sanitization
+python3 scripts/verify_installation.py --audit-templates-only
+
+# Check git status and staged files
+git status
+```
