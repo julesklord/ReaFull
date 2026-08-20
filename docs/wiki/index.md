@@ -36,19 +36,20 @@ graph TD
 
 ## 2. Wiki Navigation & Core Documentation
 
-The wiki is organized into modular guides covering architecture, deployment, audio tuning, plugin DSP catalogs, workflow templates, maintenance, and developer standards:
+The wiki is organized into modular guides covering architecture, deployment, audio tuning, plugin DSP catalogs, workflow templates, scripts, maintenance, and developer standards:
 
 | Document | Description | Key Topics |
 | :--- | :--- | :--- |
-| [**System Architecture**](./architecture.md) | Technical design, POSIX sanitization, and ADRs. | INI Merge Engine, Dynamic Template Expansion, Asset CDN, Architecture Decision Records (ADRs). |
+| [**System Architecture & ADRs**](./architecture.md) | Technical design, POSIX sanitization, and ADRs. | INI Merge Engine, Dynamic Template Expansion, Asset CDN, 5 Architecture Decision Records (ADRs). |
 | [**Installation & Deployment**](./installation-and-deployment.md) | Comprehensive installation and setup guide. | CLI profiles (`overlay` vs `fresh`), presets (`core`, `full`, `minimal`, etc.), cURL one-liner, headless CI setup. |
 | [**Audio Engine & Kernel Tuning**](./audio-engine-tuning.md) | Linux realtime audio stack optimization. | PipeWire / ALSA / JACK setup, thread allocations, `mlockall`, RT priority, HQ Sinc resampling modes. |
-| [**DSP Suites Catalog**](./dsp-suites.md) | Complete manual for 50+ bundled JSFX processors. | Analog FX Suite (SolidBus, Pulse-EQ, FET-76, Fat-Tape), Digital FX (D-DynEQ, D-Limit), StripTease MCP Console. |
-| [**Templates & Workflows**](./templates-and-workflows.md) | Track templates, project templates, screensets & themes. | 17 TrackTemplate categories (200+ strips), Screensets (`F7`, `F8`, `F9`), Pro/Dark/Gray/Light themes, Typography. |
+| [**DSP Plugin Suites Catalog**](./dsp-suites.md) | Exhaustive manual for 50+ bundled JSFX processors. | Analog FX Suite (SolidBus, Pulse-EQ, FET-76, Fat-Tape), Digital FX (D-DynEQ, D-Limit), StripTease MCP Console. |
+| [**Templates, Workflows & Themes**](./templates-and-workflows.md) | Track templates, project templates, screensets & themes. | 17 TrackTemplate categories (200+ strips), 19 ProjectTemplates, Screensets (`F7`, `F8`, `F9`), Pro/Dark/Gray/Light themes. |
+| [**ReaScripts & Automation Catalog**](./scripts-and-extensions.md) | Studio scripting, native extensions & macros. | ReaFull Hub/Updater, FTC Tools, HeDa Track Inspector 2, MPL, Sexan, X-Raym, Edu Serra suites, Auto-render macros. |
 | [**Backup & Troubleshooting**](./backup-and-troubleshooting.md) | Disaster recovery, maintenance, and diagnostic runbook. | `uninstall.sh` workflow, health check verification, PipeWire buffer lock, xrun debugging, font cache fixes. |
-| [**Development Guide**](./development.md) | Contribution guide, repo layout, and toolchains. | Template authoring, validation scripts, build/release asset pipelines, dry-run simulation. |
+| [**Developer & Contributor Guide**](./development.md) | Contribution guide, repo layout, and toolchains. | Template authoring, validation scripts, build/release asset pipelines, dry-run simulation. |
 | [**Git Hygiene & Versioning**](./hygiene.md) | Conventional Commits, branch model, and SemVer. | Commit formatting, `VERSION` file protocol, release tagging, and change hygiene. |
-| [**Agent SOP (Standard Operating Procedure)**](./agent-sop.md) | AI Agent operational boundaries and execution laws. | Read-before-write, dry-run validation, context preservation, and build verification gates. |
+| [**AI Agent SOP (Standard Operating Procedure)**](./agent-sop.md) | AI Agent operational boundaries and execution laws. | Read-before-write, dry-run validation, context preservation, and build verification gates. |
 
 ---
 
