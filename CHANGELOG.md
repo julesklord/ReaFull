@@ -15,6 +15,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 - Closed the deep production audit with strict post-install verification, explicit extension selection, and REAPER-process protection.
 - Added automated license and attribution inventory checks to CI.
 
+### Added
+- **ReaFull Hub** (`ReaFull_Hub.lua`): modular in-DAW catalog with installed-state detection, component selection, release access, configuration folder access, ReaPack sync, and safe installation guidance.
+
 ---
 
 ## [2026.2.0] - 2026-08-18

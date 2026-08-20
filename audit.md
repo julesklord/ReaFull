@@ -12,7 +12,7 @@
 
 La versión `v2026.3.0` alcanza los criterios definidos para cerrar esta auditoría:
 - **P0.1 Resuelto**: Se eliminó la ejecución ciega de `curl | bash` en `ReaFull_Updater.lua`. El actualizador ahora guía al usuario a cerrar REAPER y abrir el release oficial verificado o descargar el artefacto fijado.
-- **P0.2 Resuelto**: `install.py` verifica el SHA-256 oficial del tar de assets (`17019271...d12c3`), SWS y ReaPack, extrae `tar` de forma segura y usa reemplazos atómicos.
+- **P0.2 Resuelto**: `install.py` verifica el SHA-256 oficial del tar de assets (`565d4011...92527a`), SWS y ReaPack, extrae `tar` de forma segura y usa reemplazos atómicos.
 - **P1.1 Resuelto**: SWS y ReaPack se aislaron en un componente modular explícito `extensions`. Las instalaciones de perfiles no asociados (`minimal`, `themes-only`, `fx-only`) no descargan binarios de red ni crean `UserPlugins/`.
 - **P1.2 Resuelto**: El chequeo posterior de salud (`verify_installation.py`) actúa como un **Quality Gate estricto** con validación consciente de los componentes seleccionados (`--components`); cualquier fallo o ruta inválida provoca la finalización con error (`exit 1`) en `install.py`.
 - **P1.3 Resuelto**: El instalador bloquea de forma preventiva la actualización no interactiva (`--quiet`) si REAPER se encuentra en ejecución, a menos que se use explícitamente `--allow-running-reaper` o `--force`.
@@ -33,9 +33,9 @@ La versión `v2026.3.0` alcanza los criterios definidos para cerrar esta auditor
 
 ### Integridad del asset principal
 
-`install.py:33-38` incluye el digest oficial publicado por GitHub para `reafull-assets-v2026.3.0.tar.gz`. `install.py:142` lo entrega a `download_and_verify()`, que descarga a un temporal, calcula SHA-256 y sólo hace `os.replace()` tras validar.
+`install.py:33-38` incluye el digest oficial del asset actualizado de `v2026.3.0`, que incorpora el Hub. `install.py:142` lo entrega a `download_and_verify()`, que descarga a un temporal, calcula SHA-256 y sólo hace `os.replace()` tras validar.
 
-El digest fue comprobado contra el asset publicado originalmente para `v2026.2.0` y se reutiliza byte por byte para `v2026.3.0`.
+El digest fue calculado sobre el asset `v2026.3.0` reconstruido y publicado con `ReaFull_Hub.lua`.
 
 ### Actualizador dentro de REAPER
 

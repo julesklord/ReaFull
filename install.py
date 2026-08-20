@@ -31,7 +31,7 @@ VERSION = "2026.3.0"
 ASSETS_RELEASE_URL = f"https://github.com/julesklord/ReaFull/releases/download/v{VERSION}/reafull-assets-v{VERSION}.tar.gz"
 
 KNOWN_HASHES = {
-    "reafull-assets-v2026.3.0.tar.gz": "17019271a743534111384cc0c0dfd835ed61d5dec57e408e650fc7232f2d12c3",
+    "reafull-assets-v2026.3.0.tar.gz": "565d40111b6e55ccebdd0666c397896b781f4a9e36ae46d1c9b185f3a092527a",
     "sws_x86_64": "4cf0629aeeff346c1ed9a355ce826febfacf9775bd6f49f09b1b4f9f053b8644",
     "sws_aarch64": "615b66ae9e38e01aabb2e5e2a21fb0ffe3c1bab9587c1a2620f62c6e80e9a409",
     "reapack_x86_64": "35d80f63d8174c964af589c7d87c4728aa18f06899dce873e33f8d552d1bc7e0",
@@ -386,7 +386,7 @@ def calculate_component_size(comp_id):
 
 def is_reaper_running():
     try:
-        res = subprocess.run(["pgrep", "-i", "reaper"], capture_output=True, text=True)
+        res = subprocess.run(["pgrep", "-x", "-i", "reaper"], capture_output=True, text=True)
         return res.returncode == 0
     except Exception:
         return False
@@ -950,6 +950,7 @@ def merge_reaper_ini(selected_keys, target_dir, logger, dry_run=False):
 
     if "reaper" in tpl_sections:
         for line in tpl_sections["reaper"]:
+            line = line.replace("{{REAPER_CONFIG_DIR}}", target_dir)
             if "=" in line:
                 k, v = line.split("=", 1)
                 k_trim = k.strip()

@@ -24,14 +24,6 @@ ReaFull transforms Cockos REAPER on Linux into a studio-ready workstation for pr
 
 ## 2. Studio Interface & Workflow Showcase
 
-### 2.1 ReaFull Production Suite Showcase (Latest v2026.2)
-
-[![ReaFull Studio Console Demo v2](https://raw.githubusercontent.com/julesklord/ReaFull/main/docs/demo_preview.gif)](https://github.com/julesklord/ReaFull/raw/main/docs/demo.mp4)
-
-> 🎬 **High-Definition Video:** [View / Download MP4 (`docs/demo.mp4`)](https://github.com/julesklord/ReaFull/raw/main/docs/demo.mp4) · [WebM Version (`docs/demo.webm`)](https://github.com/julesklord/ReaFull/raw/main/docs/demo.webm) · [Poster Frame](https://raw.githubusercontent.com/julesklord/ReaFull/main/docs/demo_poster.png)
-
-### 2.2 Classic Analog Console Showcase (Archive v1)
-
 [![ReaFull Classic Studio Console Demo](https://raw.githubusercontent.com/julesklord/ReaFull/main/docs/demo_v1_preview.gif)](https://github.com/julesklord/ReaFull/raw/main/docs/demo_v1.mp4)
 
 > 🎬 **Archive Video:** [View / Download MP4 (`docs/demo_v1.mp4`)](https://github.com/julesklord/ReaFull/raw/main/docs/demo_v1.mp4) · [WebM Version (`docs/demo_v1.webm`)](https://github.com/julesklord/ReaFull/raw/main/docs/demo_v1.webm)
@@ -217,7 +209,8 @@ Menu options in `uninstall.sh`:
    - `F9`: Mastering & Metering Suite.
 3. **Insert Track Templates**: Right-click track panel → *Insert track from template* → Select from 17 categories (Drums, Vocals, MixBus, Stems).
 4. **Console FX Workflow**: In FX browser, open `ReaFull Analog FX` for channel modeling (`Mix-Chan`, `SolidBus`, `Fat-Tape`, `Pulse-EQ`) or `ReaFull Digital FX` for surgical processing (`D-DynEQ`, `D-ReEQ`, `D-Meter`).
-5. **ReaFull Manager**: Access `Scripts/ReaFull/ReaFull_Updater.lua` from the Action List to synchronize ReaPack packages or reload views.
+5. **ReaFull Hub**: Access `Scripts/ReaFull/ReaFull_Hub.lua` from the Action List to inspect installed modules, select components, open the verified release, sync ReaPack, and prepare a safe modular installation.
+6. **ReaFull Manager**: Access `Scripts/ReaFull/ReaFull_Updater.lua` from the Action List for release notifications, the Hub, ReaPack synchronization, and view reloads.
 
 ---
 
