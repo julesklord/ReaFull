@@ -921,10 +921,7 @@ def merge_reaper_ini(selected_keys, target_dir, logger, dry_run=False):
             for k, v in best_audio.items():
                 preserved_kvs[k] = v
         else:
-            logger.action("AUDIO", f"Custom audio device detected ({preserved_kvs.get('alsa_indev')}). Optimizing threads and realtime...")
-            for opt_k in ["alsa_rtprio", "linux_mlockall", "linux_disable_pm", "linux_auto_pasuspend", "workthreads", "playresamplemode", "projrenderresample", "afx", "afxb", "afxrender"]:
-                if opt_k not in preserved_kvs or preserved_kvs[opt_k] in ["", "0", "-1", "50"]:
-                    preserved_kvs[opt_k] = best_audio.get(opt_k, preserved_kvs.get(opt_k, "1"))
+            logger.action("AUDIO", f"Custom audio device detected ({preserved_kvs.get('alsa_indev')}); preserving all existing audio parameters.")
 
     # Auto-configure Python ReaScript engine in REAPER if not explicitly set
     if "python_lib" not in preserved_kvs:
