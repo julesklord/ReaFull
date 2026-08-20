@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/logo_mark.png" alt="ReaFull Logomark" width="160" height="160" />
+  <img src="docs/Splash ReaFull.png" alt="ReaFull Splash" width="760" />
 </p>
 
 <h1 align="center">ReaFull</h1>
