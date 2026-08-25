@@ -644,6 +644,18 @@ def deploy_components(selected_keys, target_dir, logger, profile="overlay", forc
         for src_rel, dst_rel in comp["folders"]:
             src_full = os.path.join(ASSETS_DIR, src_rel)
             dst_full = os.path.join(target_dir, dst_rel)
+            if not os.path.exists(src_full):
+                # Fallback for splash screen or direct assets
+                fallback_candidates = [
+                    os.path.join(ASSETS_DIR, os.path.basename(src_rel)),
+                    os.path.join(ROOT_DIR, "docs", os.path.basename(src_rel)),
+                    os.path.join(ROOT_DIR, "assets", src_rel),
+                    os.path.join(ROOT_DIR, "assets", os.path.basename(src_rel)),
+                ]
+                for fb in fallback_candidates:
+                    if os.path.exists(fb):
+                        src_full = fb
+                        break
             if os.path.exists(src_full):
                 safe_copy_item(src_full, dst_full, logger, dry_run=dry_run)
 
@@ -941,6 +953,16 @@ def merge_reaper_ini(selected_keys, target_dir, logger, dry_run=False):
     for sec_name in [".swell", ".swell_recent_path", "Recent", "RecentFX", "recentmetropat", "reaper_video", "midihw"]:
         if sec_name in cur_sections:
             preserved_sections[sec_name] = cur_sections[sec_name]
+
+    # Explicitly enforce ReaFull branding and theme in reaper.ini when themes is selected
+    if "themes" in selected_keys:
+        splash_path = os.path.join(target_dir, "Splash ReaFull.png")
+        theme_path = os.path.join(target_dir, "ColorThemes/ReaFull Pro.ReaperThemeZip")
+        preserved_kvs["splashimage"] = splash_path
+        preserved_kvs["lastthemefn5"] = theme_path
+        preserved_kvs["splash"] = "1"
+        preserved_kvs["splash2"] = "1"
+        preserved_kvs["splashfast"] = "0"
 
     merged_reaper_lines = []
     seen_reaper_keys = set()

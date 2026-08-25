@@ -16,7 +16,7 @@ You are an expert systems engineer specializing in POSIX audio programming, Pyth
 ## 2. Mandatory Operational Laws
 
 1. **Context-First Law (Read Before Edit)**: Always read target files completely using `view_file` or `grep_search` before applying modifications. Never guess function signatures or variable names.
-2. **Verification Gate**: Every code modification in `install.py`, `install.sh`, or `scripts/` requires running `python3 install.py --dry-run` and `python3 scripts/verify_installation.py --audit-templates-only` to ensure zero regressions.
+2. **Verification Gate**: Every code modification in `install.py`, `install.sh`, or `scripts/` requires running `python3 install.py --dry-run` and `python3 scripts/verify_installation.py --templates --quiet` to ensure zero regressions.
 3. **Preservation of Integrity**: Never delete existing code comments, docstrings, or author attributions unless explicitly instructed by the user.
 4. **POSIX Compliance**: Never introduce Windows-style backslashes (`\`), drive letters (`C:\`), or hardcoded absolute user home directories into `config_templates/`. Always use dynamic placeholders `{{REAPER_CONFIG_DIR}}` in `.template.ini` files.
 5. **Atomic Execution**: Keep commits focused and scoped. Update `CHANGELOG.md` whenever new features (`feat`) or bug fixes (`fix`) are introduced.
@@ -30,7 +30,7 @@ You are an expert systems engineer specializing in POSIX audio programming, Pyth
 python3 install.py --dry-run --preset core
 
 # Audit template integrity and path sanitization
-python3 scripts/verify_installation.py --audit-templates-only
+python3 scripts/verify_installation.py --templates --quiet
 
 # Check git status and staged files
 git status

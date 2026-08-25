@@ -88,7 +88,7 @@ python3 install.py --dry-run --preset minimal
 ### 4.2 Template & Path Integrity Audit
 Audit all templates in `config_templates/`:
 ```bash
-python3 scripts/verify_installation.py --audit-templates-only
+python3 scripts/verify_installation.py --templates --quiet
 ```
 
 ### 4.3 Component License Audit

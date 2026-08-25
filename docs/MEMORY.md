@@ -13,3 +13,4 @@ This file serves as persistent memory for long sessions with AI agents. Don't fo
 ## Session Notes
 
 - 2026-08-20: FMG dev standard applied. Splash redesigned.
+- 2026-08-21: Resumed session. Verified installer branding enforcement (reaper.ini merge) and asset fallback via dry-run + live merge tests against scratch targets. CHANGELOG updated under Unreleased. Pending: commit, version bump decision (2026.3.1), release.
