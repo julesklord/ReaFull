@@ -31,7 +31,7 @@ VERSION = "2026.3.1"
 ASSETS_RELEASE_URL = f"https://github.com/julesklord/ReaFull/releases/download/v{VERSION}/reafull-assets-v{VERSION}.tar.gz"
 
 KNOWN_HASHES = {
-    "reafull-assets-v2026.3.1.tar.gz": "PLACEHOLDER_HASH",
+    "reafull-assets-v2026.3.1.tar.gz": "fc70af76eb816ab0e20551b0dddb690fe99e72682c78b7f96df18d3c035c8771",
     "sws_x86_64": "4cf0629aeeff346c1ed9a355ce826febfacf9775bd6f49f09b1b4f9f053b8644",
     "sws_aarch64": "615b66ae9e38e01aabb2e5e2a21fb0ffe3c1bab9587c1a2620f62c6e80e9a409",
     "reapack_x86_64": "35d80f63d8174c964af589c7d87c4728aa18f06899dce873e33f8d552d1bc7e0",
