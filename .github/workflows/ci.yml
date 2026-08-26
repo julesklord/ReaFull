@@ -42,7 +42,7 @@ jobs:
         run: |
           python3 - <<'PY'
           import install
-          expected = "74f70f722ec665eb2fbf53fa194e8ffe5d77d27a1e93dad4bdf9a06a4ad56698"
+          expected = "b6e0a839446e34c1cc11c08ced459f3c4f2c30f6dba500e28704391b7227b1d1"
           key = f"reafull-assets-v{install.VERSION}.tar.gz"
           assert install.KNOWN_HASHES.get(key) == expected, f"Missing or incorrect hash for {key}"
           assert install.KNOWN_HASHES.get("sws_x86_64")
