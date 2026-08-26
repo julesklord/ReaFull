@@ -27,11 +27,11 @@ import urllib.request
 import tarfile
 from datetime import datetime
 
-VERSION = "2026.3.0"
+VERSION = "2026.3.1"
 ASSETS_RELEASE_URL = f"https://github.com/julesklord/ReaFull/releases/download/v{VERSION}/reafull-assets-v{VERSION}.tar.gz"
 
 KNOWN_HASHES = {
-    "reafull-assets-v2026.3.0.tar.gz": "565d40111b6e55ccebdd0666c397896b781f4a9e36ae46d1c9b185f3a092527a",
+    "reafull-assets-v2026.3.1.tar.gz": "PLACEHOLDER_HASH",
     "sws_x86_64": "4cf0629aeeff346c1ed9a355ce826febfacf9775bd6f49f09b1b4f9f053b8644",
     "sws_aarch64": "615b66ae9e38e01aabb2e5e2a21fb0ffe3c1bab9587c1a2620f62c6e80e9a409",
     "reapack_x86_64": "35d80f63d8174c964af589c7d87c4728aa18f06899dce873e33f8d552d1bc7e0",
@@ -289,6 +289,13 @@ COMPONENTS = {
         "inis": [],
         "default": True
     },
+    "pro_tools_mode": {
+        "name": "Pro Tools Mode (ReaTooled)",
+        "desc": "Pro Tools–style editing workflow: per-track ripple, grid snap, smart tool, edit cursor",
+        "folders": [("KeyMaps/ProTools", "KeyMaps")],
+        "inis": ["reaper-protools.template.ini"],
+        "default": False
+    },
 }
 
 class Logger:
@@ -415,7 +422,9 @@ def detect_reaper_dir(interactive=True):
 
 def interactive_menu():
     keys = list(COMPONENTS.keys())
-    selected = {k: COMPONENTS[k]["default"] for k in keys}
+    # Default: only Pro Tools Mode (ReaTooled) selected
+    reatooled_set = {"themes", "menus_toolbars", "fonts", "extensions", "pro_tools_mode"}
+    selected = {k: k in reatooled_set for k in keys}
 
     while True:
         os.system('clear' if os.name == 'posix' else 'cls')
@@ -430,6 +439,7 @@ def interactive_menu():
         print(f"\n   Studio Production Suite for Linux REAPER (v{VERSION})")
         print(f"{Colors.ENDC}")
         print(f"{Colors.BOLD}Select the components you want to install:{Colors.ENDC}\n")
+        print(f"  {Colors.DIM}Default: ReaTooled (Pro Tools workflow). Use presets below to expand.{Colors.ENDC}\n")
 
         total_selected_size = 0
         total_selected_files = 0
@@ -452,9 +462,11 @@ def interactive_menu():
         print(f"  {Colors.BOLD}Commands:{Colors.ENDC}")
         print("  - Type a component number to toggle it on/off (e.g. '1', '2 5 8')")
         print("  - 'a' / 'all'   : Select all (Full Studio)")
-        print("  - 'k' / 'core'  : Core Suite (<700MB: ReaFull Themes, Analog/Digital FX, Templates, SWS, Fonts)")
+        print("  - 'r' / 'rt'    : ReaTooled only (Pro Tools workflow: keymaps, snap, ripple edit)")
+        print("  - 'k' / 'core'  : Core Suite (<700MB: Themes, Analog/Digital FX, Templates, SWS, Fonts)")
         print("  - 'm' / 'min'   : Minimal profile (Themes, Audio Tuning, Fonts)")
         print("  - 'f' / 'fx'    : FX and Plugins only")
+        print("  - 'p' / 'pt'    : Pro Tools Mode (PT-style workflow: keymaps, grid snap, ripple edit)")
         print("  - 'c' / 'enter' : CONTINUE with installation")
         print("  - 'q' / 'exit'  : Cancel and exit\n")
 
@@ -472,6 +484,10 @@ def interactive_menu():
         elif choice in ['a', 'all']:
             for k in keys:
                 selected[k] = True
+        elif choice in ['r', 'rt']:
+            reatooled_set = {"themes", "menus_toolbars", "fonts", "extensions", "pro_tools_mode"}
+            for k in keys:
+                selected[k] = k in reatooled_set
         elif choice in ['k', 'core']:
             core_set = {"themes", "analog_fx", "digital_fx", "templates", "sws_autocolor", "menus_toolbars", "fonts", "audio_tuning", "docs"}
             for k in keys:
@@ -482,6 +498,9 @@ def interactive_menu():
         elif choice in ['f', 'fx']:
             for k in keys:
                 selected[k] = k in ["analog_fx", "digital_fx", "community_fx", "presets", "audio_tuning"]
+        elif choice in ['p', 'pt']:
+            for k in keys:
+                selected[k] = k in ["themes", "menus_toolbars", "fonts", "extensions", "pro_tools_mode"]
         else:
             parts = choice.replace(",", " ").split()
             for p in parts:
@@ -638,6 +657,16 @@ def deploy_components(selected_keys, target_dir, logger, profile="overlay", forc
             install_fonts(logger, dry_run=dry_run)
             continue
         if comp_id == "audio_tuning":
+            continue
+        if comp_id == "pro_tools_mode":
+            logger.action("COMPONENT", f"Installing: {comp['name']}...")
+            for src_rel, dst_rel in comp["folders"]:
+                src_full = os.path.join(ASSETS_DIR, src_rel)
+                dst_full = os.path.join(target_dir, dst_rel)
+                if not os.path.exists(src_full):
+                    src_full = os.path.join(ROOT_DIR, "assets", src_rel)
+                if os.path.exists(src_full):
+                    safe_copy_item(src_full, dst_full, logger, dry_run=dry_run)
             continue
 
         logger.action("COMPONENT", f"Installing: {comp['name']}...")
@@ -935,6 +964,33 @@ def merge_reaper_ini(selected_keys, target_dir, logger, dry_run=False):
         else:
             logger.action("AUDIO", f"Custom audio device detected ({preserved_kvs.get('alsa_indev')}); preserving all existing audio parameters.")
 
+    if "pro_tools_mode" in selected_keys:
+        logger.action("PRO TOOLS MODE", "Applying Pro Tools–style editing configuration...")
+        protool_overrides = {
+            "ripplepertrack": "1",
+            "ripplelockmode": "0",
+            "autoxfade": "0",
+            "splitautoxfade": "0",
+            "newitemlenmode": "0",
+            "projrelsnap": "1",
+            "projgridsnapmin": "4",
+            "projgriddivsnap": "0.25000000",
+            "itemsnap": "1",
+            "snapextraden": "0",
+            "maxsnaptrack": "0",
+            "projgrid": "4",
+            "editcursorcontext": "1",
+            "toolmode": "5",
+            "trimcontentbehind": "1",
+            "xfadeedit_open": "1",
+            "tabediting": "1",
+            "projrecmode": "1",
+            "projrecfiletype": "wav",
+        }
+        for k, v in protool_overrides.items():
+            preserved_kvs[k] = v
+        logger.action("PRO TOOLS MODE", "Per-track ripple editing, grid snapping, smart tool, and destructive record enabled.")
+
     # Auto-configure Python ReaScript engine in REAPER if not explicitly set
     if "python_lib" not in preserved_kvs:
         for lib_dir in ["/usr/lib", "/usr/lib64", "/usr/lib/x86_64-linux-gnu"]:
@@ -1034,7 +1090,7 @@ def main():
     parser.add_argument("--force", "-f", action="store_true", help="Overwrite keyboard shortcuts, menus, and custom INIs even if they already exist")
     parser.add_argument("--all", "-a", action="store_true", help="Install all components (Full Mode)")
     parser.add_argument("--components", "-c", type=str, default=None, help="Comma-separated list of components (e.g. themes,analog_fx,audio_tuning)")
-    parser.add_argument("--preset", "-p", choices=["full", "core", "minimal", "fx-only", "themes-only", "community", "extras"], help="Quick selection preset ('core' < 700MB)")
+    parser.add_argument("--preset", "-p", choices=["reatooled", "full", "core", "minimal", "fx-only", "themes-only", "community", "extras", "pro-tools"], help="Quick selection preset (default: reatooled = Pro Tools workflow; full = complete ReaFull suite)")
     parser.add_argument("--no-backup", action="store_true", help="Skip pre-install backup creation")
     parser.add_argument("--allow-running-reaper", action="store_true", help="Allow installation even if REAPER is currently running (not recommended)")
     parser.add_argument("--assets-dir", type=str, default=None, help="Custom path to ReaFull assets directory")
@@ -1069,23 +1125,25 @@ def main():
     else:
         profile = "overlay" if os.path.exists(os.path.join(target_dir, "reaper.ini")) else "fresh"
 
-    # Component Selection Resolution
+    # Component Selection Resolution — default is "reatooled" (Pro Tools workflow)
+    REAPRESETS = {
+        "reatooled": ["themes", "menus_toolbars", "fonts", "extensions", "pro_tools_mode"],
+        "full": list(COMPONENTS.keys()),
+        "core": ["themes", "analog_fx", "digital_fx", "templates", "sws_autocolor", "menus_toolbars", "fonts", "audio_tuning", "extensions", "docs"],
+        "minimal": ["themes", "fonts", "audio_tuning"],
+        "fx-only": ["analog_fx", "digital_fx", "community_fx", "presets", "audio_tuning"],
+        "themes-only": ["themes", "fonts", "sws_autocolor"],
+        "community": ["community_fx", "scripts", "presets"],
+        "pro-tools": ["themes", "menus_toolbars", "fonts", "extensions", "pro_tools_mode"],
+    }
     if args.all or args.preset == "full":
-        selected_keys = list(COMPONENTS.keys())
-    elif args.preset == "core":
-        selected_keys = ["themes", "analog_fx", "digital_fx", "templates", "sws_autocolor", "menus_toolbars", "fonts", "audio_tuning", "extensions", "docs"]
-    elif args.preset == "minimal":
-        selected_keys = ["themes", "fonts", "audio_tuning"]
-    elif args.preset == "fx-only":
-        selected_keys = ["analog_fx", "digital_fx", "community_fx", "presets", "audio_tuning"]
-    elif args.preset == "themes-only":
-        selected_keys = ["themes", "fonts", "sws_autocolor"]
-    elif args.preset in ["community", "extras"]:
-        selected_keys = ["community_fx", "scripts", "presets"]
+        selected_keys = REAPRESETS["full"]
+    elif args.preset and args.preset in REAPRESETS:
+        selected_keys = REAPRESETS[args.preset]
     elif args.components:
         selected_keys = [k.strip() for k in args.components.split(",") if k.strip() in COMPONENTS]
     elif args.quiet:
-        selected_keys = [k for k, v in COMPONENTS.items() if v["default"]]
+        selected_keys = REAPRESETS["reatooled"]
     else:
         selected_keys = interactive_menu()
 

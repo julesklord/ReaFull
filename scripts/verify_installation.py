@@ -44,6 +44,7 @@ def check_templates(templates_dir, quiet=False):
         "reaper-menu.ini",
         "reaper-mouse.ini",
         "reaper-screensets.ini",
+        "reaper-protools.template.ini",
     ]
     missing = [t for t in required_templates if not os.path.exists(os.path.join(templates_dir, t))]
     if not missing:
@@ -219,6 +220,30 @@ def check_reafull(target_dir=None, components=None, quiet=False):
         else:
             issues.append("Native extensions (SWS/ReaPack) missing in UserPlugins/")
             if not quiet: print("[WARN] Native extensions missing in UserPlugins/.")
+
+    # 8. Check Pro Tools Mode (if pro_tools_mode selected or full check)
+    if check_all or (components and "pro_tools_mode" in components):
+        pt_keymap = os.path.join(target_dir, "KeyMaps", "ProTools")
+        pt_config = os.path.join(target_dir, "reaper-protools.ini")
+        reaper_ini = os.path.join(target_dir, "reaper.ini")
+        has_pt_keymap = os.path.isdir(pt_keymap)
+        has_pt_config = os.path.exists(pt_config)
+        has_ripple = False
+        if os.path.exists(reaper_ini):
+            with open(reaper_ini, "r", encoding="utf-8", errors="ignore") as f:
+                for line in f:
+                    if line.strip().startswith("ripplepertrack="):
+                        has_ripple = True
+                        break
+        if has_pt_keymap and has_ripple:
+            if not quiet: print("[OK] Pro Tools Mode (ReaTooled) active: keymaps + config applied.")
+            checks_passed += 1
+        elif has_pt_config:
+            if not quiet: print("[OK] Pro Tools Mode config deployed (reaper-protools.ini present).")
+            checks_passed += 1
+        else:
+            issues.append("Pro Tools Mode not detected")
+            if not quiet: print("[WARN] Pro Tools Mode files not found.")
 
     # 8. Audit INI files for broken Windows paths and raw placeholders (ALWAYS check target INIs)
     ini_path_errors = 0
