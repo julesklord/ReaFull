@@ -31,7 +31,7 @@ VERSION = "2026.3.1"
 ASSETS_RELEASE_URL = f"https://github.com/julesklord/ReaFull/releases/download/v{VERSION}/reafull-assets-v{VERSION}.tar.gz"
 
 KNOWN_HASHES = {
-    "reafull-assets-v2026.3.1.tar.gz": "60da7d7c9afe7414c2942718a75ccfaa0a54ac438031da578dc733cb6d1f367e",
+    "reafull-assets-v2026.3.1.tar.gz": "f4848c9fdcfd74835bfdce11a3230af55cee83ed782f3128cc0e3369543cf7b9",
     "sws_x86_64": "4cf0629aeeff346c1ed9a355ce826febfacf9775bd6f49f09b1b4f9f053b8644",
     "sws_aarch64": "615b66ae9e38e01aabb2e5e2a21fb0ffe3c1bab9587c1a2620f62c6e80e9a409",
     "reapack_x86_64": "35d80f63d8174c964af589c7d87c4728aa18f06899dce873e33f8d552d1bc7e0",
@@ -180,7 +180,7 @@ class Colors:
 COMPONENTS = {
     "themes": {
         "name": "Visual Themes & Splash Screen",
-        "desc": "ReaFull Pro Tools (default), Pro, Dark, Gray, Light themes and splash screen",
+        "desc": "ReaTools Classic (default), ReaFull Pro, Dark, Gray, Light themes and splash screen",
         "folders": [("ColorThemes", "ColorThemes"), ("branding/Splash ReaFull.png", "Splash ReaFull.png")],
         "inis": ["reaper-themeconfig.ini"],
         "default": True
@@ -1052,7 +1052,7 @@ def merge_reaper_ini(selected_keys, target_dir, logger, dry_run=False):
 
     if "themes" in selected_keys:
         if "lastthemefn5" not in seen_reaper_keys:
-            merged_reaper_lines.append(f"lastthemefn5={os.path.join(target_dir, 'ColorThemes/ReaFull Pro Tools.ReaperThemeZip')}\n")
+            merged_reaper_lines.append(f"lastthemefn5={os.path.join(target_dir, 'ColorThemes/ReaTools Classic.ReaperThemeZip')}\n")
         if "splashimage" not in seen_reaper_keys:
             merged_reaper_lines.append(f"splashimage={os.path.join(target_dir, 'Splash ReaFull.png')}\n")
 
