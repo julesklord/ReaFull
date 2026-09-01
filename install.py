@@ -27,10 +27,11 @@ import urllib.request
 import tarfile
 from datetime import datetime
 
-VERSION = "2026.3.1"
+VERSION = "2026.3.2"
 ASSETS_RELEASE_URL = f"https://github.com/julesklord/ReaFull/releases/download/v{VERSION}/reafull-assets-v{VERSION}.tar.gz"
 
 KNOWN_HASHES = {
+    "reafull-assets-v2026.3.2.tar.gz": "6362aeec5b9b69dd2069c81b91fe946abbc4c32dddae61db7122d1ac459198b9",
     "reafull-assets-v2026.3.1.tar.gz": "b6e0a839446e34c1cc11c08ced459f3c4f2c30f6dba500e28704391b7227b1d1",
     "sws_x86_64": "4cf0629aeeff346c1ed9a355ce826febfacf9775bd6f49f09b1b4f9f053b8644",
     "sws_aarch64": "615b66ae9e38e01aabb2e5e2a21fb0ffe3c1bab9587c1a2620f62c6e80e9a409",
@@ -422,24 +423,24 @@ def detect_reaper_dir(interactive=True):
 
 def interactive_menu():
     keys = list(COMPONENTS.keys())
-    # Default: only Pro Tools Mode (ReaTooled) selected
-    reatooled_set = {"themes", "menus_toolbars", "fonts", "extensions", "pro_tools_mode"}
+    # Default: Pro Tools Mode (ReaTooled) with ReArtist design (SWS autocolor/icons/theme) selected
+    reatooled_set = {"themes", "menus_toolbars", "sws_autocolor", "fonts", "extensions", "pro_tools_mode"}
     selected = {k: k in reatooled_set for k in keys}
 
     while True:
         os.system('clear' if os.name == 'posix' else 'cls')
         print(f"{Colors.BOLD}{Colors.CYAN}")
-        print(r"       █ │ █                                                           ")
-        print(r"     █ █ │ █ █       ██████╗ ███████╗ █████╗ ███████╗██╗   ██╗██╗     ██╗")
-        print(r"   █ █ █ █ █ █ █     ██╔══██╗██╔════╝██╔══██╗██╔════╝██║   ██║██║     ██║")
-        print(r" █ █ █ █ █ █ █ █ █   ██████╔╝█████╗  ███████║█████╗  ██║   ██║██║     ██║")
-        print(r"   █ █ █ █ █ █ █     ██╔══██╗██╔══╝  ██╔══██║██╔══╝  ██║   ██║██║     ██║")
-        print(r"     █ █ │ █ █       ██║  ██║███████╗██║  ██║██║     ╚██████╔╝███████╗███████╗")
-        print(r"       █ │ █         ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝      ╚═════╝ ╚══════╝╚══════╝")
+        print(r"                                                                    ")
+        print(r"                           ")
+        print(r"                      ")
+        print(r"                        ")
+        print(r"                          ")
+        print(r"                         ")
+        print(r"                             ")
         print(f"\n   Studio Production Suite for Linux REAPER (v{VERSION})")
         print(f"{Colors.ENDC}")
         print(f"{Colors.BOLD}Select the components you want to install:{Colors.ENDC}\n")
-        print(f"  {Colors.DIM}Default: ReaTooled (Pro Tools workflow). Use presets below to expand.{Colors.ENDC}\n")
+        print(f"  {Colors.DIM}Default: ReaTooled workflow with ReArtist design & SWS autocolor.{Colors.ENDC}\n")
 
         total_selected_size = 0
         total_selected_files = 0
@@ -462,11 +463,11 @@ def interactive_menu():
         print(f"  {Colors.BOLD}Commands:{Colors.ENDC}")
         print("  - Type a component number to toggle it on/off (e.g. '1', '2 5 8')")
         print("  - 'a' / 'all'   : Select all (Full Studio)")
-        print("  - 'r' / 'rt'    : ReaTooled only (Pro Tools workflow: keymaps, snap, ripple edit)")
+        print("  - 'r' / 'rt'    : ReaTooled only (Pro Tools workflow + ReArtist SWS AutoColor & Icons)")
         print("  - 'k' / 'core'  : Core Suite (<700MB: Themes, Analog/Digital FX, Templates, SWS, Fonts)")
         print("  - 'm' / 'min'   : Minimal profile (Themes, Audio Tuning, Fonts)")
         print("  - 'f' / 'fx'    : FX and Plugins only")
-        print("  - 'p' / 'pt'    : Pro Tools Mode (PT-style workflow: keymaps, grid snap, ripple edit)")
+        print("  - 'p' / 'pt'    : Pro Tools Mode (PT workflow + ReArtist SWS AutoColor & Icons)")
         print("  - 'c' / 'enter' : CONTINUE with installation")
         print("  - 'q' / 'exit'  : Cancel and exit\n")
 
@@ -485,7 +486,7 @@ def interactive_menu():
             for k in keys:
                 selected[k] = True
         elif choice in ['r', 'rt']:
-            reatooled_set = {"themes", "menus_toolbars", "fonts", "extensions", "pro_tools_mode"}
+            reatooled_set = {"themes", "menus_toolbars", "sws_autocolor", "fonts", "extensions", "pro_tools_mode"}
             for k in keys:
                 selected[k] = k in reatooled_set
         elif choice in ['k', 'core']:
@@ -500,7 +501,7 @@ def interactive_menu():
                 selected[k] = k in ["analog_fx", "digital_fx", "community_fx", "presets", "audio_tuning"]
         elif choice in ['p', 'pt']:
             for k in keys:
-                selected[k] = k in ["themes", "menus_toolbars", "fonts", "extensions", "pro_tools_mode"]
+                selected[k] = k in ["themes", "menus_toolbars", "sws_autocolor", "fonts", "extensions", "pro_tools_mode"]
         else:
             parts = choice.replace(",", " ").split()
             for p in parts:
@@ -1125,16 +1126,16 @@ def main():
     else:
         profile = "overlay" if os.path.exists(os.path.join(target_dir, "reaper.ini")) else "fresh"
 
-    # Component Selection Resolution — default is "reatooled" (Pro Tools workflow)
+    # Component Selection Resolution — default is "reatooled" (Pro Tools workflow + ReArtist SWS AutoColor/Design)
     REAPRESETS = {
-        "reatooled": ["themes", "menus_toolbars", "fonts", "extensions", "pro_tools_mode"],
+        "reatooled": ["themes", "menus_toolbars", "sws_autocolor", "fonts", "extensions", "pro_tools_mode"],
         "full": list(COMPONENTS.keys()),
         "core": ["themes", "analog_fx", "digital_fx", "templates", "sws_autocolor", "menus_toolbars", "fonts", "audio_tuning", "extensions", "docs"],
         "minimal": ["themes", "fonts", "audio_tuning"],
         "fx-only": ["analog_fx", "digital_fx", "community_fx", "presets", "audio_tuning"],
         "themes-only": ["themes", "fonts", "sws_autocolor"],
         "community": ["community_fx", "scripts", "presets"],
-        "pro-tools": ["themes", "menus_toolbars", "fonts", "extensions", "pro_tools_mode"],
+        "pro-tools": ["themes", "menus_toolbars", "sws_autocolor", "fonts", "extensions", "pro_tools_mode"],
     }
     if args.all or args.preset == "full":
         selected_keys = REAPRESETS["full"]
@@ -1153,13 +1154,13 @@ def main():
 
     if not args.quiet:
         print(f"{Colors.BOLD}{Colors.CYAN}")
-        print(r"       █ │ █                                                           ")
-        print(r"     █ █ │ █ █       ██████╗ ███████╗ █████╗ ███████╗██╗   ██╗██╗     ██╗")
-        print(r"   █ █ █ █ █ █ █     ██╔══██╗██╔════╝██╔══██╗██╔════╝██║   ██║██║     ██║")
-        print(r" █ █ █ █ █ █ █ █ █   ██████╔╝█████╗  ███████║█████╗  ██║   ██║██║     ██║")
-        print(r"   █ █ █ █ █ █ █     ██╔══██╗██╔══╝  ██╔══██║██╔══╝  ██║   ██║██║     ██║")
-        print(r"     █ █ │ █ █       ██║  ██║███████╗██║  ██║██║     ╚██████╔╝███████╗███████╗")
-        print(r"       █ │ █         ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝      ╚═════╝ ╚══════╝╚══════╝")
+        print(r"                                                                    ")
+        print(r"                           ")
+        print(r"                      ")
+        print(r"                        ")
+        print(r"                          ")
+        print(r"                         ")
+        print(r"                             ")
         print(f"{Colors.ENDC}")
         print(f"{Colors.BOLD}{Colors.CYAN}==============================================================================={Colors.ENDC}")
         print(f"{Colors.BOLD}{Colors.CYAN}                    ReaFull Installation Pre-Flight Summary                     {Colors.ENDC}")

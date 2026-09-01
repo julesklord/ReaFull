@@ -7,13 +7,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ## [Unreleased]
 
-### Fixed
-- **Installer branding enforcement** (`install.py`): the `themes` component now explicitly enforces `splashimage`, `lastthemefn5`, `splash`, `splash2`, and `splashfast` in the merged `reaper.ini`, overriding stale values from previous themes or installations. User audio device settings remain preserved.
-- **Asset fallback resolution** (`install.py`): `deploy_components` now resolves missing asset paths through `assets/branding/`, `assets/`, and `docs/` candidates, keeping splash deployment functional across repository layout changes.
+---
+
+## [2026.3.2] - 2026-09-01
+
+### Added
+- **ReaFull Hub — 1-Click Automatic Updater**: the updater now downloads and applies the latest release in background via `install.sh --quiet --preset reatooled --profile overlay`, reloads themes, triggers SWS AutoColor and syncs ReaPack automatically — no manual terminal instructions required.
+- **ReaFull Hub — Redesigned 4-tab console**: Doctor & Health (live audio driver/latency telemetry, SWS/ReaPack status), Modules & Presets (interactive component selector with quick presets), Workflow & Themes (instant live theme switcher + PT-mode shortcuts), System Settings (profile integration, autostart toggle, documentation links).
+- **Instant theme switcher** in Workflow tab: applies any ReaFull theme live inside REAPER without restart using `reaper.OpenColorThemeFile`.
 
 ### Changed
-- Regenerated official splash screen artwork (higher resolution, radar pattern background) and synced it across `assets/branding/`, `assets/`, and `docs/`.
-- Corrected the verification gate command in `docs/wiki/agent-sop.md` and `docs/wiki/development.md`: `verify_installation.py` uses `--templates --quiet` (the documented `--audit-templates-only` flag does not exist).
+- **SWS AutoColor rules preserved across ReaTooled preset**: `sws_autocolor` component is now included in the `reatooled` and `pro-tools` presets, ensuring ReArtist's 317+ color/icon rules are not overwritten by ReaTooled workflow settings.
+- **Pro Tools layout fix**: removed non-standard `layout_tcp=1 TCP竖` from `reaper-protools.template.ini`; replaced with `layout_tcp=A` to maintain clean ReArtist theme layout.
+- **Emoji-free codebase**: all emoji characters removed from Lua scripts, Python scripts, shell scripts, and INI configs across the entire repository.
+- Asset tarball version bumped to `reafull-assets-v2026.3.2.tar.gz` (SHA-256: `6362aeec5b9b69dd2069c81b91fe946abbc4c32dddae61db7122d1ac459198b9`).
+
+### Fixed
+- **Installer branding enforcement** (`install.py`): the `themes` component now explicitly enforces `splashimage`, `lastthemefn5`, `splash`, `splash2`, and `splashfast` in the merged `reaper.ini`, overriding stale values from previous themes or installations.
+- **Asset fallback resolution** (`install.py`): `deploy_components` now resolves missing asset paths through `assets/branding/`, `assets/`, and `docs/` candidates.
 
 ---
 

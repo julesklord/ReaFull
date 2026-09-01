@@ -101,7 +101,7 @@ jobs:
       - name: Test Real Deployment (ReaTooled Preset) & Component-Aware Verification
         run: |
           ./install.sh --quiet --preset reatooled --target /tmp/reafull_ci_reatooled
-          python3 scripts/verify_installation.py /tmp/reafull_ci_reatooled --components themes,menus_toolbars,fonts,extensions,pro_tools_mode
+          python3 scripts/verify_installation.py /tmp/reafull_ci_reatooled --components themes,menus_toolbars,sws_autocolor,fonts,extensions,pro_tools_mode
 
       - name: Test Real Deployment (Core Preset) & Health Verification
         run: |

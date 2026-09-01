@@ -13,7 +13,7 @@ C_GREEN='\033[92m'
 C_YELLOW='\033[93m'
 C_CYAN='\033[96m'
 
-VERSION="2026.3.0"
+VERSION="2026.3.2"
 ASSETS_RELEASE_URL="https://github.com/julesklord/ReaFull/releases/download/v${VERSION}/reafull-assets-v${VERSION}.tar.gz"
 
 # Reconnect stdin to TTY only if executing via curl pipe in interactive mode
