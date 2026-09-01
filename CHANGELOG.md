@@ -9,6 +9,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ---
 
+## [2026.3.3] - 2026-09-01
+
+### Changed
+- **ReaFull Hub — brand & UI color refresh**: the entire Hub palette now derives from the new splash screen identity (deep navy `#0D1628` background with bright cyan `#00B5DB` accents), applied across header, tabs, cards, buttons, badges, and diagnostic panels for a cohesive branded look.
+- **New splash screen asset**: `Splash ReaFull.png` updated with the new ReaFull shield branding and color identity.
+- Bubble version and asset tarball bumped to `reafull-assets-v2026.3.3.tar.gz` (SHA-256: `6ad3ae8c6e288ef7749b324e2bfdb6c21aa58cb99290d537397b03083d272030`).
+
+---
+
 ## [2026.3.2] - 2026-09-01
 
 ### Added

@@ -1,6 +1,6 @@
 # Installation and Deployment Guide
 
-> **Version**: `v2026.3.2`  
+> **Version**: `v2026.3.3`  
 > **Target Environment**: Linux x86_64 / aarch64  
 > **Host Requirements**: Cockos REAPER v6.x or v7.x
 

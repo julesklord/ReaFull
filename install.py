@@ -27,10 +27,11 @@ import urllib.request
 import tarfile
 from datetime import datetime
 
-VERSION = "2026.3.2"
+VERSION = "2026.3.3"
 ASSETS_RELEASE_URL = f"https://github.com/julesklord/ReaFull/releases/download/v{VERSION}/reafull-assets-v{VERSION}.tar.gz"
 
 KNOWN_HASHES = {
+    "reafull-assets-v2026.3.3.tar.gz": "6ad3ae8c6e288ef7749b324e2bfdb6c21aa58cb99290d537397b03083d272030",
     "reafull-assets-v2026.3.2.tar.gz": "6362aeec5b9b69dd2069c81b91fe946abbc4c32dddae61db7122d1ac459198b9",
     "reafull-assets-v2026.3.1.tar.gz": "b6e0a839446e34c1cc11c08ced459f3c4f2c30f6dba500e28704391b7227b1d1",
     "sws_x86_64": "4cf0629aeeff346c1ed9a355ce826febfacf9775bd6f49f09b1b4f9f053b8644",
