@@ -108,7 +108,10 @@ To create a new release asset bundle for GitHub Releases CDN:
 echo "2026.4.0" > VERSION
 
 # 2. Package assets tarball
-tar -czvf reaffull-assets-v$(cat VERSION).tar.gz -C assets .
+# IMPORTANT: the tarball must keep the 'assets/' root prefix so extraction into
+# ~/.cache/reafull/ resolves to ~/.cache/reafull/assets/Effects as required by
+# ensure_assets_available() in install.py. A './'-rooted bundle deploys nothing.
+tar -czvf reafull-assets-v$(cat VERSION).tar.gz -C . assets
 
 # 3. Calculate SHA-256 Checksum
 sha256sum reaffull-assets-v$(cat VERSION).tar.gz

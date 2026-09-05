@@ -42,7 +42,7 @@ jobs:
         run: |
           python3 - <<'PY'
           import install
-          expected = "b6e0a839446e34c1cc11c08ced459f3c4f2c30f6dba500e28704391b7227b1d1"
+          expected = "748bceb1458e9d6d4b8dbef1f037add18b88032044bbf34da6de9d198539796d"
           key = f"reafull-assets-v{install.VERSION}.tar.gz"
           assert install.KNOWN_HASHES.get(key) == expected, f"Missing or incorrect hash for {key}"
           assert install.KNOWN_HASHES.get("sws_x86_64")
@@ -96,7 +96,7 @@ jobs:
       - name: Test Real Deployment (Minimal Preset) & Component-Aware Verification
         run: |
           ./install.sh --quiet --preset minimal --target /tmp/reafull_ci_minimal
-          python3 scripts/verify_installation.py /tmp/reafull_ci_minimal --components themes,fonts,audio_tuning
+          python3 scripts/verify_installation.py /tmp/reafull_ci_minimal --components themes,fonts
 
       - name: Test Real Deployment (ReaTooled Preset) & Component-Aware Verification
         run: |

@@ -1,6 +1,6 @@
 # ReaFull Documentation Wiki
 
-> **Version**: `v2026.3.3`  
+> **Version**: `v2026.3.4`  
 > **Status**: Production Ready  
 > **Platform**: Linux (x86_64, aarch64) · Native & Flatpak  
 > **Host**: Cockos REAPER (v6.x / v7.x)

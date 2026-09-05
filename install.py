@@ -9,7 +9,6 @@ Features:
 - Non-destructive configuration merge & full automated backup creation
 - Intelligent ReaPack repository merge (preserves existing user remotes)
 - Preserves existing keyboard shortcuts, mouse maps, and custom menus in Overlay mode
-- Audio engine hardware & thread auto-tuning (PipeWire / ALSA Realtime, HQ Sinc)
 - Comprehensive post-installation health verification
 """
 
@@ -27,10 +26,11 @@ import urllib.request
 import tarfile
 from datetime import datetime
 
-VERSION = "2026.3.3"
+VERSION = "2026.3.4"
 ASSETS_RELEASE_URL = f"https://github.com/julesklord/ReaFull/releases/download/v{VERSION}/reafull-assets-v{VERSION}.tar.gz"
 
 KNOWN_HASHES = {
+    "reafull-assets-v2026.3.4.tar.gz": "748bceb1458e9d6d4b8dbef1f037add18b88032044bbf34da6de9d198539796d",
     "reafull-assets-v2026.3.3.tar.gz": "6ad3ae8c6e288ef7749b324e2bfdb6c21aa58cb99290d537397b03083d272030",
     "reafull-assets-v2026.3.2.tar.gz": "6362aeec5b9b69dd2069c81b91fe946abbc4c32dddae61db7122d1ac459198b9",
     "reafull-assets-v2026.3.1.tar.gz": "b6e0a839446e34c1cc11c08ced459f3c4f2c30f6dba500e28704391b7227b1d1",
@@ -259,13 +259,6 @@ COMPONENTS = {
         "inis": [],
         "default": True
     },
-    "audio_tuning": {
-        "name": "Linux Audio Engine Optimization",
-        "desc": "Realtime settings (ALSA/JACK/PipeWire), thread priority, RAM locking, and HQ Resampling",
-        "folders": [],
-        "inis": [],
-        "default": True
-    },
     "striptease": {
         "name": "StripTease Modular Mixer Strip Suite",
         "desc": "Modular MCP channel strip interface with knobs, switches, and real-time GR meters",
@@ -491,15 +484,15 @@ def interactive_menu():
             for k in keys:
                 selected[k] = k in reatooled_set
         elif choice in ['k', 'core']:
-            core_set = {"themes", "analog_fx", "digital_fx", "templates", "sws_autocolor", "menus_toolbars", "fonts", "audio_tuning", "docs"}
+            core_set = {"themes", "analog_fx", "digital_fx", "templates", "sws_autocolor", "menus_toolbars", "fonts", "docs"}
             for k in keys:
                 selected[k] = k in core_set
         elif choice in ['m', 'min']:
             for k in keys:
-                selected[k] = k in ["themes", "fonts", "audio_tuning"]
+                selected[k] = k in ["themes", "fonts"]
         elif choice in ['f', 'fx']:
             for k in keys:
-                selected[k] = k in ["analog_fx", "digital_fx", "community_fx", "presets", "audio_tuning"]
+                selected[k] = k in ["analog_fx", "digital_fx", "community_fx", "presets"]
         elif choice in ['p', 'pt']:
             for k in keys:
                 selected[k] = k in ["themes", "menus_toolbars", "sws_autocolor", "fonts", "extensions", "pro_tools_mode"]
@@ -576,6 +569,31 @@ def safe_copy_item(src_path, dst_path, logger, dry_run=False):
                         shutil.copy2(sf, df)
                     except Exception as e:
                         logger.warn(f"Warning copying {f}: {e}")
+
+def purge_legacy_suite_folders(src_suite, dst_suite, logger, dry_run=False):
+    """
+    On 'fresh' profile: removes flat legacy plugin folders inside a suite dir that
+    have been regrouped under functional category subfolders in the source tree.
+    Prevents duplicate JSFX entries in the REAPER FX browser on reinstall.
+    """
+    if not os.path.isdir(src_suite) or not os.path.isdir(dst_suite):
+        return
+    regrouped = set()
+    for entry in os.listdir(src_suite):
+        cat_dir = os.path.join(src_suite, entry)
+        if os.path.isdir(cat_dir):
+            for sub in os.listdir(cat_dir):
+                if os.path.isdir(os.path.join(cat_dir, sub)):
+                    regrouped.add(sub)
+    removed = []
+    for entry in os.listdir(dst_suite):
+        stale_path = os.path.join(dst_suite, entry)
+        if os.path.isdir(stale_path) and entry in regrouped:
+            if not dry_run:
+                shutil.rmtree(stale_path)
+            removed.append(entry)
+    if removed:
+        logger.info(f"  -> Fresh profile: removed {len(removed)} legacy flat folder(s): {', '.join(sorted(removed))}")
 
 def merge_reapack_ini(src_path, dst_path):
     """
@@ -658,8 +676,11 @@ def deploy_components(selected_keys, target_dir, logger, profile="overlay", forc
         if comp_id == "fonts":
             install_fonts(logger, dry_run=dry_run)
             continue
-        if comp_id == "audio_tuning":
-            continue
+        if comp_id in ("analog_fx", "digital_fx") and profile == "fresh":
+            purge_legacy_suite_folders(
+                os.path.join(ASSETS_DIR, "Effects", comp["folders"][0][0]),
+                os.path.join(target_dir, "Effects", comp["folders"][0][1]),
+                logger, dry_run=dry_run)
         if comp_id == "pro_tools_mode":
             logger.action("COMPONENT", f"Installing: {comp['name']}...")
             for src_rel, dst_rel in comp["folders"]:
@@ -839,70 +860,6 @@ def ensure_native_extensions(target_dir, logger, dry_run=False):
             else:
                 logger.warn("Could not download/verify ReaPack.")
 
-def detect_best_audio_settings(logger):
-    cpu_cores = os.cpu_count() or 4
-    audio_settings = {
-        "workthreads": str(cpu_cores),
-        "afx": "1",
-        "afxb": "200",
-        "afxrender": "1",
-        "playresamplemode": "5",  # r8brain / 512pt Sinc HQ
-        "projrenderresample": "6",  # r8brain / 768pt Sinc
-        "audio_closeifidle": "0",
-        "audio_mute": "1",
-        "audio_mute_db": "18.0",
-        "linux_mlockall": "1",
-        "linux_disable_pm": "1",
-        "linux_auto_pasuspend": "1",
-        "alsa_rtprio": "90",
-    }
-
-    is_pipewire = False
-    try:
-        pw_check = subprocess.run(["pgrep", "-x", "pipewire"], capture_output=True)
-        if pw_check.returncode == 0:
-            is_pipewire = True
-    except Exception:
-        pass
-
-    try:
-        res = subprocess.run(["aplay", "-l"], capture_output=True, text=True)
-        if "U192k" in res.stdout or "UMC404HD" in res.stdout:
-            audio_settings.update({
-                "alsa_indev": "hw:U192k",
-                "alsa_outdev": "hw:U192k",
-                "linux_audio_bits": "32",
-                "linux_audio_bsize": "256",
-                "linux_audio_bufs": "3",
-                "linux_audio_nch_in": "4",
-                "linux_audio_nch_out": "4",
-                "linux_audio_srate": "48000",
-                "linux_audio_srateor": "1",
-            })
-            logger.info("  [Audio Hardware] Interface detected: Behringer UMC404HD 192k (hw:U192k, 4 in/4 out, 32-bit, 48kHz).")
-        elif "AudioBox" in res.stdout:
-            audio_settings.update({
-                "alsa_indev": "hw:USB",
-                "alsa_outdev": "hw:USB",
-                "linux_audio_bits": "24",
-                "linux_audio_bsize": "256",
-                "linux_audio_bufs": "3",
-                "linux_audio_nch_in": "2",
-                "linux_audio_nch_out": "2",
-                "linux_audio_srate": "48000",
-                "linux_audio_srateor": "1",
-            })
-            logger.info("  [Audio Hardware] Interface detected: Presonus AudioBox USB (hw:USB).")
-        else:
-            if is_pipewire:
-                logger.info("  [Audio Server] PipeWire server detected. Optimized threads and HQ sinc retained.")
-            else:
-                logger.info("  [Audio] General thread configuration applied (HQ Sinc, low-latency DSP).")
-    except Exception as e:
-        logger.warn(f"Could not query aplay: {e}")
-
-    return audio_settings
-
 def merge_reaper_ini(selected_keys, target_dir, logger, dry_run=False):
     cur_ini_path = os.path.join(target_dir, "reaper.ini")
     tpl_ini_path = os.path.join(CONFIG_TEMPLATES_DIR, "reaper.template.ini")
@@ -955,16 +912,6 @@ def merge_reaper_ini(selected_keys, target_dir, logger, dry_run=False):
                 k_trim = k.strip()
                 if k_trim in project_and_system_keys:
                     preserved_kvs[k_trim] = v.strip()
-
-    if "audio_tuning" in selected_keys:
-        best_audio = detect_best_audio_settings(logger)
-        has_custom = bool(preserved_kvs.get("alsa_indev") or preserved_kvs.get("alsa_outdev") or preserved_kvs.get("jack_launchcmd"))
-        if not has_custom:
-            logger.action("AUDIO", "Applying optimal Linux audio engine configuration...")
-            for k, v in best_audio.items():
-                preserved_kvs[k] = v
-        else:
-            logger.action("AUDIO", f"Custom audio device detected ({preserved_kvs.get('alsa_indev')}); preserving all existing audio parameters.")
 
     if "pro_tools_mode" in selected_keys:
         logger.action("PRO TOOLS MODE", "Applying Pro Tools–style editing configuration...")
@@ -1091,8 +1038,8 @@ def main():
     parser.add_argument("--profile", choices=["overlay", "fresh"], default=None, help="Installation profile: 'overlay' (non-destructive, preserves user INIs and settings) or 'fresh' (clean studio setup)")
     parser.add_argument("--force", "-f", action="store_true", help="Overwrite keyboard shortcuts, menus, and custom INIs even if they already exist")
     parser.add_argument("--all", "-a", action="store_true", help="Install all components (Full Mode)")
-    parser.add_argument("--components", "-c", type=str, default=None, help="Comma-separated list of components (e.g. themes,analog_fx,audio_tuning)")
-    parser.add_argument("--preset", "-p", choices=["reatooled", "full", "core", "minimal", "fx-only", "themes-only", "community", "extras", "pro-tools"], help="Quick selection preset (default: reatooled = Pro Tools workflow; full = complete ReaFull suite)")
+    parser.add_argument("--components", "-c", type=str, default=None, help="Comma-separated list of components (e.g. themes,analog_fx)");
+    parser.add_argument("--preset", "-p", choices=["reatooled", "full", "core", "minimal", "fx-only", "themes-only", "community", "pro-tools"], help="Quick selection preset (default: reatooled = Pro Tools workflow; full = complete ReaFull suite)")
     parser.add_argument("--no-backup", action="store_true", help="Skip pre-install backup creation")
     parser.add_argument("--allow-running-reaper", action="store_true", help="Allow installation even if REAPER is currently running (not recommended)")
     parser.add_argument("--assets-dir", type=str, default=None, help="Custom path to ReaFull assets directory")
@@ -1104,7 +1051,9 @@ def main():
     args = parser.parse_args()
 
     # Ensure assets are present or download from release CDN
-    ensure_assets_available(custom_assets_dir=args.assets_dir, quiet=args.quiet)
+    if not ensure_assets_available(custom_assets_dir=args.assets_dir, quiet=args.quiet):
+        print(f"[FATAL] Could not obtain ReaFull assets. Aborting installation.", file=sys.stderr)
+        sys.exit(1)
 
     is_interactive = not args.quiet and not args.all and not args.preset and not args.components
     
@@ -1131,9 +1080,9 @@ def main():
     REAPRESETS = {
         "reatooled": ["themes", "menus_toolbars", "sws_autocolor", "fonts", "extensions", "pro_tools_mode"],
         "full": list(COMPONENTS.keys()),
-        "core": ["themes", "analog_fx", "digital_fx", "templates", "sws_autocolor", "menus_toolbars", "fonts", "audio_tuning", "extensions", "docs"],
-        "minimal": ["themes", "fonts", "audio_tuning"],
-        "fx-only": ["analog_fx", "digital_fx", "community_fx", "presets", "audio_tuning"],
+        "core": ["themes", "analog_fx", "digital_fx", "templates", "sws_autocolor", "menus_toolbars", "fonts", "extensions", "docs"],
+        "minimal": ["themes", "fonts"],
+        "fx-only": ["analog_fx", "digital_fx", "community_fx", "presets"],
         "themes-only": ["themes", "fonts", "sws_autocolor"],
         "community": ["community_fx", "scripts", "presets"],
         "pro-tools": ["themes", "menus_toolbars", "sws_autocolor", "fonts", "extensions", "pro_tools_mode"],
@@ -1143,7 +1092,13 @@ def main():
     elif args.preset and args.preset in REAPRESETS:
         selected_keys = REAPRESETS[args.preset]
     elif args.components:
-        selected_keys = [k.strip() for k in args.components.split(",") if k.strip() in COMPONENTS]
+        raw = [k.strip() for k in args.components.split(",") if k.strip()]
+        invalid = [k for k in raw if k not in COMPONENTS]
+        if invalid:
+            print(f"[ERROR] Unrecognized component(s): {', '.join(invalid)}", file=sys.stderr)
+            print(f"  Valid components: {', '.join(sorted(COMPONENTS.keys()))}", file=sys.stderr)
+            sys.exit(1)
+        selected_keys = raw
     elif args.quiet:
         selected_keys = REAPRESETS["reatooled"]
     else:

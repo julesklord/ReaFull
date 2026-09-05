@@ -107,7 +107,7 @@ def make_interactive_menu_screenshot():
         [("                         ", "cyan")],
         [("                             ", "cyan")],
         [("", "default")],
-        [("   Studio Production Suite for Linux REAPER (v2026.3.3)", "bold")],
+        [("   Studio Production Suite for Linux REAPER (v2026.3.4)", "bold")],
         [("", "default")],
         [("Select the components you want to install:", "bold")],
         [("", "default")],

@@ -1,5 +1,70 @@
 # AGENTS
 
+## What This Repo Is
+
+Shell/Python installer suite that deploys a complete REAPER DAW production environment on Linux. Not a library or app — an installer that copies assets, merges configs, and downloads binaries.
+
+## Key Files
+
+- `install.py` — Main installer logic (Python 3). Entry point.
+- `install.sh` — Bash wrapper: checks deps, resolves source dir, launches `install.py`.
+- `uninstall.sh` — Interactive uninstaller & backup restore.
+- `VERSION` — Single source of truth for version (`2026.3.4`). Must match `install.py:VERSION` and `install.sh:VERSION`.
+- `config_templates/` — INI templates. `*.template.ini` files use `{{REAPER_CONFIG_DIR}}` placeholder (expanded at install). Static `*.ini` files must contain zero placeholders.
+- `assets/` — Git-ignored release assets (themes, JSFX, fonts, scripts). Downloaded from GitHub Releases tarball at runtime, or present locally for dev.
+- `scripts/` — Utility scripts (rebranding, audit, sanitization, verification).
+- `scripts/verify_installation.py` — Post-install health checker. Also validates template cleanliness.
+
+## Verification Commands
+
+```bash
+# Syntax check (CI gate)
+python3 -m py_compile install.py
+python3 -m py_compile scripts/verify_installation.py
+
+# License audit (CI gate)
+python3 scripts/audit_licenses.py
+
+# Template validation — must pass with zero issues
+python3 scripts/verify_installation.py config_templates
+
+# Dry-run installer (safe, no filesystem changes)
+./install.sh --quiet --dry-run --preset core --target /tmp/reafull_dryrun
+./install.sh --quiet --dry-run --preset reatooled --target /tmp/reafull_reatooled
+
+# Real install test (to a temp dir)
+./install.sh --quiet --preset minimal --target /tmp/reafull_test
+python3 scripts/verify_installation.py /tmp/reafull_test --components themes,fonts
+```
+
+## Hard Rules (CI-Enforced)
+
+- **Zero Windows drive paths** (`C:\`, `C:/Users/...`) in `config_templates/` and `assets/Scripts/ReaFull/`. CI lints for these.
+- **Zero unexpanded placeholders** (`{{...}}`) in static `.ini` files or deployed target dirs. Only `*.template.ini` files may contain `{{REAPER_CONFIG_DIR}}`.
+- **Version parity**: `VERSION` file, `install.py:VERSION`, and `install.sh:VERSION` must all match.
+- **SHA-256 hashes pinned** in `install.py:KNOWN_HASHES` for every release tarball and extension binary. Add new hashes when bumping versions.
+- **No emojis** in Lua scripts, Python scripts, shell scripts, or INI configs.
+
+## Overlay vs Fresh Mode
+
+- **Overlay** (default): Merges configs non-destructively. Preserves existing `reaper-kb.ini`, `reaper-mouse.ini`, custom menus. Saves ReaFull copy as `*.reafull` alongside preserved files.
+- **Fresh**: Overwrites all configs with templates.
+
+When modifying config deployment logic in `install.py`, test both modes. CI verifies overlay preserves custom content.
+
+## Component System
+
+Installer deploys modular components defined in `install.py:COMPONENTS` dict. Each component has `folders` (asset source → deploy target) and `inis` (config templates). Presets (`REAPRESETS` dict) are named subsets. When adding a component, update both `COMPONENTS` and relevant presets.
+
+## Scripts Directory
+
+Developer/maintainer utilities, not user-facing:
+- `sanitize_and_prepare.py` — Cleans Windows artifacts from sourced assets.
+- `apply_rebranding.py` — Verifies ReaFull branding across themes/configs.
+- `audit_licenses.py` — Scans for license compliance (CI gate).
+- `clean_fxfolders.py`, `clean_templates_final.py` — Asset cleanup helpers.
+- `verify_installation.py` — Dual-purpose: post-install health check AND template validator (`--templates` flag).
+
 <skills_system priority="1">
 
 ## Available Skills

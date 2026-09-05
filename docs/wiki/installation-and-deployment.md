@@ -1,6 +1,6 @@
 # Installation and Deployment Guide
 
-> **Version**: `v2026.3.3`  
+> **Version**: `v2026.3.4`  
 > **Target Environment**: Linux x86_64 / aarch64  
 > **Host Requirements**: Cockos REAPER v6.x or v7.x
 
@@ -100,7 +100,7 @@ Examples:
 You can supply exact comma-separated component identifiers via `--components`:
 
 ```bash
-./install.sh --components themes,analog_fx,digital_fx,fonts,audio_tuning
+./install.sh --components themes,analog_fx,digital_fx,fonts
 ```
 
 Available component identifiers:
@@ -114,7 +114,6 @@ Available component identifiers:
 - `scripts`: FTC Tools, HeDa Track Inspector 2, Lokasenna GUI v2, Zaibuyidao, ReaFull Manager.
 - `presets`: Factory analog/digital presets, mastering and mix chains.
 - `fonts`: Studio typography installed to `~/.local/share/fonts/ReaFull/`.
-- `audio_tuning`: Realtime Linux audio engine and thread optimization.
 - `striptease`: StripTease Modular MCP console mixer engine.
 - `extensions`: SWS Extension (v2.14.0.7) and ReaPack (v1.2.6) native binary setup.
 - `docs`: Embedded offline documentation.

@@ -24,25 +24,33 @@ The **ReaFull Analog FX Suite** provides component-level analog modeling of clas
 
 ```
 Effects/ReaFull Analog FX/
-├── SolidBus            ← British 4K VCA Master Bus Compressor
-├── Distres / DisTres-C ← Non-linear digitizer & knee compressor (Distressor emulation)
-├── Pulse-EQ            ← Passive tube program equalizer (Pultec EQP-1A emulation)
-├── FET-76              ← Ultra-fast Class-A FET peak limiter (1176 LN emulation)
-├── Opto-2A / Opto-2A-AI← Electro-optical leveling amplifier (LA-2A emulation)
-├── Vari-Mu             ← Vacuum tube variable-mu mixbus compressor (Fairchild 670 / Manley)
-├── Retro-C             ← Vintage variable-gain tube leveler
-├── VCA-160             ← Hard-knee VCA dynamic punch processor (dbx 160 emulation)
-├── Fat-Tape            ← Analog magnetic tape machine (7.5, 15, 30 IPS & Head-Bump)
-├── Tape-Dly            ← Tape echo unit with flutter, wow, and saturation
-├── Tube-Pre            ← Triode/Pentode tube preamplifier drive stage
-├── Mix-Chan            ← Analog console channel strip with harmonic drive & filters
-├── Mix-Bus             ← Console mixbus summing with crosstalk & saturation
-├── Sum-Desk / Sum-Mix  ← Multi-channel summing console matrix
-├── Sum-Strip           ← Line amplifier summing strip
-├── ST-Bass             ← Dedicated analog bass channel processor
-├── ST-Guitar           ← Dedicated electric guitar analog processor
-├── VoKoder             ← Analog spectral vocoder engine
-└── VU Meter / VU Zeno  ← Ballistic needle VU meters (-18 dBFS / -14 dBFS calibration)
+├── Compressors/
+│   ├── SolidBus            ← British 4K VCA Master Bus Compressor
+│   ├── Distres             ← Non-linear digitizer & knee compressor (Distressor emulation)
+│   ├── FET-76              ← Ultra-fast Class-A FET peak limiter (1176 LN emulation)
+│   ├── Opto-2A / Opto-2A-AI← Electro-optical leveling amplifier (LA-2A emulation)
+│   ├── Vari-Mu             ← Vacuum tube variable-mu mixbus compressor (Fairchild 670 / Manley)
+│   ├── Retro-C             ← Vintage variable-gain tube leveler
+│   └── VCA-160             ← Hard-knee VCA dynamic punch processor (dbx 160 emulation)
+├── Mixing & Summing/
+│   ├── Mix-Chan            ← Analog console channel strip with harmonic drive & filters
+│   ├── Mix-Bus             ← Console mixbus summing with crosstalk & saturation
+│   ├── Sum-Desk / Sum-Mix  ← Multi-channel summing console matrix
+│   └── Sum-Strip           ← Line amplifier summing strip
+├── Drive & Saturation/
+│   ├── Fat-Tape            ← Analog magnetic tape machine (7.5, 15, 30 IPS & Head-Bump)
+│   └── Tube-Pre            ← Triode/Pentode tube preamplifier drive stage
+├── EQ/
+│   └── Pulse-EQ            ← Passive tube program equalizer (Pultec EQP-1A emulation)
+├── Delay/
+│   └── Tape-Dly            ← Tape echo unit with flutter, wow, and saturation
+├── Guitar & Bass/
+│   ├── ST-Bass             ← Dedicated analog bass channel processor
+│   └── ST-Guitar           ← Dedicated electric guitar analog processor
+├── Meters & Analysis/
+│   └── VU Meter / VU Zeno  ← Ballistic needle VU meters (-18 dBFS / -14 dBFS calibration)
+└── Modulation/
+    └── VoKoder             ← Analog spectral vocoder engine
 ```
 
 ### 1.1 Detailed Processor Manual
@@ -146,22 +154,37 @@ The **ReaFull Digital FX Suite** provides surgical, transparent, and high-precis
 
 ```
 Effects/ReaFull Digital FX/
-├── D-DynEQ           ← Dynamic multi-band parametric equalizer
-├── D-EQ / D-ReEQ     ← FFT-assisted parametric equalizers with surgical filters
-├── D-Comp            ← Feed-forward transparent digital compressor
-├── D-MSComp          ← Mid/Side dual-stage matrix compressor
-├── D-Limit           ← Mastering True-Peak brickwall limiter with lookahead
-├── D-Multi           ← 4-band linear-phase dynamic processor
-├── D-Esser           ← Precision vocal de-esser with frequency monitor
-├── D-Gate            ← Precision noise gate with sidechain filter
-├── D-Noise           ← Spectral noise filter
-├── D-Delay           ← Stereo digital delay with crossfeed & modulation
-├── D-Shaper          ← Transient designer & envelope shaper
-├── Reflex 1, 2, 3    ← Algorithmic reverb suite (Plate, Room, Hall)
-├── T-Meter / D-Meter ← EBU R128 / ITU-R BS.1770-4 LUFS analyzer & True Peak
-├── T-FFT             ← High-resolution real-time FFT spectrum visualizer
-├── T-Peak / T-Phase  ← Stereo correlation meter and Lissajous vector scope
-└── T-Tone/Pink/White ← Precision audio calibration signal generators
+├── EQ/
+│   ├── D-DynEQ            ← Dynamic multi-band parametric equalizer
+│   └── D-EQ / D-ReEQ      ← FFT-assisted parametric equalizers with surgical filters
+├── Compressors/
+│   ├── D-Comp             ← Feed-forward transparent digital compressor
+│   ├── D-MSComp           ← Mid/Side dual-stage matrix compressor
+│   ├── D-Multi            ← 4-band linear-phase dynamic processor
+│   └── Basic Comp         ← Express bus compressor (Stillwell)
+├── Dynamics/
+│   ├── D-Limit            ← Mastering True-Peak brickwall limiter with lookahead
+│   ├── D-Esser            ← Precision vocal de-esser with frequency monitor
+│   ├── D-Gate             ← Precision noise gate with sidechain filter
+│   ├── D-Noise            ← Spectral noise filter
+│   └── D-Shaper           ← Transient designer & envelope shaper
+├── Reverb/
+│   └── Reflex 1, 2, 3     ← Algorithmic reverb suite (Plate, Room, Hall)
+├── Delay/
+│   └── D-Delay            ← Stereo digital delay with crossfeed & modulation
+├── Modulation/
+│   └── Module-A / Module-B← LFO & multi-mode modulation processors
+├── Meters & Analysis/
+│   ├── T-Meter            ← EBU R128 / ITU-R BS.1770-4 LUFS analyzer & True Peak
+│   ├── T-FFT              ← High-resolution real-time FFT spectrum visualizer
+│   ├── T-Peak / T-Phase   ← Stereo correlation meter and Lissajous vector scope
+│   └── T-Quiet            ← Silence / FX-tail end detector
+├── Generators/
+│   └── T-Tone / T-Pink / T-White ← Precision audio calibration signal generators
+└── Utility/
+    └── T-Tool             ← Utility signal tool
+
+Sub-suite: Sonic Anomaly/ (Quadra-C, Hybrid-C, SLAX-C, Leet-D, SEGX2-G)
 ```
 
 ### 2.1 Key Digital Processors

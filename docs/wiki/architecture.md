@@ -1,6 +1,6 @@
 # ReaFull System Architecture & Architecture Decision Records (ADRs)
 
-> **Version**: `v2026.3.3`  
+> **Version**: `v2026.3.4`  
 > **Status**: Approved  
 > **Maintainer**: Jules Martins (`fearlesslymediagroup@gmail.com`)
 
