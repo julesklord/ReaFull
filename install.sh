@@ -13,7 +13,7 @@ C_GREEN='\033[92m'
 C_YELLOW='\033[93m'
 C_CYAN='\033[96m'
 
-VERSION="2026.3.4"
+VERSION="2026.3.5"
 
 # Reconnect stdin to TTY only if executing via curl pipe in interactive mode
 IS_QUIET=0

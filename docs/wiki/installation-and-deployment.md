@@ -1,6 +1,6 @@
 # Installation and Deployment Guide
 
-> **Version**: `v2026.3.4`  
+> **Version**: `v2026.3.5`  
 > **Target Environment**: Linux x86_64 / aarch64  
 > **Host Requirements**: Cockos REAPER v6.x or v7.x
 
@@ -79,12 +79,13 @@ Engineered for fresh operating system installations or complete DAW resets:
 
 | Preset Flag | Profile Description | Approx. Download Size | Target Use Case |
 | :--- | :--- | :--- | :--- |
-| `--preset core` | Core Studio Suite (Themes, Analog/Digital FX, Templates, SWS rules, Typography, Audio Tuning) | **< 700 MB** | Recommended for standard production workstations. |
-| `--preset full` | Complete Studio Suite (Everything including third-party and community suites) | **~858 MB** | Full offline master archive. |
-| `--preset minimal` | Minimal Studio Core (Themes, Typography, Linux Audio Optimization) | **~20 MB** | Lightweight setup for existing plugin ecosystems. |
+| `--preset reatooled` | Pro Tools workflow (Themes, Menus/Toolbars, SWS AutoColor, Fonts, Extensions, Pro Tools mode) | **~60 MB** | Default profile for Pro Tools–style editing. |
+| `--preset core` | Core Studio Suite (Themes, Analog/Digital FX, Templates, SWS rules, Typography, Extensions) | **< 700 MB** | Recommended for standard production workstations. |
+| `--preset full` | Complete Studio Suite (Everything including third-party and community suites) | **~860 MB** | Full offline master archive. |
+| `--preset minimal` | Minimal Studio Core (Themes, Typography) | **~20 MB** | Lightweight setup for existing plugin ecosystems. |
 | `--preset fx-only` | JSFX Audio FX Suites, Presets & Chains | **~640 MB** | Pure mixing/mastering DSP installation. |
-| `--preset themes-only` | Themes, Splash Screen, Icons, SWS AutoColor | **~20 MB** | Visual identity and workflow styling only. |
-| `--preset extras` | Community FX Suites (Saike, Sonic Anomaly, Tilr) & extra scripts | **~180 MB** | Supplementary DSP additions. |
+| `--preset themes-only` | Themes, Splash Screen, Fonts, SWS AutoColor | **~20 MB** | Visual identity and workflow styling only. |
+| `--preset community` | Community FX Suites (Saike, Sonic Anomaly, Tilr), Scripts & Presets | **~195 MB** | Supplementary DSP and scripting additions. |
 
 Examples:
 ```bash
@@ -160,7 +161,7 @@ flowchart TD
 ```
 usage: install.py [-h] [--target TARGET] [--profile {overlay,fresh}] [--force]
                   [--all] [--components COMPONENTS]
-                  [--preset {full,core,minimal,fx-only,themes-only,community,extras}]
+                  [--preset {reatooled,full,core,minimal,fx-only,themes-only,community,pro-tools}]
                   [--no-backup] [--allow-running-reaper] [--assets-dir ASSETS_DIR]
                   [--dry-run] [--log-file LOG_FILE] [--quiet] [--version]
 ```

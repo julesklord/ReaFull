@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReaFull — Production-Grade Studio Workstation for REAPER on Linux</title>
+  <meta name="description" content="Transforma Cockos REAPER en Linux en una suite de estudio con consola analógica. 200+ plantillas, DSP JSFX analógico, flujo Pro Tools y consola ReaFull Hub.">
+  <link rel="icon" type="image/png" href="./logo_mark.png">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            studio: {
+              950: '#07090e',
+              900: '#0c0f17',
+              850: '#111522',
+              800: '#181e2e',
+              700: '#262f45',
+              600: '#38435f',
+              accent: '#38bdf8',
+              amber: '#f59e0b',
+              emerald: '#10b981',
+              rose: '#f43f5e'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom studio aesthetic accents */
+    .studio-glow {
+      box-shadow: 0 0 50px -10px rgba(56, 189, 248, 0.15);
+    }
+    .amber-glow {
+      box-shadow: 0 0 40px -10px rgba(245, 158, 11, 0.2);
+    }
+    .grid-bg {
+      background-image: radial-gradient(rgba(56, 189, 248, 0.08) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    .vu-meter {
+      background: linear-gradient(90deg, #10b981 0%, #10b981 70%, #f59e0b 85%, #f43f5e 100%);
+    }
+  </style>
+</head>
+<body class="bg-studio-950 text-slate-100 font-sans antialiased selection:bg-sky-500 selection:text-black min-h-screen flex flex-col">
+
+  <!-- Top Navigation -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-studio-950/80 border-b border-studio-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <img src="./logo_mark.png" alt="ReaFull Logo" class="w-8 h-8 rounded-lg shadow-sm">
+        <span class="font-extrabold text-xl tracking-tight text-white flex items-center">
+          ReaFull <span class="ml-2 text-[10px] font-mono tracking-widest uppercase bg-sky-500/10 text-sky-400 border border-sky-500/30 px-2 py-0.5 rounded">v2026.3.5</span>
+        </span>
+      </div>
+
+      <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-400">
+        <a href="#suite" class="hover:text-white transition-colors">Suite DSP</a>
+        <a href="#workflow" class="hover:text-white transition-colors">Workflow & Templates</a>
+        <a href="#pricing" class="hover:text-white transition-colors text-amber-400 font-semibold">Precios & Pro</a>
+        <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
+      </nav>
+
+      <div class="flex items-center space-x-3">
+        <a href="https://github.com/julesklord/ReaFull" target="_blank" class="text-xs font-mono bg-studio-850 hover:bg-studio-800 text-slate-300 border border-studio-700 px-3 py-2 rounded-lg flex items-center space-x-2 transition-all">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          <span class="hidden sm:inline">GitHub</span>
+        </a>
+        <a href="#pricing" class="text-xs font-semibold bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-300 hover:to-blue-400 text-black px-4 py-2 rounded-lg shadow-sm transition-all">
+          Obtener Pro
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative pt-20 pb-28 overflow-hidden grid-bg border-b border-studio-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      
+      <!-- Live Badge -->
+      <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-studio-900 border border-studio-700/80 text-xs font-medium text-slate-300 mb-8 shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>Estudio Profesional Llave en Mano para Cockos REAPER en Linux</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-5xl mx-auto leading-tight sm:leading-none">
+        Transforma REAPER en una <br class="hidden sm:inline">
+        <span class="bg-gradient-to-r from-sky-400 via-teal-300 to-amber-300 bg-clip-text text-transparent">
+          Consola Analógica de Clase Mundial
+        </span>
+      </h1>
+
+      <p class="mt-6 text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed font-normal">
+        Suites de procesamiento JSFX analógico (SSL, 1176, Pultec, LA-2A), más de 200 plantillas de pista por género, flujo de trabajo Pro Tools (ReaTooled) y consola de gestión ReaFull Hub dentro del DAW. En un solo instalador automatizado.
+      </p>
+
+      <!-- Terminal Quick-Install Copy Box -->
+      <div class="mt-10 max-w-2xl mx-auto bg-studio-900 border border-studio-700 rounded-xl p-3 flex items-center justify-between shadow-2xl">
+        <div class="flex items-center space-x-3 overflow-x-auto text-left font-mono text-xs sm:text-sm text-sky-300 px-2 py-1">
+          <span class="text-slate-500 select-none">$</span>
+          <span id="cmd-install" class="select-all">curl -fsSL https://raw.githubusercontent.com/julesklord/ReaFull/main/install.sh | bash</span>
+        </div>
+        <button onclick="copyCommand()" id="btn-copy" class="ml-3 px-4 py-2 bg-studio-800 hover:bg-studio-700 text-xs font-semibold text-white rounded-lg border border-studio-600 transition-all flex items-center space-x-1.5 shrink-0">
+          <svg id="copy-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+          <span id="copy-text">Copiar</span>
+        </button>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#pricing" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-black font-bold rounded-xl shadow-lg transition-all text-base flex items-center justify-center space-x-2 amber-glow">
+          <span>Obtener ReaFull Pro ($29 USD)</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+        <a href="https://github.com/julesklord/ReaFull" target="_blank" class="w-full sm:w-auto px-8 py-4 bg-studio-900 hover:bg-studio-850 text-white font-medium rounded-xl border border-studio-700 shadow transition-all text-base flex items-center justify-center space-x-2">
+          <span>Descarga Libre (GitHub)</span>
+        </a>
+      </div>
+
+      <!-- High-Res Hero Preview Mockup -->
+      <div class="mt-16 max-w-5xl mx-auto rounded-2xl overflow-hidden border border-studio-700/80 shadow-2xl studio-glow bg-studio-900">
+        <div class="bg-studio-850 px-4 py-3 border-b border-studio-700 flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+            <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+            <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+            <span class="ml-3 text-xs font-mono text-slate-400">ReaFull Studio Console // Pro Tools Dark Theme</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <div class="w-24 h-2 rounded vu-meter"></div>
+            <span class="text-[10px] font-mono text-emerald-400">-14 LUFS</span>
+          </div>
+        </div>
+        <img src="./Splash ReaFull.png" alt="ReaFull Studio Splash" class="w-full object-cover">
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Bento Grid: Processing Suites -->
+  <section id="suite" class="py-24 bg-studio-900/50 border-b border-studio-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-xs font-mono tracking-widest uppercase text-sky-400 mb-2">Hardware-Modeled DSP</h2>
+        <h3 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">El Sonido Clásico de Gran Estudio en tu Máquina Linux</h3>
+        <p class="mt-4 text-slate-400 text-base sm:text-lg">
+          Sin dependencias pesadas de Wine ni dongles iLok. Algoritmos JSFX nativos optimizados para mínimo consumo de CPU y máxima fidelidad analógica.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Card 1: Analog Suite -->
+        <div class="bg-studio-900 border border-studio-800 hover:border-studio-700 p-8 rounded-2xl transition-all shadow-sm">
+          <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-6">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
+          </div>
+          <h4 class="text-xl font-bold text-white mb-2">ReaFull Analog FX</h4>
+          <p class="text-slate-400 text-sm mb-4 leading-relaxed">
+            Emulaciones de canales clásicos y compresores de bus con saturación y armónicos reales.
+          </p>
+          <ul class="space-y-2 text-xs font-mono text-slate-300">
+            <li class="flex items-center"><span class="text-amber-400 mr-2">●</span> SolidBus (SSL G-Master Bus Comp)</li>
+            <li class="flex items-center"><span class="text-amber-400 mr-2">●</span> FET-76 & Opto-2A (1176 & LA-2A)</li>
+            <li class="flex items-center"><span class="text-amber-400 mr-2">●</span> Pulse-EQ (Pultec EQP-1A Tube EQ)</li>
+            <li class="flex items-center"><span class="text-amber-400 mr-2">●</span> Fat-Tape & Tube-Pre Saturation</li>
+            <li class="flex items-center"><span class="text-amber-400 mr-2">●</span> Mix-Bus & Sum-Desk Console Summing</li>
+          </ul>
+        </div>
+
+        <!-- Card 2: Digital Surgical DSP -->
+        <div class="bg-studio-900 border border-studio-800 hover:border-studio-700 p-8 rounded-2xl transition-all shadow-sm">
+          <div class="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 mb-6">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          </div>
+          <h4 class="text-xl font-bold text-white mb-2">ReaFull Digital FX</h4>
+          <p class="text-slate-400 text-sm mb-4 leading-relaxed">
+            Procesamiento quirúrgico de precisión para mezcla y masterización con calibración broadcast.
+          </p>
+          <ul class="space-y-2 text-xs font-mono text-slate-300">
+            <li class="flex items-center"><span class="text-sky-400 mr-2">●</span> D-DynEQ & D-ReEQ con analizador FFT en vivo</li>
+            <li class="flex items-center"><span class="text-sky-400 mr-2">●</span> D-Limit (Limitador True-Peak de pared)</li>
+            <li class="flex items-center"><span class="text-sky-400 mr-2">●</span> D-MSComp (Dinámica Mid/Side quirúrgica)</li>
+            <li class="flex items-center"><span class="text-sky-400 mr-2">●</span> Reflex Suite (Reverbs algorítmicas de sala)</li>
+            <li class="flex items-center"><span class="text-sky-400 mr-2">●</span> T-Meter (Medición LUFS EBU R128 estándar)</li>
+          </ul>
+        </div>
+
+        <!-- Card 3: ReaFull Hub & Pro Tools Mode -->
+        <div class="bg-studio-900 border border-studio-800 hover:border-studio-700 p-8 rounded-2xl transition-all shadow-sm">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-6">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+          </div>
+          <h4 class="text-xl font-bold text-white mb-2">ReaFull Hub & ReaTooled</h4>
+          <p class="text-slate-400 text-sm mb-4 leading-relaxed">
+            Consola de control In-DAW, flujo de edición estilo Pro Tools y despliegue seguro sin tocar tu configuración de audio.
+          </p>
+          <ul class="space-y-2 text-xs font-mono text-slate-300">
+            <li class="flex items-center"><span class="text-emerald-400 mr-2">●</span> ReaFull Hub: Diagnóstico y selector en vivo</li>
+            <li class="flex items-center"><span class="text-emerald-400 mr-2">●</span> Modo ReaTooled: Ripple, Smart Tool y Keymaps PT</li>
+            <li class="flex items-center"><span class="text-emerald-400 mr-2">●</span> StripTease: Canal modular con medidores GR</li>
+            <li class="flex items-center"><span class="text-emerald-400 mr-2">●</span> Instalador no destructivo con respaldo automático</li>
+            <li class="flex items-center"><span class="text-emerald-400 mr-2">●</span> Compatible con REAPER Nativo y Flatpak</li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Interactive Terminal & Workflow Section -->
+  <section id="workflow" class="py-24 border-b border-studio-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-xs font-mono tracking-widest uppercase text-sky-400 mb-2">Non-Destructive Overlay</h2>
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+            Instalación en 30 Segundos. <br>
+            Sin romper tus atajos de teclado.
+          </h3>
+          <p class="mt-4 text-slate-300 text-base leading-relaxed">
+            El mayor temor al instalar un paquete de estudio es que sobrescriba tus configuraciones personales. 
+            El motor de fusión inteligente de ReaFull opera en modo <strong>Overlay</strong> por defecto:
+          </p>
+
+          <div class="mt-6 space-y-4">
+            <div class="flex items-start space-x-3">
+              <span class="text-emerald-400 font-bold">✓</span>
+              <p class="text-sm text-slate-300"><strong class="text-white">Preserva tus atajos:</strong> No toca tu <code class="text-sky-300 bg-studio-850 px-1 py-0.5 rounded">reaper-kb.ini</code> ni tus modificadores de ratón.</p>
+            </div>
+            <div class="flex items-start space-x-3">
+              <span class="text-emerald-400 font-bold">✓</span>
+              <p class="text-sm text-slate-300"><strong class="text-white">Fusiona ReaPack:</strong> Mantiene tus repositorios de terceros existentes y añade los de la suite.</p>
+            </div>
+            <div class="flex items-start space-x-3">
+              <span class="text-emerald-400 font-bold">✓</span>
+              <p class="text-sm text-slate-300"><strong class="text-white">Respaldo Automático con Fecha:</strong> Siempre puedes revertir cualquier cambio al 100% ejecutando <code class="text-sky-300 bg-studio-850 px-1 py-0.5 rounded">./uninstall.sh</code>.</p>
+            </div>
+          </div>
+
+          <div class="mt-8">
+            <a href="https://github.com/julesklord/ReaFull/blob/main/CHANGELOG.md" target="_blank" class="text-sm text-sky-400 hover:text-sky-300 flex items-center space-x-1 font-medium">
+              <span>Leer notas de la versión 2026.3.5</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="bg-studio-900 border border-studio-700/80 rounded-2xl overflow-hidden shadow-2xl">
+          <div class="bg-studio-850 px-4 py-3 border-b border-studio-700 flex items-center justify-between">
+            <span class="text-xs font-mono text-slate-400">Terminal Selector Interactivo</span>
+            <span class="text-[10px] font-mono bg-studio-800 text-sky-400 px-2 py-0.5 rounded">Python 3.8+</span>
+          </div>
+          <img src="./terminal_interactive.png" alt="ReaFull Interactive Terminal Selector" class="w-full">
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Pricing & Pro Expansion Model -->
+  <section id="pricing" class="py-24 bg-studio-900/40 border-b border-studio-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-xs font-mono tracking-widest uppercase text-amber-400 mb-2">Elige tu Nivel de Estudio</h2>
+        <h3 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">Software Libre con Opciones Pro para Quienes Valoran su Tiempo</h3>
+        <p class="mt-4 text-slate-400 text-base sm:text-lg">
+          Puedes instalar la suite base gratis desde GitHub, u obtener la versión Pro empaquetada con plantillas de mezcla exclusivas y soporte directo.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+        
+        <!-- Tier 1: Community Free -->
+        <div class="bg-studio-900 border border-studio-800 rounded-2xl p-8 flex flex-col justify-between shadow-sm">
+          <div>
+            <div class="flex justify-between items-center mb-4">
+              <span class="text-xs font-mono uppercase tracking-wider text-slate-400 bg-studio-850 px-2.5 py-1 rounded">Open Source</span>
+              <span class="text-xs text-emerald-400 font-semibold">100% Libre</span>
+            </div>
+            <h4 class="text-2xl font-bold text-white mb-2">ReaFull Community</h4>
+            <div class="mt-4 mb-6">
+              <span class="text-4xl font-extrabold text-white">$0</span>
+              <span class="text-slate-400 text-sm ml-1">USD para siempre</span>
+            </div>
+            <p class="text-slate-400 text-sm mb-6">
+              Para productores cómodos con la terminal de Linux y GitHub.
+            </p>
+            <ul class="space-y-3 text-xs text-slate-300 border-t border-studio-800 pt-6">
+              <li class="flex items-center"><span class="text-emerald-400 mr-2">✓</span> Instalador modular completo de terminal</li>
+              <li class="flex items-center"><span class="text-emerald-400 mr-2">✓</span> Suite completa de FX analógicos y digitales JSFX</li>
+              <li class="flex items-center"><span class="text-emerald-400 mr-2">✓</span> Temas Pro Tools Dark y Classic</li>
+              <li class="flex items-center"><span class="text-emerald-400 mr-2">✓</span> Consola ReaFull Hub In-DAW y modo ReaTooled</li>
+              <li class="flex items-center"><span class="text-emerald-400 mr-2">✓</span> Soporte comunitario en GitHub Issues</li>
+            </ul>
+          </div>
+          <div class="mt-8 space-y-3">
+            <a href="https://github.com/julesklord/ReaFull" target="_blank" class="w-full py-3 bg-studio-800 hover:bg-studio-700 text-white font-semibold rounded-xl text-center block transition-all text-sm border border-studio-600">
+              Instalar vía GitHub
+            </a>
+            <a href="https://ko-fi.com/julesklord" target="_blank" class="w-full py-2 bg-transparent hover:bg-studio-850 text-slate-400 hover:text-white font-medium rounded-xl text-center block transition-all text-xs border border-dashed border-studio-700">
+              ☕ Donar / Invitar un Café
+            </a>
+          </div>
+        </div>
+
+        <!-- Tier 2: ReaFull PRO (Featured) -->
+        <div class="bg-gradient-to-b from-studio-850 to-studio-900 border-2 border-amber-500/80 rounded-2xl p-8 flex flex-col justify-between shadow-2xl relative amber-glow">
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 to-amber-500 text-black text-[11px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full shadow">
+            ⭐ Recomendado para Productores
+          </div>
+          <div>
+            <div class="flex justify-between items-center mb-4 mt-2">
+              <span class="text-xs font-mono uppercase tracking-wider text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded border border-amber-500/30">Paquete Turnkey Pro</span>
+              <span class="text-xs text-amber-300 font-semibold">Descarga Inmediata</span>
+            </div>
+            <h4 class="text-2xl font-bold text-white mb-2">ReaFull Studio PRO</h4>
+            <div class="mt-4 mb-6">
+              <span class="text-4xl font-extrabold text-white">$29</span>
+              <span class="text-slate-400 text-sm ml-1">USD (Pago Único)</span>
+            </div>
+            <p class="text-slate-300 text-sm mb-6">
+              La experiencia sin fricción: paquete offline todo-en-uno, cadenas de mezcla maestras y video tutorial.
+            </p>
+            <ul class="space-y-3 text-xs text-slate-200 border-t border-studio-700 pt-6">
+              <li class="flex items-center"><span class="text-amber-400 mr-2 font-bold">✓</span> <strong>Todo lo incluido en Community</strong></li>
+              <li class="flex items-center"><span class="text-amber-400 mr-2 font-bold">✓</span> <strong>Instalador Offline Todo-en-Uno:</strong> Sin descargas externas</li>
+              <li class="flex items-center"><span class="text-amber-400 mr-2 font-bold">✓</span> <strong>50 Cadenas de Mezcla Maestras:</strong> Voces Pop/Trap, Baterías, SSL Glue</li>
+              <li class="flex items-center"><span class="text-amber-400 mr-2 font-bold">✓</span> <strong>Masterclass en Video (45 min):</strong> "De Cero a Master en Linux REAPER"</li>
+              <li class="flex items-center"><span class="text-amber-400 mr-2 font-bold">✓</span> <strong>10 Sesiones Comerciales con Stems</strong> pre-balanceadas</li>
+              <li class="flex items-center"><span class="text-amber-400 mr-2 font-bold">✓</span> <strong>Canal VIP en Discord</strong> y soporte prioritario de instalación</li>
+            </ul>
+          </div>
+          <div class="mt-8">
+            <a href="https://julesklord.gumroad.com/l/reafull-pro" target="_blank" class="w-full py-4 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-black font-extrabold rounded-xl text-center block shadow-lg transition-all text-sm">
+              Comprar ReaFull Pro ($29 USD)
+            </a>
+            <p class="text-[11px] text-center text-slate-400 mt-2">Entrega instantánea por Gumroad / Tarjeta o PayPal</p>
+          </div>
+        </div>
+
+        <!-- Tier 3: Remote Studio Setup Service -->
+        <div class="bg-studio-900 border border-studio-800 rounded-2xl p-8 flex flex-col justify-between shadow-sm">
+          <div>
+            <div class="flex justify-between items-center mb-4">
+              <span class="text-xs font-mono uppercase tracking-wider text-sky-400 bg-sky-500/10 px-2.5 py-1 rounded border border-sky-500/30">Servicio 1-a-1</span>
+              <span class="text-xs text-sky-400 font-semibold">Garantizado</span>
+            </div>
+            <h4 class="text-2xl font-bold text-white mb-2">Remote Studio Setup</h4>
+            <div class="mt-4 mb-6">
+              <span class="text-4xl font-extrabold text-white">$149</span>
+              <span class="text-slate-400 text-sm ml-1">USD por estudio</span>
+            </div>
+            <p class="text-slate-400 text-sm mb-6">
+              Puesta a punto remota completa de tu estudio con el creador de ReaFull.
+            </p>
+            <ul class="space-y-3 text-xs text-slate-300 border-t border-studio-800 pt-6">
+              <li class="flex items-center"><span class="text-sky-400 mr-2">✓</span> Incluye ReaFull Studio PRO completo</li>
+              <li class="flex items-center"><span class="text-sky-400 mr-2">✓</span> Sesión remota 1-a-1 de 90 minutos (AnyDesk / RustDesk)</li>
+              <li class="flex items-center"><span class="text-sky-400 mr-2">✓</span> Calibración de tu interfaz de audio a cero xruns</li>
+              <li class="flex items-center"><span class="text-sky-400 mr-2">✓</span> Configuración de plugins VST con Yabridge/Wine</li>
+              <li class="flex items-center"><span class="text-sky-400 mr-2">✓</span> Mapeo de superficies de control MIDI y atajos</li>
+            </ul>
+          </div>
+          <div class="mt-8">
+            <a href="mailto:fearlesslymediagroup@gmail.com?subject=Reserva%20de%20Remote%20Studio%20Setup%20ReaFull" class="w-full py-3 bg-studio-800 hover:bg-studio-700 text-white font-semibold rounded-xl text-center block transition-all text-sm border border-studio-600">
+              Agendar Sesión de Configuración
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-24 border-b border-studio-800">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h3 class="text-3xl font-extrabold text-white text-center mb-12">Preguntas Frecuentes</h3>
+
+      <div class="space-y-6">
+        <div class="bg-studio-900 border border-studio-800 p-6 rounded-xl">
+          <h4 class="text-base font-bold text-white mb-2">¿Sobrescribirá ReaFull mis atajos de teclado o personalizaciones existentes?</h4>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            No por defecto. ReaFull utiliza un modo de instalación <strong>Overlay</strong> que respeta tu archivo <code class="text-sky-300">reaper-kb.ini</code>, tus modificadores de ratón y tus menús existentes. Además, crea una copia de seguridad con fecha y hora antes de tocar cualquier archivo.
+          </p>
+        </div>
+
+        <div class="bg-studio-900 border border-studio-800 p-6 rounded-xl">
+          <h4 class="text-base font-bold text-white mb-2">¿Es compatible con REAPER instalado como Flatpak?</h4>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Sí. El instalador detecta automáticamente si estás utilizando la versión nativa de REAPER (<code class="text-sky-300">~/.config/REAPER</code>) o la versión en Flatpak (<code class="text-sky-300">~/.var/app/fm.reaper.Reaper/config/REAPER</code>) e instala los archivos en la ruta correcta.
+          </p>
+        </div>
+
+        <div class="bg-studio-900 border border-studio-800 p-6 rounded-xl">
+          <h4 class="text-base font-bold text-white mb-2">¿Qué licencias rigen los plugins incluidos en la suite?</h4>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            El instalador y las herramientas de despliegue de ReaFull están licenciados bajo MIT © Jules Martins. Los algoritmos de procesamiento JSFX de terceros (Tukan Studios, Sonic Anomaly, Saike Tools) y las extensiones (SWS, ReaPack) permanecen bajo sus licencias originales de código abierto (GPL-3.0, LGPL-3.0, MIT). Todos los autores originales están plenamente acreditados en el archivo <code class="text-sky-300">THIRD_PARTY.md</code>.
+          </p>
+        </div>
+
+        <div class="bg-studio-900 border border-studio-800 p-6 rounded-xl">
+          <h4 class="text-base font-bold text-white mb-2">¿Qué diferencia a la versión Pro de la comunitaria?</h4>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            La versión comunitaria en GitHub contiene toda la suite técnica base. La versión Pro añade contenido de valor de autoría original: 50 cadenas maestras de mezcla pre-calibradas, la Masterclass en video HD de 45 minutos, proyectos comerciales con stems, paquete offline llave en mano y soporte VIP directo.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-studio-950 py-12 border-t border-studio-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="flex items-center space-x-3">
+        <img src="./logo_mark.png" alt="ReaFull Logo" class="w-6 h-6 rounded">
+        <span class="text-sm font-bold text-white">ReaFull Studio Suite</span>
+        <span class="text-xs text-slate-500">© 2025–2026 Jules Martins</span>
+      </div>
+
+      <div class="flex items-center space-x-6 text-xs text-slate-400">
+        <a href="https://github.com/julesklord/ReaFull" target="_blank" class="hover:text-white transition-colors">GitHub</a>
+        <a href="https://github.com/julesklord/ReaFull/blob/main/LICENSE" target="_blank" class="hover:text-white transition-colors">Licencia MIT</a>
+        <a href="https://github.com/julesklord/ReaFull/blob/main/THIRD_PARTY.md" target="_blank" class="hover:text-white transition-colors">Avisos de Terceros</a>
+        <a href="mailto:fearlesslymediagroup@gmail.com" class="hover:text-white transition-colors">Contacto</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function copyCommand() {
+      const cmd = document.getElementById('cmd-install').innerText;
+      navigator.clipboard.writeText(cmd).then(() => {
+        const text = document.getElementById('copy-text');
+        const icon = document.getElementById('copy-icon');
+        text.innerText = '¡Copiado!';
+        text.classList.add('text-emerald-400');
+        setTimeout(() => {
+          text.innerText = 'Copiar';
+          text.classList.remove('text-emerald-400');
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

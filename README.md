@@ -11,13 +11,13 @@
 <p align="center">
   <a href="https://github.com/julesklord/ReaFull/actions"><img src="https://github.com/julesklord/ReaFull/actions/workflows/ci.yml/badge.svg" alt="CI Status" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License" /></a>
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-2026.3.4-cyan.svg" alt="Version" /></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/version-2026.3.5-cyan.svg" alt="Version" /></a>
   <a href="https://github.com/julesklord/ReaFull/releases"><img src="https://img.shields.io/github/downloads/julesklord/ReaFull/total.svg" alt="Downloads" /></a>
 </p>
 
 ---
 
-ReaFull transforms Cockos REAPER on Linux into a complete studio environment for music production, mixing, and mastering. It deploys analog-modeled JSFX consoles, surgical digital DSP, 200+ track templates, genre-based project templates, studio typography, Pro Tools workflow emulation, and non-destructive Linux audio engine optimizations through a single automated installer.
+ReaFull transforms Cockos REAPER on Linux into a complete studio environment for music production, mixing, and mastering. It deploys analog-modeled JSFX consoles, surgical digital DSP, 200+ track templates, genre-based project templates, studio typography, Pro Tools workflow emulation, and the ReaFull Hub in-DAW manager through a single automated installer.
 
 ## Table of Contents
 

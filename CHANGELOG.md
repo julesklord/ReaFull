@@ -9,6 +9,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 
 ---
 
+## [2026.3.5] - 2026-11-18
+
+### Fixed
+- **ReaFull Hub (`ReaFull_Hub.lua`)**: fixed background installer (`run_background_install`) deleting its own result marker immediately, missing `--allow-running-reaper`, and passing `--preset reatooled` which overrode custom `--components` selections; updated font labels (`Electrolize, Orbitron, Roboto, Open Sans`).
+- **ReaFull Auto-Updater (`ReaFull_Updater.lua`)**: added `--allow-running-reaper`, exit-code verification before reporting success, and prevented forced reinstallation when already running the latest version.
+- **Installer (`install.py`)**:
+  - Fixed duplicated `Effects/Effects/` path in `purge_legacy_suite_folders()` for `--profile fresh`.
+  - Unified default theme enforcement to `ReaFull PT Dark.ReaperThemeZip` (matching `reaper.template.ini` and `README.md`).
+  - Fixed `pro_tools_mode` target directory to `KeyMaps/ProTools` and parsed `reaper-protools.template.ini` dynamically so all 29 Pro Tools overrides stay in sync.
+- **Health Check (`scripts/verify_installation.py`)**: enabled extension verification on full checks and made `pro_tools_mode` informational unless explicitly requested.
+- **Uninstaller (`uninstall.sh`)**: selective uninstall now also removes `StripTease`, `.reafull` backup INIs, and stale ReaFull theme/splash entries in `reaper.ini`.
+- **Documentation & Landing Page**: added `docs/index.html`, removed stale `audio_tuning` / `audio-engine-tuning.md` references across README and wiki, and fixed the Flatpak config path in the FAQ.
+
+---
+
 ## [2026.3.4] - 2026-09-04
 
 ### Added

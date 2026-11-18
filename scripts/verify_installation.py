@@ -207,8 +207,8 @@ def check_reafull(target_dir=None, components=None, quiet=False):
             issues.append("sws-autocoloricon.ini missing")
             if not quiet: print("[WARN] sws-autocoloricon.ini not found.")
 
-    # 7. Check Native Extensions (if extensions selected)
-    if not check_all and "extensions" in components:
+    # 7. Check Native Extensions (if extensions selected or full check)
+    if check_all or "extensions" in components:
         userplugins_dir = os.path.join(target_dir, "UserPlugins")
         has_ext = os.path.exists(userplugins_dir) and any(
             f.startswith("reaper_sws") or f.startswith("reaper_reapack")
@@ -221,7 +221,7 @@ def check_reafull(target_dir=None, components=None, quiet=False):
             issues.append("Native extensions (SWS/ReaPack) missing in UserPlugins/")
             if not quiet: print("[WARN] Native extensions missing in UserPlugins/.")
 
-    # 8. Check Pro Tools Mode (if pro_tools_mode selected or full check)
+    # 8. Check Pro Tools Mode (if pro_tools_mode explicitly selected, or informational in full check)
     if check_all or (components and "pro_tools_mode" in components):
         pt_keymap = os.path.join(target_dir, "KeyMaps", "ProTools")
         pt_config = os.path.join(target_dir, "reaper-protools.ini")
@@ -241,9 +241,11 @@ def check_reafull(target_dir=None, components=None, quiet=False):
         elif has_pt_config:
             if not quiet: print("[OK] Pro Tools Mode config deployed (reaper-protools.ini present).")
             checks_passed += 1
-        else:
+        elif components and "pro_tools_mode" in components:
             issues.append("Pro Tools Mode not detected")
             if not quiet: print("[WARN] Pro Tools Mode files not found.")
+        else:
+            if not quiet: print("[INFO] Pro Tools Mode not active (optional component).")
 
     # 8. Audit INI files for broken Windows paths and raw placeholders (ALWAYS check target INIs)
     ini_path_errors = 0

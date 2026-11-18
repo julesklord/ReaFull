@@ -1,6 +1,6 @@
 # ReaFull Documentation Wiki
 
-> **Version**: `v2026.3.4`  
+> **Version**: `v2026.3.5`  
 > **Status**: Production Ready  
 > **Platform**: Linux (x86_64, aarch64) · Native & Flatpak  
 > **Host**: Cockos REAPER (v6.x / v7.x)
@@ -11,7 +11,7 @@ Welcome to the technical documentation and developer wiki for **ReaFull**, a mod
 
 ## 1. Overview & Vision
 
-ReaFull eliminates the "Linux audio setup tax" by packaging an analog-modeled JSFX console ecosystem, surgical digital DSP, 200+ production track templates, genre-tailored project templates, studio typography, SWS auto-color rules, and automated realtime Linux audio engine optimizations into an atomic, non-destructive deployment engine.
+ReaFull eliminates the "Linux audio setup tax" by packaging an analog-modeled JSFX console ecosystem, surgical digital DSP, 200+ production track templates, genre-tailored project templates, studio typography, SWS auto-color rules, and Pro Tools workflow emulation into an atomic, non-destructive deployment engine.
 
 ```mermaid
 graph TD
@@ -22,13 +22,11 @@ graph TD
     Installer -->|"2. Asset Delivery"| Assets["Assets Engine (Themes, JSFX, Templates, Fonts)"]
     Installer -->|"3. INI Engine"| Merge["Multi-Pass INI Merger (Overlay vs Fresh)"]
     Installer -->|"4. Native Extensions"| Exts["SWS (v2.14.0.7) & ReaPack (v1.2.6)"]
-    Installer -->|"5. Audio Engine"| Tuning["Kernel & Audio Tuning (PipeWire / ALSA / JACK)"]
-    Installer -->|"6. Verification"| Verifier["Health Check Gate (verify_installation.py)"]
+    Installer -->|"5. Verification"| Verifier["Health Check Gate (verify_installation.py)"]
     
     Assets --> ReaperTarget
     Merge --> ReaperTarget
     Exts --> ReaperTarget
-    Tuning --> ReaperTarget
     Verifier -->|"Validates Integrity"| ReaperTarget
 ```
 
@@ -42,7 +40,6 @@ The wiki is organized into modular guides covering architecture, deployment, aud
 | :--- | :--- | :--- |
 | [**System Architecture & ADRs**](./architecture.md) | Technical design, POSIX sanitization, and ADRs. | INI Merge Engine, Dynamic Template Expansion, Asset CDN, 5 Architecture Decision Records (ADRs). |
 | [**Installation & Deployment**](./installation-and-deployment.md) | Comprehensive installation and setup guide. | CLI profiles (`overlay` vs `fresh`), presets (`core`, `full`, `minimal`, etc.), cURL one-liner, headless CI setup. |
-| [**Audio Engine & Kernel Tuning**](./audio-engine-tuning.md) | Linux realtime audio stack optimization. | PipeWire / ALSA / JACK setup, thread allocations, `mlockall`, RT priority, HQ Sinc resampling modes. |
 | [**DSP Plugin Suites Catalog**](./dsp-suites.md) | Exhaustive manual for 50+ bundled JSFX processors. | Analog FX Suite (SolidBus, Pulse-EQ, FET-76, Fat-Tape), Digital FX (D-DynEQ, D-Limit), StripTease MCP Console. |
 | [**Templates, Workflows & Themes**](./templates-and-workflows.md) | Track templates, project templates, screensets & themes. | 17 TrackTemplate categories (200+ strips), 19 ProjectTemplates, Screensets (`F7`, `F8`, `F9`), Pro/Dark/Gray/Light themes. |
 | [**ReaScripts & Automation Catalog**](./scripts-and-extensions.md) | Studio scripting, native extensions & macros. | ReaFull Hub/Updater, FTC Tools, HeDa Track Inspector 2, MPL, Sexan, X-Raym, Edu Serra suites, Auto-render macros. |
@@ -58,5 +55,5 @@ The wiki is organized into modular guides covering architecture, deployment, aud
 1. **POSIX Sanitized**: 100% compliant with standard Linux filesystem hierarchies. Zero hardcoded Windows drive letters (`C:\...`) or invalid path separators in config templates.
 2. **Non-Destructive by Default (`Overlay` Mode)**: Never overwrites user shortcuts (`reaper-kb.ini`), custom menus (`reaper-menu.ini`), or mouse modifiers (`reaper-mouse.ini`). Merges ReaPack remotes without wiping custom repositories.
 3. **Fail-Safe Operation**: Every installation creates an automated timestamped backup before touching target directories.
-4. **Hardware-Aware Optimization**: Automatically identifies audio interfaces (e.g. Behringer UMC404HD 192k, Presonus AudioBox) and audio servers (PipeWire, JACK, ALSA) to tune buffer sizes, thread counts, and realtime scheduler priorities.
+4. **Non-Intrusive Audio Setup**: Preserves your existing ALSA, PipeWire, or JACK driver and buffer settings in `reaper.ini` untouched.
 5. **Verified Integrity**: Bundled extensions (SWS, ReaPack) and remote asset bundles are cryptographically verified using SHA-256 checksums before installation.

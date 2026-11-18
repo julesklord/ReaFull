@@ -1,6 +1,6 @@
 # ReaFull System Architecture & Architecture Decision Records (ADRs)
 
-> **Version**: `v2026.3.4`  
+> **Version**: `v2026.3.5`  
 > **Status**: Approved  
 > **Maintainer**: Jules Martins (`fearlesslymediagroup@gmail.com`)
 
@@ -145,7 +145,7 @@ Implement `merge_reapack_ini()` to parse `[remotes]`, extract existing repositor
 
 ### ADR 0005: Low-Latency Linux Audio Tuning & Hardware Heuristics
 
-- **Status**: Accepted
+- **Status**: Superseded in `v2026.3.4` (component `audio_tuning` removed to leave user audio device and thread settings untouched)
 - **Date**: 2026-08-17
 
 #### Context

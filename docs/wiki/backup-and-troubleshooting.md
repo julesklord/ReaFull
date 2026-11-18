@@ -92,7 +92,7 @@ Audio playback crackles, clicks, or stutters during playback or recording.
    # max locked memory       (kbytes, -l) unlimited
    # real-time priority              (-r) 95 (or 90+)
    ```
-   If not, configure `/etc/security/limits.d/audio.conf` as described in the [Audio Engine Tuning Guide](./audio-engine-tuning.md).
+   If not, configure `/etc/security/limits.d/audio.conf` (e.g. `@audio - rtprio 95` and `@audio - memlock unlimited`) for your distribution.
 
 2. **Adjust Buffer Size**: In REAPER (*Preferences → Audio → Device*):
    - For recording / live tracking: Set Block Size to `128` or `256` samples (48kHz).

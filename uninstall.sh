@@ -14,16 +14,7 @@ C_YELLOW='\033[93m'
 C_BLUE='\033[94m'
 C_CYAN='\033[96m'
 
-echo -e "${C_BOLD}${C_CYAN}"
-echo "                                                                    "
-echo "                           "
-echo "                      "
-echo "                        "
-echo "                          "
-echo "                         "
-echo "                             "
-echo -e "${C_RESET}"
-echo -e "${C_BOLD}ReaFull Uninstallation & Backup Restoration Utility${C_RESET}\n"
+echo -e "\n${C_BOLD}${C_CYAN}ReaFull Uninstallation & Backup Restoration Utility${C_RESET}\n"
 
 # 1. Resolve Target REAPER Directory
 NATIVE_DIR="$HOME/.config/REAPER"
@@ -119,8 +110,17 @@ case "$ACTION_CHOICE" in
             # Remove JSFX Suites
             rm -rf "$CONFIG_DIR/Effects/ReaFull Analog FX"
             rm -rf "$CONFIG_DIR/Effects/ReaFull Digital FX"
-            # Remove ReaFull scripts
+            rm -rf "$CONFIG_DIR/Effects/StripTease"
+            # Remove ReaFull & StripTease scripts and chains
             rm -rf "$CONFIG_DIR/Scripts/ReaFull"
+            rm -rf "$CONFIG_DIR/Scripts/StripTease"
+            rm -rf "$CONFIG_DIR/FXChains/StripTease"
+            # Remove .reafull reference INI copies
+            rm -f "$CONFIG_DIR/"*.reafull
+            # Reset theme/splash keys in reaper.ini if pointing to deleted ReaFull assets
+            if [ -f "$CONFIG_DIR/reaper.ini" ]; then
+                sed -i '/^lastthemefn5=.*ReaFull/d; /^splashimage=.*Splash ReaFull\.png/d' "$CONFIG_DIR/reaper.ini"
+            fi
             # Remove Fonts
             FONTS_DIR="$HOME/.local/share/fonts/ReaFull"
             if [ -d "$FONTS_DIR" ]; then

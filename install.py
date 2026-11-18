@@ -26,10 +26,11 @@ import urllib.request
 import tarfile
 from datetime import datetime
 
-VERSION = "2026.3.4"
+VERSION = "2026.3.5"
 ASSETS_RELEASE_URL = f"https://github.com/julesklord/ReaFull/releases/download/v{VERSION}/reafull-assets-v{VERSION}.tar.gz"
 
 KNOWN_HASHES = {
+    "reafull-assets-v2026.3.5.tar.gz": "d395f77f492d03a44815cca38b9538563ac6722b54600aa3d2755bd242aadc22",
     "reafull-assets-v2026.3.4.tar.gz": "748bceb1458e9d6d4b8dbef1f037add18b88032044bbf34da6de9d198539796d",
     "reafull-assets-v2026.3.3.tar.gz": "6ad3ae8c6e288ef7749b324e2bfdb6c21aa58cb99290d537397b03083d272030",
     "reafull-assets-v2026.3.2.tar.gz": "6362aeec5b9b69dd2069c81b91fe946abbc4c32dddae61db7122d1ac459198b9",
@@ -287,7 +288,7 @@ COMPONENTS = {
     "pro_tools_mode": {
         "name": "Pro Tools Mode (ReaTooled)",
         "desc": "Pro Tools–style editing workflow: per-track ripple, grid snap, smart tool, edit cursor",
-        "folders": [("KeyMaps/ProTools", "KeyMaps")],
+        "folders": [("KeyMaps/ProTools", "KeyMaps/ProTools")],
         "inis": ["reaper-protools.template.ini"],
         "default": False
     },
@@ -424,14 +425,7 @@ def interactive_menu():
     while True:
         os.system('clear' if os.name == 'posix' else 'cls')
         print(f"{Colors.BOLD}{Colors.CYAN}")
-        print(r"                                                                    ")
-        print(r"                           ")
-        print(r"                      ")
-        print(r"                        ")
-        print(r"                          ")
-        print(r"                         ")
-        print(r"                             ")
-        print(f"\n   Studio Production Suite for Linux REAPER (v{VERSION})")
+        print(f"   ReaFull Studio Production Suite for Linux REAPER (v{VERSION})")
         print(f"{Colors.ENDC}")
         print(f"{Colors.BOLD}Select the components you want to install:{Colors.ENDC}\n")
         print(f"  {Colors.DIM}Default: ReaTooled workflow with ReArtist design & SWS autocolor.{Colors.ENDC}\n")
@@ -459,7 +453,7 @@ def interactive_menu():
         print("  - 'a' / 'all'   : Select all (Full Studio)")
         print("  - 'r' / 'rt'    : ReaTooled only (Pro Tools workflow + ReArtist SWS AutoColor & Icons)")
         print("  - 'k' / 'core'  : Core Suite (<700MB: Themes, Analog/Digital FX, Templates, SWS, Fonts)")
-        print("  - 'm' / 'min'   : Minimal profile (Themes, Audio Tuning, Fonts)")
+        print("  - 'm' / 'min'   : Minimal profile (Themes, Fonts)")
         print("  - 'f' / 'fx'    : FX and Plugins only")
         print("  - 'p' / 'pt'    : Pro Tools Mode (PT workflow + ReArtist SWS AutoColor & Icons)")
         print("  - 'c' / 'enter' : CONTINUE with installation")
@@ -678,8 +672,8 @@ def deploy_components(selected_keys, target_dir, logger, profile="overlay", forc
             continue
         if comp_id in ("analog_fx", "digital_fx") and profile == "fresh":
             purge_legacy_suite_folders(
-                os.path.join(ASSETS_DIR, "Effects", comp["folders"][0][0]),
-                os.path.join(target_dir, "Effects", comp["folders"][0][1]),
+                os.path.join(ASSETS_DIR, comp["folders"][0][0]),
+                os.path.join(target_dir, comp["folders"][0][1]),
                 logger, dry_run=dry_run)
         if comp_id == "pro_tools_mode":
             logger.action("COMPONENT", f"Installing: {comp['name']}...")
@@ -915,29 +909,39 @@ def merge_reaper_ini(selected_keys, target_dir, logger, dry_run=False):
 
     if "pro_tools_mode" in selected_keys:
         logger.action("PRO TOOLS MODE", "Applying Pro Tools–style editing configuration...")
-        protool_overrides = {
-            "ripplepertrack": "1",
-            "ripplelockmode": "0",
-            "autoxfade": "0",
-            "splitautoxfade": "0",
-            "newitemlenmode": "0",
-            "projrelsnap": "1",
-            "projgridsnapmin": "4",
-            "projgriddivsnap": "0.25000000",
-            "itemsnap": "1",
-            "snapextraden": "0",
-            "maxsnaptrack": "0",
-            "projgrid": "4",
-            "editcursorcontext": "1",
-            "toolmode": "5",
-            "trimcontentbehind": "1",
-            "xfadeedit_open": "1",
-            "tabediting": "1",
-            "projrecmode": "1",
-            "projrecfiletype": "wav",
-        }
-        for k, v in protool_overrides.items():
-            preserved_kvs[k] = v
+        pt_tpl_path = os.path.join(CONFIG_TEMPLATES_DIR, "reaper-protools.template.ini")
+        pt_sections = parse_ini(pt_tpl_path)
+        if "reaper" in pt_sections and pt_sections["reaper"]:
+            for line in pt_sections["reaper"]:
+                line_s = line.strip()
+                if not line_s or line_s.startswith("#") or "=" not in line_s:
+                    continue
+                k, v = line_s.split("=", 1)
+                preserved_kvs[k.strip()] = v.strip()
+        else:
+            protool_overrides = {
+                "ripplepertrack": "1",
+                "ripplelockmode": "0",
+                "autoxfade": "0",
+                "splitautoxfade": "0",
+                "newitemlenmode": "0",
+                "projrelsnap": "1",
+                "projgridsnapmin": "4",
+                "projgriddivsnap": "0.25000000",
+                "itemsnap": "1",
+                "snapextraden": "0",
+                "maxsnaptrack": "0",
+                "projgrid": "4",
+                "editcursorcontext": "1",
+                "toolmode": "5",
+                "trimcontentbehind": "1",
+                "xfadeedit_open": "1",
+                "tabediting": "1",
+                "projrecmode": "1",
+                "projrecfiletype": "wav",
+            }
+            for k, v in protool_overrides.items():
+                preserved_kvs[k] = v
         logger.action("PRO TOOLS MODE", "Per-track ripple editing, grid snapping, smart tool, and destructive record enabled.")
 
     # Auto-configure Python ReaScript engine in REAPER if not explicitly set
@@ -962,7 +966,7 @@ def merge_reaper_ini(selected_keys, target_dir, logger, dry_run=False):
     # Explicitly enforce ReaFull branding and theme in reaper.ini when themes is selected
     if "themes" in selected_keys:
         splash_path = os.path.join(target_dir, "Splash ReaFull.png")
-        theme_path = os.path.join(target_dir, "ColorThemes/ReaFull Pro.ReaperThemeZip")
+        theme_path = os.path.join(target_dir, "ColorThemes/ReaFull PT Dark.ReaperThemeZip")
         preserved_kvs["splashimage"] = splash_path
         preserved_kvs["lastthemefn5"] = theme_path
         preserved_kvs["splash"] = "1"
@@ -982,7 +986,7 @@ def merge_reaper_ini(selected_keys, target_dir, logger, dry_run=False):
                     merged_reaper_lines.append(f"{k_trim}={preserved_kvs[k_trim]}\n")
                     seen_reaper_keys.add(k_trim)
                 elif k_trim == "lastthemefn5" and "themes" in selected_keys:
-                    theme_path = os.path.join(target_dir, "ColorThemes/ReaFull Pro.ReaperThemeZip")
+                    theme_path = os.path.join(target_dir, "ColorThemes/ReaFull PT Dark.ReaperThemeZip")
                     merged_reaper_lines.append(f"lastthemefn5={theme_path}\n")
                     seen_reaper_keys.add(k_trim)
                 elif k_trim == "splashimage" and "themes" in selected_keys:
@@ -1109,15 +1113,7 @@ def main():
     total_files = sum(calculate_component_size(k)[1] for k in selected_keys)
 
     if not args.quiet:
-        print(f"{Colors.BOLD}{Colors.CYAN}")
-        print(r"                                                                    ")
-        print(r"                           ")
-        print(r"                      ")
-        print(r"                        ")
-        print(r"                          ")
-        print(r"                         ")
-        print(r"                             ")
-        print(f"{Colors.ENDC}")
+        print()
         print(f"{Colors.BOLD}{Colors.CYAN}==============================================================================={Colors.ENDC}")
         print(f"{Colors.BOLD}{Colors.CYAN}                    ReaFull Installation Pre-Flight Summary                     {Colors.ENDC}")
         print(f"{Colors.BOLD}{Colors.CYAN}==============================================================================={Colors.ENDC}")
